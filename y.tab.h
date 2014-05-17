@@ -93,19 +93,20 @@ extern int yydebug;
     PERCENT = 303,
     CONCAT = 304,
     PASSIGNMENT = 305,
-    EQV = 306,
-    NEQV = 307,
-    OR = 308,
-    AND = 309,
-    NOT = 310,
-    LT = 311,
-    LE = 312,
-    GE = 313,
-    GT = 314,
-    EQ = 315,
-    NE = 316,
-    EXP = 317,
-    UMINUS = 318
+    INTERFACE = 306,
+    EQV = 307,
+    NEQV = 308,
+    OR = 309,
+    AND = 310,
+    NOT = 311,
+    LT = 312,
+    LE = 313,
+    GE = 314,
+    GT = 315,
+    EQ = 316,
+    NE = 317,
+    EXP = 318,
+    UMINUS = 319
   };
 #endif
 
@@ -124,7 +125,7 @@ union YYSTYPE
 	char *sval;
 	symTable *sym; // ID or INTEGERC or REALC
 
-#line 128 "y.tab.h" /* yacc.c:1909  */
+#line 129 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

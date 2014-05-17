@@ -113,6 +113,7 @@ id       {letter}({letter}|{digit})*
 "stop"        {return STOP;}
 "subroutine"  {return SUBROUTINE;}
 "type"        {return TYPE;}
+"interface"   {return INTERFACE;}
 
 "integer"     {return INTEGER;}
 "logical"     {return LOGICAL;}
@@ -203,7 +204,6 @@ id       {letter}({letter}|{digit})*
 			LIST;
 			printf("%d: %s", linenum++, buf);
 			buf[0] = '\0';
-			return *yytext;
 			}
 	
 

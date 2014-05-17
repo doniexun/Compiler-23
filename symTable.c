@@ -83,7 +83,7 @@ symTable *insert(scope *s, char* token)
 		}
 	}
 	else
-		return search(s, token);
+		return NULL;
 }
 
 void printSym(symTable *sym)

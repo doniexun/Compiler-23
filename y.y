@@ -22,9 +22,12 @@ Types tTemp;
 int dimesParam;
 Attrs aTemp;
 
+scope *stable[10];
+int sCurrent = 0;
+
+symTable *table[10];
+int vCurrent = 0;
 %}
-
-
 
 %union{
 	int ival;
@@ -61,7 +64,7 @@ Attrs aTemp;
 
 %token CALL CASE CLOSE CONTINUE CYCLE DATA DIMENSION DO ELSE END EXIT FUNCTION
        GOTO IF PROCEDURE PARAMETER PRINT PRINTLN POINTER PROGRAM RECURSIVE
-       RETURN SELECT STOP SUBROUTINE TYPE PERCENT CONCAT PASSIGNMENT
+       RETURN SELECT STOP SUBROUTINE TYPE PERCENT CONCAT PASSIGNMENT INTERFACE
 
 %right '='
 %left EQV NEQV
@@ -77,17 +80,17 @@ Attrs aTemp;
 %type <epty> expr
 %%
 program
-	: PROGRAM ID '\n' 
+	: PROGRAM ID
 	  		{ 
 	  		printf("accept\n");
 			symTable *s = insert(currentScope, $2);
 			s->type = PROG_TYPE;
 			}
 
-	  context END PROGRAM ID '\n' 
+	  context END PROGRAM ID 
 	  		{
-	  	   	printf("program : %s\n", $8);
-	  	    if(strcmp($2, $8) != 0) yyerror("Varible name(program) doens't match.");
+	  	   	printf("program : %s\n", $7);
+	  	    if(strcmp($2, $7) != 0) yyerror("Varible name(program) doens't match.");
 			}
 	;
 
@@ -96,8 +99,8 @@ context
 	;
 
 decls
-	: declVar decls '\n'
-	| declFunc decls '\n'
+	: declVar decls
+	| declFunc decls
     |
 	;
 
@@ -108,10 +111,17 @@ declVar
     ;
 
 declFunc
-    : INTERFACE ;
+	: INTERFACE SUBROUNTINE ID {
+	  		symTable *s = insert(currentScope, $3);
+			if(s == NULL) yyerror("ID was exist.");
+			s->type = SUBR_TYPE;
+			scope *sc = createScope();
+			stable[sCurrent] = sc;	
+			}
+	  '(' idn ')'
 
 exprs
-	: expr exprs '\n'
+	: expr exprs 
 	| 
 	;
 			   
@@ -122,24 +132,46 @@ types
     | CHARACTER {tTemp = 4;}
 	;
 
-ids
-	: ids ',' ID {
-			symTable *s = insert(currentScope, $3);
-	  	  	if(s == NULL) yyerror("ID name was exist");
-	  	  	else {
-				s->type = tTemp;
-				s->attr = aTemp;
-			}
-			}
-	| ID    {
-			symTable *s = insert(currentScope, $1);
-	  	  	if(s == NULL) yyerror("ID name was exist");
-	  	  	else {
-				s->type = tTemp;
-				s->attr = aTemp;
-			}
-			}
+
+idn
+	: ids
+	| 
 	;
+
+ids
+	: ids ',' ID { 
+	  	  	if(tTemp == FUNC_TYPE || tTemp == SUBR_TYPE)
+			{
+				symTable *s = insert(stable[sCurrent], $3);
+				if(s == NULL) yyerror("ID name was exist.");
+				table[vCurrent++] = s;
+			}
+			else
+			{			
+				symTable *s = insert(currentScope, $3);
+	  	  		if(s == NULL) yyerror("ID name was exist");
+				s->type = tTemp;
+				s->attr = aTemp;
+			}
+	  }
+
+	| ID {
+			if(tTemp == FUNC_TYPE || tTemp == SUBR_TYPE)
+			{
+				symTable *s = insert(stable[sCurrent], $1);
+	  	  		if(s == NULL) yyerror("ID name was exist");
+				table[vCurrent++] = s;
+			}
+	  	  	else {
+				symTable *s = insert(currentScope, $1);
+				if(s == NULL) yyerror("ID name was exist");
+				s->type = tTemp;
+				s->attr = aTemp;
+			}
+	  }
+	;
+
+
 
 fAttr
 	: DIMENSION '(' INTEGERC ')' {
