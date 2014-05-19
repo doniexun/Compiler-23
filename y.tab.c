@@ -87,8 +87,15 @@ Types tTemp;
 int dimesParam;
 Attrs aTemp;
 
+scope *tempTable[10];
+int sCurrent = 0;
 
-#line 92 "y.tab.c" /* yacc.c:339  */
+symTable *table[10];
+int vCurrent = 0;
+
+int typeDef = 0;
+
+#line 99 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -193,7 +200,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 29 "y.y" /* yacc.c:355  */
+#line 34 "y.y" /* yacc.c:355  */
 
 	int ival;
 	float dval;
@@ -203,7 +210,7 @@ union YYSTYPE
 	char *sval;
 	symTable *sym; // ID or INTEGERC or REALC
 
-#line 207 "y.tab.c" /* yacc.c:355  */
+#line 214 "y.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -218,7 +225,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 222 "y.tab.c" /* yacc.c:358  */
+#line 229 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -460,16 +467,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   68
+#define YYLAST   70
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  73
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  13
+#define YYNNTS  18
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  33
+#define YYNRULES  40
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  56
+#define YYNSTATES  79
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -519,12 +526,13 @@ static const yytype_uint8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    81,    81,    80,    95,    99,   100,   101,   105,   106,
-     107,   111,   114,   115,   119,   120,   121,   122,   126,   134,
-     145,   149,   150,   154,   158,   162,   163,   164,   165,   166,
-     167,   168,   169,   170
+       0,    86,    86,    85,   100,   104,   105,   106,   110,   111,
+     112,   116,   124,   116,   144,   152,   144,   167,   168,   172,
+     173,   174,   175,   180,   181,   185,   222,   264,   268,   269,
+     273,   277,   281,   282,   283,   284,   285,   286,   287,   288,
+     289
 };
 #endif
 
@@ -543,8 +551,8 @@ static const char *const yytname[] =
   "PERCENT", "CONCAT", "PASSIGNMENT", "INTERFACE", "'='", "EQV", "NEQV",
   "OR", "AND", "NOT", "LT", "LE", "GE", "GT", "EQ", "NE", "'+'", "'-'",
   "'*'", "'/'", "EXP", "UMINUS", "','", "'('", "')'", "$accept", "program",
-  "$@1", "context", "decls", "declVar", "declFunc", "exprs", "types",
-  "ids", "fAttr", "sAttr", "expr", YY_NULLPTR
+  "$@1", "context", "decls", "declVar", "declFunc", "$@2", "$@3", "$@4",
+  "$@5", "exprs", "types", "idn", "ids", "fAttr", "sAttr", "expr", YY_NULLPTR
 };
 #endif
 
@@ -564,10 +572,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -48
+#define YYPACT_NINF -60
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-48)))
+  (!!((Yystate) == (-60)))
 
 #define YYTABLE_NINF -1
 
@@ -578,12 +586,14 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -29,    14,    30,   -48,   -48,   -12,   -48,   -48,   -48,   -48,
-     -48,     0,    11,   -12,   -12,    -2,    -9,   -48,   -48,   -48,
-     -48,   -48,   -48,    -3,   -48,   -48,   -48,    26,   -15,   -36,
-      28,    11,    11,    11,    11,   -48,   -36,   -35,   -48,   -48,
-     -32,    33,   -48,   -47,   -47,   -48,   -48,    38,     2,    31,
-     -48,   -28,   -48,    26,   -48,   -36
+     -32,     4,    15,   -60,   -60,     3,   -60,   -60,   -60,   -60,
+     -21,   -15,    27,     3,     3,    -2,    11,    12,   -14,   -60,
+     -60,   -60,   -60,   -60,   -60,    -3,   -60,   -60,   -60,    21,
+     -11,   -35,   -60,   -60,    33,    27,    27,    27,    27,   -60,
+     -35,   -30,   -60,   -60,   -28,    36,   -27,   -26,   -60,   -59,
+     -59,   -60,   -60,    43,     7,    37,   -60,    21,    21,   -24,
+     -60,    21,   -22,   -35,   -19,   -60,   -35,   -60,   -60,     3,
+       3,    20,    24,    23,    13,    50,    51,   -60,   -60
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -591,26 +601,28 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,     2,     1,     7,    14,    15,    16,    17,
-      11,     0,    13,     7,     7,     0,     0,    30,    31,    32,
-      33,    29,     4,    13,     5,     6,    19,     0,     0,     8,
-       0,     0,     0,     0,     0,    12,     9,     0,    22,    21,
-      24,     0,     3,    25,    26,    27,    28,     0,     0,     0,
-      18,     0,    23,     0,    20,    10
+       0,     0,     0,     2,     1,     7,    19,    20,    21,    22,
+       0,     0,    18,     7,     7,     0,     0,     0,     0,    37,
+      38,    39,    40,    36,     4,    18,     5,     6,    26,     0,
+       0,     8,    14,    11,     0,     0,     0,     0,     0,    17,
+       9,     0,    29,    28,    31,     0,     0,     0,     3,    32,
+      33,    34,    35,     0,     0,     0,    25,    24,    24,     0,
+      30,     0,     0,    23,     0,    27,    10,    15,    12,     7,
+       7,     0,     0,     0,     0,     0,     0,    16,    13
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -48,   -48,   -48,   -48,    10,   -48,   -48,    22,   -48,   -16,
-     -48,   -48,    -5
+     -60,   -60,   -60,   -60,     0,   -60,   -60,   -60,   -60,   -60,
+     -60,    35,   -60,     8,    -9,   -60,   -60,     1
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     5,    11,    12,    13,    14,    22,    15,    29,
-      40,    49,    23
+      -1,     2,     5,    11,    12,    13,    14,    47,    70,    46,
+      69,    24,    15,    62,    63,    44,    55,    25
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -618,24 +630,26 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      17,    18,    19,    20,    21,    26,     6,     7,     8,     9,
-      27,    36,     1,    37,    17,    18,    19,    20,    21,    33,
-      34,     3,    38,    24,    25,    39,    43,    44,    45,    46,
-       4,    16,    30,    26,    41,    42,    47,    55,    48,    10,
-      50,    51,    52,    53,    54,    35,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    31,    32,    33,    34,     0,     0,     0,    28
+      19,    20,    21,    22,    23,    28,    31,    37,    38,     1,
+      29,     3,    16,    26,    27,     4,    18,    41,    32,    33,
+      40,     6,     7,     8,     9,    17,    42,    34,    28,    43,
+      19,    20,    21,    22,    23,    45,    49,    50,    51,    52,
+      48,    53,    54,    56,    57,    58,    59,    60,    65,    61,
+      67,    73,    66,    68,    10,    74,    75,    77,    78,    76,
+      39,    35,    36,    37,    38,     0,    64,     0,    30,    71,
+      72
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     4,     5,     6,     7,     7,    18,    19,    20,    21,
-      12,    27,    41,    28,     3,     4,     5,     6,     7,    66,
-      67,     7,    37,    13,    14,    40,    31,    32,    33,    34,
-       0,    31,    41,     7,    70,     7,    71,    53,    70,    51,
-       7,     3,    40,    12,    72,    23,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    64,    65,    66,    67,    -1,    -1,    -1,    70
+       3,     4,     5,     6,     7,     7,    15,    66,    67,    41,
+      12,     7,    33,    13,    14,     0,    31,    28,     7,     7,
+      29,    18,    19,    20,    21,    46,    37,    41,     7,    40,
+       3,     4,     5,     6,     7,    70,    35,    36,    37,    38,
+       7,    71,    70,     7,    71,    71,     3,    40,    72,    12,
+      72,    31,    61,    72,    51,    31,    33,     7,     7,    46,
+      25,    64,    65,    66,    67,    -1,    58,    -1,    70,    69,
+      70
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -643,29 +657,33 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,    41,    74,     7,     0,    75,    18,    19,    20,    21,
-      51,    76,    77,    78,    79,    81,    31,     3,     4,     5,
-       6,     7,    80,    85,    77,    77,     7,    12,    70,    82,
-      41,    64,    65,    66,    67,    80,    82,    28,    37,    40,
-      83,    70,     7,    85,    85,    85,    85,    71,    70,    84,
-       7,     3,    40,    12,    72,    82
+      51,    76,    77,    78,    79,    85,    33,    46,    31,     3,
+       4,     5,     6,     7,    84,    90,    77,    77,     7,    12,
+      70,    87,     7,     7,    41,    64,    65,    66,    67,    84,
+      87,    28,    37,    40,    88,    70,    82,    80,     7,    90,
+      90,    90,    90,    71,    70,    89,     7,    71,    71,     3,
+      40,    12,    86,    87,    86,    72,    87,    72,    72,    83,
+      81,    77,    77,    31,    31,    33,    46,     7,     7
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
        0,    73,    75,    74,    76,    77,    77,    77,    78,    78,
-      78,    79,    80,    80,    81,    81,    81,    81,    82,    82,
-      83,    83,    83,    84,    84,    85,    85,    85,    85,    85,
-      85,    85,    85,    85
+      78,    80,    81,    79,    82,    83,    79,    84,    84,    85,
+      85,    85,    85,    86,    86,    87,    87,    88,    88,    88,
+      89,    89,    90,    90,    90,    90,    90,    90,    90,    90,
+      90
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     0,     7,     2,     2,     2,     0,     2,     3,
-       6,     1,     2,     0,     1,     1,     1,     1,     3,     1,
-       4,     1,     1,     2,     0,     3,     3,     3,     3,     1,
-       1,     1,     1,     1
+       6,     0,     0,    12,     0,     0,    12,     2,     0,     1,
+       1,     1,     1,     1,     0,     3,     1,     4,     1,     1,
+       2,     0,     3,     3,     3,     3,     1,     1,     1,     1,
+       1
 };
 
 
@@ -1342,124 +1360,256 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 81 "y.y" /* yacc.c:1646  */
+#line 86 "y.y" /* yacc.c:1646  */
     { 
 	  		printf("accept\n");
 			symTable *s = insert(currentScope, (yyvsp[0].sval));
 			s->type = PROG_TYPE;
 			}
-#line 1352 "y.tab.c" /* yacc.c:1646  */
+#line 1370 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 88 "y.y" /* yacc.c:1646  */
+#line 93 "y.y" /* yacc.c:1646  */
     {
 	  	   	printf("program : %s\n", (yyvsp[0].sval));
 	  	    if(strcmp((yyvsp[-5].sval), (yyvsp[0].sval)) != 0) yyerror("Varible name(program) doens't match.");
 			}
-#line 1361 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 8:
-#line 105 "y.y" /* yacc.c:1646  */
-    {aTemp = ERR_ATTR;}
-#line 1367 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 9:
-#line 106 "y.y" /* yacc.c:1646  */
-    {aTemp = ERR_ATTR;}
-#line 1373 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 107 "y.y" /* yacc.c:1646  */
-    {aTemp = ERR_ATTR;}
 #line 1379 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 14:
-#line 119 "y.y" /* yacc.c:1646  */
-    {tTemp = 1;}
+  case 8:
+#line 110 "y.y" /* yacc.c:1646  */
+    {aTemp = ERR_ATTR;}
 #line 1385 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 15:
-#line 120 "y.y" /* yacc.c:1646  */
-    {tTemp = 2;}
+  case 9:
+#line 111 "y.y" /* yacc.c:1646  */
+    {aTemp = ERR_ATTR;}
 #line 1391 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 16:
-#line 121 "y.y" /* yacc.c:1646  */
-    {tTemp = 3;}
+  case 10:
+#line 112 "y.y" /* yacc.c:1646  */
+    {aTemp = ERR_ATTR;}
 #line 1397 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 17:
-#line 122 "y.y" /* yacc.c:1646  */
-    {tTemp = 4;}
-#line 1403 "y.tab.c" /* yacc.c:1646  */
+  case 11:
+#line 116 "y.y" /* yacc.c:1646  */
+    {
+			scope *sc = createScope();
+			tempTable[sCurrent] = sc;	
+	  		symTable *s = insert(sc, (yyvsp[0].sval));
+			if(s == NULL) yyerror("ID was exist.");
+			s->type = SUBR_TYPE;
+			tTemp = SUBR_TYPE;
+	  }
+#line 1410 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 18:
-#line 126 "y.y" /* yacc.c:1646  */
+  case 12:
+#line 124 "y.y" /* yacc.c:1646  */
+    {	
+	  	  	  typeDef = 1;
+			  int i;
+			  printf("vCurrent:%d\n", vCurrent);
+	  	  	  for(i = 0; i < vCurrent; i++)
+			  {
+				  printf("token %s\n", table[i]->name);
+			  }
+			}
+#line 1424 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
+#line 133 "y.y" /* yacc.c:1646  */
     {
-			symTable *s = insert(currentScope, (yyvsp[0].sval));
-	  	  	if(s == NULL) yyerror("ID name was exist");
-	  	  	else {
-				s->type = tTemp;
-				s->attr = aTemp;
+	  		int i;
+			for(i = 0; i < vCurrent; i++)
+			{
+				if(table[i] != NULL) yyerror("Variable type not declear.");
 			}
+	  	    if(strcmp((yyvsp[-9].sval), (yyvsp[0].sval)) != 0) yyerror("Subroutine's name doesn't match.");
+			vCurrent = 0;
+			typeDef = 0;
+	  }
+#line 1439 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 14:
+#line 144 "y.y" /* yacc.c:1646  */
+    {
+	  		scope *sc = createScope();
+			tempTable[sCurrent] = sc;	
+	  		symTable *s = insert(sc, (yyvsp[0].sval));
+			if(s == NULL) yyerror("ID was exist.");
+			table[vCurrent++] = s;
+			tTemp = FUNC_TYPE;
 			}
-#line 1416 "y.tab.c" /* yacc.c:1646  */
+#line 1452 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 15:
+#line 152 "y.y" /* yacc.c:1646  */
+    {	typeDef = 1; }
+#line 1458 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 16:
+#line 153 "y.y" /* yacc.c:1646  */
+    {
+	  		int i;
+			for(i = 0; i < vCurrent; i++)
+				if(table[i] != NULL) yyerror("Variable type not declear.");
+				
+			if(strcmp((yyvsp[-9].sval),(yyvsp[0].sval)) != 0) yyerror("Function's name doesn't match.");
+			vCurrent = 0;
+			typeDef = 0;		
+	  }
+#line 1472 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 134 "y.y" /* yacc.c:1646  */
-    {
-			symTable *s = insert(currentScope, (yyvsp[0].sval));
-	  	  	if(s == NULL) yyerror("ID name was exist");
-	  	  	else {
-				s->type = tTemp;
-				s->attr = aTemp;
-			}
-			}
-#line 1429 "y.tab.c" /* yacc.c:1646  */
+#line 172 "y.y" /* yacc.c:1646  */
+    {tTemp = 1;}
+#line 1478 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 145 "y.y" /* yacc.c:1646  */
+#line 173 "y.y" /* yacc.c:1646  */
+    {tTemp = 2;}
+#line 1484 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 174 "y.y" /* yacc.c:1646  */
+    {tTemp = 3;}
+#line 1490 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 22:
+#line 175 "y.y" /* yacc.c:1646  */
+    {tTemp = 4;}
+#line 1496 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 25:
+#line 185 "y.y" /* yacc.c:1646  */
+    { 
+	  	  	if(typeDef == 0)
+			{
+				if(tTemp == FUNC_TYPE || tTemp == SUBR_TYPE)
+				{
+					symTable *s = insert(tempTable[sCurrent], (yyvsp[0].sval));
+					if(s == NULL) yyerror("ID name was exist.");
+					table[vCurrent++] = s;
+				}
+				else
+				{			
+					symTable *s = insert(currentScope, (yyvsp[0].sval));
+	  	  			if(s == NULL) yyerror("ID name was exist");
+					s->type = tTemp;
+					s->attr = aTemp;
+				}
+			}
+			else
+			{
+				int i = 0;
+				symTable *s;
+				for(i = 0; i < vCurrent; i++)
+				{
+					if(table[i] != NULL)
+					{
+						s = table[i];
+						if(strcmp((yyvsp[0].sval), s->name) == 0) break;
+					}
+				}
+
+				if(i == vCurrent) yyerror("Variable not declear.");
+				s->type = tTemp;
+				s->attr = aTemp;
+				table[i] = NULL;
+			}
+	  }
+#line 1537 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 26:
+#line 222 "y.y" /* yacc.c:1646  */
+    {
+			if(typeDef == 0)
+			{
+				if(tTemp == FUNC_TYPE || tTemp == SUBR_TYPE)
+				{
+					symTable *s = insert(tempTable[sCurrent], (yyvsp[0].sval));
+					if(s == NULL) yyerror("ID name was exist.");
+					table[vCurrent++] = s;
+				}
+				else
+				{			
+					symTable *s = insert(currentScope, (yyvsp[0].sval));
+	  	  			if(s == NULL) yyerror("ID name was exist");
+					s->type = tTemp;
+					s->attr = aTemp;
+				}
+			}
+			else
+			{
+				int i = 0;
+				symTable *s;
+				for(i = 0; i < vCurrent; i++)
+				{
+					if(table[i] != NULL)
+					{
+						s = table[i];
+						if(strcmp((yyvsp[0].sval), s->name) == 0) break;
+					}
+				}
+
+				if(i == vCurrent) yyerror("Variable not declear.");
+				s->type = tTemp;
+				s->attr = aTemp;
+				table[i] = NULL;
+
+			}
+	  }
+#line 1579 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 27:
+#line 264 "y.y" /* yacc.c:1646  */
     {
 	  	  	aTemp = ARY_ATTR;
 		  	dimesParam = (yyvsp[-1].ival);
 		  	}
-#line 1438 "y.tab.c" /* yacc.c:1646  */
+#line 1588 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 21:
-#line 149 "y.y" /* yacc.c:1646  */
+  case 28:
+#line 268 "y.y" /* yacc.c:1646  */
     {aTemp = PTR_ATTR;}
-#line 1444 "y.tab.c" /* yacc.c:1646  */
+#line 1594 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 22:
-#line 150 "y.y" /* yacc.c:1646  */
+  case 29:
+#line 269 "y.y" /* yacc.c:1646  */
     {aTemp = PARA_ATTR;}
-#line 1450 "y.tab.c" /* yacc.c:1646  */
+#line 1600 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 23:
-#line 154 "y.y" /* yacc.c:1646  */
+  case 30:
+#line 273 "y.y" /* yacc.c:1646  */
     {
 	  	    if(aTemp != ARY_ATTR) yyerror("Same Attribute Decleared.");
 	  	  	aTemp = BOTH;
 			}
-#line 1459 "y.tab.c" /* yacc.c:1646  */
+#line 1609 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1463 "y.tab.c" /* yacc.c:1646  */
+#line 1613 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1687,12 +1837,18 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 174 "y.y" /* yacc.c:1906  */
+#line 293 "y.y" /* yacc.c:1906  */
 
 
 int main(int argc, char *argv[])
 {
+	int i = 0;
+	for(;i < 10;i++){
+		table[i] = NULL;
+		tempTable[i] = NULL;
+	}
 	currentScope = createScope();
+	
 
 yyparse();
 return 0;

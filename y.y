@@ -22,11 +22,13 @@ Types tTemp;
 int dimesParam;
 Attrs aTemp;
 
-scope *stable[10];
-int sCurrent = 0;
+scope *tempScope;
+
 
 symTable *table[10];
 int vCurrent = 0;
+
+int typeDef = 0;
 %}
 
 %union{
@@ -111,14 +113,55 @@ declVar
     ;
 
 declFunc
-	: INTERFACE SUBROUNTINE ID {
-	  		symTable *s = insert(currentScope, $3);
+	: INTERFACE SUBROUTINE ID {
+			scope *sc = createScope();
+			tempScope = sc;	
+	  		symTable *s = insert(sc, $3);
 			if(s == NULL) yyerror("ID was exist.");
 			s->type = SUBR_TYPE;
-			scope *sc = createScope();
-			stable[sCurrent] = sc;	
+			tTemp = SUBR_TYPE;
+	  }
+	  '(' idn ')' {	
+	  	  	  typeDef = 1;
+			  int i;
+			  printf("vCurrent:%d\n", vCurrent);
+	  	  	  for(i = 0; i < vCurrent; i++)
+			  {
+				  printf("token %s\n", table[i]->name);
+			  }
 			}
-	  '(' idn ')'
+	  decls END SUBROUTINE ID {
+	  		int i;
+			for(i = 0; i < vCurrent; i++)
+			{
+				if(table[i] != NULL) yyerror("Variable type not declear.");
+			}
+	  	    if(strcmp($3, $12) != 0) yyerror("Subroutine's name doesn't match.");
+			vCurrent = 0;
+			typeDef = 0;
+	  }
+
+	| INTERFACE FUNCTION ID {
+	  		scope *sc = createScope();
+			tempScope = sc;	
+	  		symTable *s = insert(sc, $3);
+			if(s == NULL) yyerror("ID was exist.");
+			table[vCurrent++] = s;
+			tTemp = FUNC_TYPE;
+			}
+	  '(' idn ')' {	typeDef = 1; }
+	  decls END FUNCTION ID {
+	  		int i;
+			for(i = 0; i < vCurrent; i++)
+				if(table[i] != NULL) yyerror("Variable type not declear.");
+				
+			if(strcmp($3,$12) != 0) yyerror("Function's name doesn't match.");
+			vCurrent = 0;
+			typeDef = 0;		
+	  }
+	;
+
+
 
 exprs
 	: expr exprs 
@@ -140,33 +183,77 @@ idn
 
 ids
 	: ids ',' ID { 
-	  	  	if(tTemp == FUNC_TYPE || tTemp == SUBR_TYPE)
+	  	  	if(typeDef == 0)
 			{
-				symTable *s = insert(stable[sCurrent], $3);
-				if(s == NULL) yyerror("ID name was exist.");
-				table[vCurrent++] = s;
+				if(tTemp == FUNC_TYPE || tTemp == SUBR_TYPE)
+				{
+					symTable *s = insert(tempScope, $3);
+					if(s == NULL) yyerror("ID name was exist.");
+					table[vCurrent++] = s;
+				}
+				else
+				{			
+					symTable *s = insert(currentScope, $3);
+	  	  			if(s == NULL) yyerror("ID name was exist");
+					s->type = tTemp;
+					s->attr = aTemp;
+				}
 			}
 			else
-			{			
-				symTable *s = insert(currentScope, $3);
-	  	  		if(s == NULL) yyerror("ID name was exist");
+			{
+				int i = 0;
+				symTable *s;
+				for(i = 0; i < vCurrent; i++)
+				{
+					if(table[i] != NULL)
+					{
+						s = table[i];
+						if(strcmp($3, s->name) == 0) break;
+					}
+				}
+
+				if(i == vCurrent) yyerror("Variable not declear.");
 				s->type = tTemp;
 				s->attr = aTemp;
+				table[i] = NULL;
 			}
 	  }
 
 	| ID {
-			if(tTemp == FUNC_TYPE || tTemp == SUBR_TYPE)
+			if(typeDef == 0)
 			{
-				symTable *s = insert(stable[sCurrent], $1);
-	  	  		if(s == NULL) yyerror("ID name was exist");
-				table[vCurrent++] = s;
+				if(tTemp == FUNC_TYPE || tTemp == SUBR_TYPE)
+				{
+					symTable *s = insert(tempScope, $1);
+					if(s == NULL) yyerror("ID name was exist.");
+					table[vCurrent++] = s;
+				}
+				else
+				{			
+					symTable *s = insert(currentScope, $1);
+	  	  			if(s == NULL) yyerror("ID name was exist");
+					s->type = tTemp;
+					s->attr = aTemp;
+				}
 			}
-	  	  	else {
-				symTable *s = insert(currentScope, $1);
-				if(s == NULL) yyerror("ID name was exist");
+			else
+			{
+				int i = 0;
+				symTable *s;
+				for(i = 0; i < vCurrent; i++)
+				{
+					if(table[i] != NULL)
+					{
+						s = table[i];
+						if(strcmp($1, s->name) == 0) break;
+					}
+				}
+
+				if(i == vCurrent) yyerror("Variable not declear.");
 				s->type = tTemp;
 				s->attr = aTemp;
+				table[i] = NULL;
+
 			}
 	  }
 	;
@@ -207,7 +294,13 @@ expr
 
 int main(int argc, char *argv[])
 {
+	int i = 0;
+	for(;i < 10;i++){
+		table[i] = NULL;
+		tempTable[i] = NULL;
+	}
 	currentScope = createScope();
+	
 
 yyparse();
 return 0;
