@@ -11,7 +11,7 @@
 }
 
 typedef enum { CONST_TYPE, INT_TYPE, REAL_TYPE, LOGI_TYPE, CHAR_TYPE, PINT_TYPE,
-               PREAL_TYPE, PLOGI_TYPE, PCHAR_TYPE, PROG_TYPE, FUNC_TYPE,
+               STR_TYPE, PREAL_TYPE, PLOGI_TYPE, PCHAR_TYPE, PROG_TYPE, FUNC_TYPE,
                SUBR_TYPE, ERR_TYPE } Types;
 
 typedef enum { ARY_ATTR, PTR_ATTR, PARA_ATTR,  BOTH, ERR_ATTR } Attrs;
@@ -22,6 +22,7 @@ struct symTable {
 	char *name;
 	Types type;
 	Attrs attr;
+	int index;
 	union{
 		int ival;
 		float dval;
@@ -37,9 +38,15 @@ struct scope{
 	symTable *table[26];
 	symTable *tableHead[26];
 	scope *prevLink;
+	int varNum;
 };
 
+
 scope *currentScope;
+scope *prevScope;
+scope *globalScope;
+scope *scopeGroup[100];
+int scopeNum;
 
 scope *createScope();
 
@@ -47,7 +54,11 @@ void initTable(scope *s);
 
 symTable *search(scope *s, char* token);
 
+symTable *searchRecu(scope *s, char *token);
+
 symTable *insert(scope *s, char* token);
+
+void deleteSym(scope *s, symTable *sym);
 
 void printSym(symTable *sym);
 

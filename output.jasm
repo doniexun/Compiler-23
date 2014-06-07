@@ -1,0 +1,43 @@
+class example
+{
+	field static int a
+	method public static void main(java.lang.String[])
+	max_stack 15
+	max_locals 15
+	{
+		sipush 5
+		putstatic int example.a
+		getstatic int example.a
+		sipush 10
+		invokstatic int example.add(int, int)
+		istore 1
+		iload 1
+		sipush 10
+		isub
+		ifle 0
+		getstatic java.io.PrintStream java.lang.System.out
+		iload 1
+		ineg
+		invokevirtual void java.io.PrintStream.print(int)
+		goto 1
+	0:
+		getstatic java.io.PrintStream java.lang.System.out
+		iload 1
+		invokevirtual void java.io.PrintStream.print(int)
+	1:
+		getstatic java.io.PrintStream java.lang.System.out
+		invokevirtual void java.io.PrintStream.println(java.lang.String)
+		ireturn
+	}
+	method public static int add(int, int)
+	max_stack 15
+	max_locals 15
+	{
+		iload 1
+		iload 2
+		iadd
+		istore 0
+		iload 0
+		ireturn
+	}
+}

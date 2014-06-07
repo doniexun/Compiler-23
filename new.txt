@@ -1,0 +1,33 @@
+program example
+  integer i,i2,i3
+  real::r1,r2
+  interface 
+    function fun(x,y)
+	  integer ,pointer::x
+	  real y
+	  integer fun
+	end function fun
+  end interface
+  
+  do i = 0, i < i2
+    if r1 >= r2 then
+	  r1 = r2 + i3
+	else
+	  r1 = r2 * i3
+	end if
+  end do
+  
+  do i = 0, i <= 10, 2
+	if i2 > 10 exit
+	end if
+  end do
+  
+  i = fun(i2,i3)
+  
+end program example
+
+function fun(x,y)
+  integer ,pointer::x
+  real y
+  integer fun
+end function fun

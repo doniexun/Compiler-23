@@ -1,0 +1,27 @@
+program example
+	  integer a, c
+	  common/a/
+	  interface
+		 function add(a, b)
+		 integer a, b
+		 integer add
+		 end function add
+	  end interface
+C main program
+	  a = 5
+	  c = add(a, 10)
+	  if (c > 10) then
+		 print -c
+	  else
+		 print c
+	  end if
+	  println "Hello World"
+end program example
+
+C add function
+function add(a, b)
+	  integer a, b
+	  integer add
+	  add = a + b
+	  return
+end function add

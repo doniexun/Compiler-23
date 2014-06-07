@@ -1,8 +1,15 @@
-import sys
-env = Environment()
+import os,platform
+
+
+print platform.system()
+
+if (os.name == 'posix'):
+   env = Environment()
+else:
+   env = Environment(ENV = {'PATH':os.environ['PATH']}, tools = ['mingw','lex','yacc'])
 
 src = ['y.tab.c','symTable.c']
-env.Append(YACCFLAGS='--defines=y.tab.h')
+#env.Append(YACCFLAGS='--defines=y.tab.h')
 env.CFile(target = 'lex.yy.c', source = 'lex.l')
-env.CFile(target = 'y.tab.c', source = 'y.y')
-env.Program('parser',src)
+env.CFile(target = 'y.tab.c', source = 'y.y', YACCFLAGS = '-r all -d')
+env.Program('parser',src, CCFLAGS='-g')

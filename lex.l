@@ -34,95 +34,99 @@ id       {letter}({letter}|{digit})*
 
 %%
  /* Define Delimiters */
-"("    {return *yytext;}
-")"    {return *yytext;}
-","    {return *yytext;}
-":"    {return *yytext;}
-"::"   {return CCOLON;}
-";"    {return *yytext;}
-"["    {return *yytext;}
-"]"    {return *yytext;}
-"{"    {return *yytext;}
-"}"    {return *yytext;}
+"("    {LIST; return *yytext;}
+")"    {LIST; return *yytext;}
+","    {LIST; return *yytext;}
+":"    {LIST; return *yytext;}
+"::"   {LIST; return CCOLON;}
+";"    {LIST; return *yytext;}
+"["    {LIST; return *yytext;}
+"]"    {LIST; return *yytext;}
+"{"    {LIST; return *yytext;}
+"}"    {LIST; return *yytext;}
 
  /* Define Component Reference */
-"%"    {return PERCENT;}
+"%"    {LIST; return PERCENT;}
 
  /* Define Arithmetic */
-"+"    {return *yytext;}
-"-"    {return *yytext;}
-"*"    {return *yytext;}
-"/"    {return *yytext;}
+"+"    {LIST; return *yytext;}
+"-"    {LIST; return *yytext;}
+"*"    {LIST; return *yytext;}
+"/"    {LIST; return *yytext;}
 
  /* Define Exponentiation */
-"**"   {return EXP;}
+"**"   {LIST; return EXP;}
 
  /* Define Concatentation */
-"//"   {return CONCAT;}
+"//"   {LIST; return CONCAT;}
 
  /* Define Relational */
-"<"    {return LT;}
-".LT." {return LT;}
-"<="   {return LE;}
-".LE." {return LE;}
-">="   {return GE;}
-".GE." {return GE;}
-">"    {return GT;}
-".GT." {return GT;}
-"=="   {return EQ;}
-".EQ." {return EQ;}
-"/="   {return NE;}
-".NE." {return NE;}
+"<"    {LIST; return LT;}
+".LT." {LIST; return LT;}
+"<="   {LIST; return LE;}
+".LE." {LIST; return LE;}
+">="   {LIST; return GE;}
+".GE." {LIST; return GE;}
+">"    {LIST; return GT;}
+".GT." {LIST; return GT;}
+"=="   {LIST; return EQ;}
+".EQ." {LIST; return EQ;}
+"/="   {LIST; return NE;}
+".NE." {LIST; return NE;}
 
  /* Define Logical */
-".AND."    {return AND;}
-".OR."     {return OR;}
-".NOT."    {return NOT;}
-".EQV."    {return EQV;}
-".NEQV."   {return NEQV;}
+".AND."    {LIST; return AND;}
+".OR."     {LIST; return OR;}
+".NOT."    {LIST; return NOT;}
+".EQV."    {LIST; return EQV;}
+".NEQV."   {LIST; return NEQV;}
 
  /* Define Assignment */
-"="    {return *yytext;}
+"="    {LIST; return *yytext;}
 
  /* Define Pointer Assignment */
-"=>"   {return PASSIGNMENT;}
+"=>"   {LIST; return PASSIGNMENT;}
 
  /* Define Keywords */
-"call"        {return CALL;}
-"case"        {return CASE;}
-"close"       {return CLOSE;}
-"continue"    {return CONTINUE;}
-"cycle"       {return CYCLE;}
-"data"        {return DATA;}
-"dimension"   {return DIMENSION;}
-"do"          {return DO;}
-"else"        {return ELSE;}
-"end"         {return END;}
-"exit"        {return EXIT;}
-"function"    {return FUNCTION;}
-"goto"        {return GOTO;}
-"if"          {return IF;}
-"procedure"   {return PROCEDURE;}
-"parameter"   {return PARAMETER;}
-"print"       {return PRINT;}
-"println"     {return PRINTLN;}
-"pointer"     {return POINTER;}
-"program"     {return PROGRAM;}
-"recursive"   {return RECURSIVE;}
-"return"      {return RETURN;}
-"select"      {return SELECT;}
-"stop"        {return STOP;}
-"subroutine"  {return SUBROUTINE;}
-"type"        {return TYPE;}
-"interface"   {return INTERFACE;}
+"call"        {LIST; return CALL;}
+"case"        {LIST; return CASE;}
+"close"       {LIST; return CLOSE;}
+"continue"    {LIST; return CONTINUE;}
+"cycle"       {LIST; return CYCLE;}
+"data"        {LIST; return DATA;}
+"dimension"   {LIST; return DIMENSION;}
+"do"          {LIST; return DO;}
+"else"        {LIST; return ELSE;}
+"end"         {LIST; return END;}
+"exit"        {LIST; return EXIT;}
+"function"    {LIST; return FUNCTION;}
+"goto"        {LIST; return GOTO;}
+"if"          {LIST; return IF;}
+"procedure"   {LIST; return PROCEDURE;}
+"parameter"   {LIST; return PARAMETER;}
+"print"       {LIST; return PRINT;}
+"println"     {LIST; return PRINTLN;}
+"pointer"     {LIST; return POINTER;}
+"program"     {LIST; return PROGRAM;}
+"recursive"   {LIST; return RECURSIVE;}
+"return"      {LIST; return RETURN;}
+"select"      {LIST; return SELECT;}
+"stop"        {LIST; return STOP;}
+"subroutine"  {LIST; return SUBROUTINE;}
+"type"        {LIST; return TYPE;}
+"interface"   {LIST; return INTERFACE;}
+"then"        {LIST; return THEN;}
+"read"        {LIST; return READ;}
+"common"      {LIST; return COMMON;}
 
-"integer"     {return INTEGER;}
-"logical"     {return LOGICAL;}
-"real"        {return REAL;}
-"character"   {return CHARACTER;}
+"integer"     {LIST; return INTEGER;}
+"logical"     {LIST; return LOGICAL;}
+"real"        {LIST; return REAL;}
+"character"   {LIST; return CHARACTER;}
 
  /* Boolean Constants */
 (".TRUE.")|(".FALSE.") {
+                LIST; 
 				if(!strcmp(".TRUE.", yytext))
 				 yylval.bval = 1;
 				else
@@ -139,10 +143,11 @@ id       {letter}({letter}|{digit})*
 				}
 
 <STRING>\"      {
+                LIST;
 				*s = 0;
 				BEGIN 0;
-				yylval.sval = strdup(yytext);
-				return STRING;
+				yylval.sval = strdup(s);
+				return STRINGC;
 				}
 
 <STRING>\"{2,2} {
@@ -182,21 +187,23 @@ id       {letter}({letter}|{digit})*
 
  /* Identifiers */
 {id}+  		{
+            LIST; 
 	   		char* s = (char*)malloc(yyleng*sizeof(char));
 			strcpy(s, yytext);
-			tokenString("Identifier", yytext);
             yylval.sval = strdup(yytext);	 
 			return ID;
 			}
 
  /* Integer Constant */
 {number}	{
+            LIST; 
 			yylval.ival = atoi(yytext);
 			return INTEGERC;
 		   	}
 
  /* Real Constant */
 [+|-]?{digit}*\.{digit}+([eE][+|-]?{digit}+)? {
+            LIST; 
 	        yylval.dval = atof(yytext);
 			return REALC;
 			}
@@ -205,6 +212,7 @@ id       {letter}({letter}|{digit})*
 			LIST;
 			printf("%d: %s", linenum++, buf);
 			buf[0] = '\0';
+            yyless(1);
 			}
 	
 
@@ -219,6 +227,11 @@ id       {letter}({letter}|{digit})*
 			}
 
 %%
+
+void yyerror (const char const *s) {
+   fprintf (stderr, "line(%d)>token(%s).errMsg:%s\n", linenum, yytext, s);
+   exit(EXIT_FAILURE);
+}
 
 int yywrap()
 {
