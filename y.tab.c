@@ -130,12 +130,15 @@ FILE *file;
 char *className;
 
 int isLoop = 0;
+int isLoopAss = 0;
+int inc;
+symTable *incV;
 int labelNum = 0;
 int loopifNum = 0;
 int tempIndex;
 int labelStack[100];
 
-#line 139 "y.tab.c" /* yacc.c:339  */
+#line 142 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -245,7 +248,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 74 "y.y" /* yacc.c:355  */
+#line 77 "y.y" /* yacc.c:355  */
 
 	int ival;
 	float dval;
@@ -255,7 +258,7 @@ union YYSTYPE
 	char *sval;
 	symTable *sym; // ID or INTEGERC or REALC
 
-#line 259 "y.tab.c" /* yacc.c:355  */
+#line 262 "y.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -270,7 +273,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 274 "y.tab.c" /* yacc.c:358  */
+#line 277 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -574,18 +577,18 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   134,   134,   151,   158,   133,   177,   206,   214,   224,
-     176,   234,   293,   302,   312,   234,   324,   328,   329,   330,
-     331,   332,   336,   337,   338,   343,   343,   347,   359,   374,
-     375,   376,   377,   381,   382,   386,   401,   402,   386,   415,
-     430,   431,   415,   442,   447,   448,   449,   450,   451,   452,
-     454,   465,   453,   471,   470,   476,   481,   480,   495,   494,
-     511,   523,   523,   535,   540,   548,   534,   561,   560,   572,
-     573,   582,   581,   593,   601,   602,   603,   604,   609,   610,
-     614,   618,   626,   630,   631,   632,   636,   641,   645,   656,
-     670,   681,   692,   703,   721,   739,   758,   777,   795,   814,
-     813,   825,   826,   827,   828,   829,   833,   866,   887,   888,
-     889,   893,   900,   901,   931,   932,   937
+       0,   137,   137,   154,   161,   136,   180,   209,   217,   227,
+     179,   237,   296,   305,   315,   237,   327,   331,   332,   333,
+     334,   335,   339,   340,   341,   346,   346,   350,   362,   377,
+     378,   379,   380,   384,   385,   389,   404,   405,   389,   418,
+     433,   434,   418,   445,   450,   451,   452,   453,   454,   455,
+     457,   468,   456,   474,   473,   479,   484,   483,   498,   497,
+     514,   529,   529,   541,   547,   556,   540,   576,   575,   587,
+     588,   597,   596,   608,   616,   617,   618,   619,   624,   625,
+     629,   633,   641,   645,   646,   647,   651,   656,   660,   671,
+     685,   696,   707,   718,   736,   754,   773,   792,   810,   829,
+     828,   840,   841,   842,   843,   844,   848,   881,   902,   903,
+     904,   908,   915,   916,   946,   950,   955
 };
 #endif
 
@@ -1519,7 +1522,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 134 "y.y" /* yacc.c:1646  */
+#line 137 "y.y" /* yacc.c:1646  */
     {   //Main program
 		  scope *sc = createScope();
 		  symTable *s;
@@ -1535,44 +1538,44 @@ yyreduce:
 		  fprintf(file, "{\n");
 			
 	  }
-#line 1539 "y.tab.c" /* yacc.c:1646  */
+#line 1542 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 151 "y.y" /* yacc.c:1646  */
+#line 154 "y.y" /* yacc.c:1646  */
     {
 		  fprintf(file, "\tmethod public static void main(java.lang.String[])\n");
 		  fprintf(file, "\tmax_stack 15\n");
 		  fprintf(file, "\tmax_locals 15\n");
 		  fprintf(file, "\t{\n");
 	  }
-#line 1550 "y.tab.c" /* yacc.c:1646  */
+#line 1553 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 158 "y.y" /* yacc.c:1646  */
+#line 161 "y.y" /* yacc.c:1646  */
     {
 		  if(strcmp((yyvsp[-8].sval), (yyvsp[0].sval)) != 0) 
 			  yyerror("Variable name(program) doesn't match.");
 
-		  fprintf(file, "\t\tireturn\n");
+		  fprintf(file, "\t\treturn\n");
 		  fprintf(file, "\t}\n");
 		    
 	  }
-#line 1563 "y.tab.c" /* yacc.c:1646  */
+#line 1566 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 168 "y.y" /* yacc.c:1646  */
+#line 171 "y.y" /* yacc.c:1646  */
     {
 
 		  fprintf(file, "}\n");
 	  }
-#line 1572 "y.tab.c" /* yacc.c:1646  */
+#line 1575 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 177 "y.y" /* yacc.c:1646  */
+#line 180 "y.y" /* yacc.c:1646  */
     {     //subroutine body
 		    int i, end;
 			symTable *s;
@@ -1602,11 +1605,11 @@ yyreduce:
 			funcCons = 1;
 			
 	  }
-#line 1606 "y.tab.c" /* yacc.c:1646  */
+#line 1609 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 206 "y.y" /* yacc.c:1646  */
+#line 209 "y.y" /* yacc.c:1646  */
     {
 		    if(varNum != tempFunc->varNum)
 				yyerror("Function variable num not correct."); 
@@ -1615,11 +1618,11 @@ yyreduce:
 	  	  	funcCons = 0; 
 			funcDecl = 1;
 	  }
-#line 1619 "y.tab.c" /* yacc.c:1646  */
+#line 1622 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 214 "y.y" /* yacc.c:1646  */
+#line 217 "y.y" /* yacc.c:1646  */
     {
 		    int i;
 		    for(i = 0; i < vCurrent; i++)
@@ -1629,11 +1632,11 @@ yyreduce:
 			varNum = 0; 
 			funcDecl = 0;
 	  }
-#line 1633 "y.tab.c" /* yacc.c:1646  */
+#line 1636 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 224 "y.y" /* yacc.c:1646  */
+#line 227 "y.y" /* yacc.c:1646  */
     {
 		    int i;
 	  		if(strcmp((yyvsp[-11].sval), (yyvsp[0].sval)) != 0)
@@ -1642,11 +1645,11 @@ yyreduce:
 			vCurrent = 0;
 			
 	  }
-#line 1646 "y.tab.c" /* yacc.c:1646  */
+#line 1649 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 234 "y.y" /* yacc.c:1646  */
+#line 237 "y.y" /* yacc.c:1646  */
     { //function body
 		    int i;
 		    int end;
@@ -1706,11 +1709,11 @@ yyreduce:
 			
 					
 	  }
-#line 1710 "y.tab.c" /* yacc.c:1646  */
+#line 1713 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 293 "y.y" /* yacc.c:1646  */
+#line 296 "y.y" /* yacc.c:1646  */
     {
  	  	  	if(varNum != tempFunc->varNum)
 				yyerror("Function variable num not correct."); 
@@ -1719,11 +1722,11 @@ yyreduce:
 	  	  	funcCons = 0; 
 			funcDecl = 1;
 	  }
-#line 1723 "y.tab.c" /* yacc.c:1646  */
+#line 1726 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 302 "y.y" /* yacc.c:1646  */
+#line 305 "y.y" /* yacc.c:1646  */
     {
 		  int i;
 		  for(i = 0; i < vCurrent; i++)
@@ -1733,11 +1736,11 @@ yyreduce:
 		  varNum = 0; 
 		  funcDecl = 0;
 	  }
-#line 1737 "y.tab.c" /* yacc.c:1646  */
+#line 1740 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 312 "y.y" /* yacc.c:1646  */
+#line 315 "y.y" /* yacc.c:1646  */
     {
 		  symTable *s = search(currentScope, (yyvsp[0].sval));
 		  
@@ -1749,47 +1752,47 @@ yyreduce:
 		  fprintf(file, "\t\tireturn\n");
 		  fprintf(file, "\t}\n");
 	  }
-#line 1753 "y.tab.c" /* yacc.c:1646  */
+#line 1756 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 328 "y.y" /* yacc.c:1646  */
+#line 331 "y.y" /* yacc.c:1646  */
     {vCurrent = 0;}
-#line 1759 "y.tab.c" /* yacc.c:1646  */
+#line 1762 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 336 "y.y" /* yacc.c:1646  */
+#line 339 "y.y" /* yacc.c:1646  */
     {aTemp = ERR_ATTR;}
-#line 1765 "y.tab.c" /* yacc.c:1646  */
+#line 1768 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 337 "y.y" /* yacc.c:1646  */
+#line 340 "y.y" /* yacc.c:1646  */
     {aTemp = ERR_ATTR;}
-#line 1771 "y.tab.c" /* yacc.c:1646  */
+#line 1774 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 338 "y.y" /* yacc.c:1646  */
+#line 341 "y.y" /* yacc.c:1646  */
     {aTemp = ERR_ATTR;}
-#line 1777 "y.tab.c" /* yacc.c:1646  */
+#line 1780 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 343 "y.y" /* yacc.c:1646  */
+#line 346 "y.y" /* yacc.c:1646  */
     {globalVa = 1;}
-#line 1783 "y.tab.c" /* yacc.c:1646  */
+#line 1786 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 343 "y.y" /* yacc.c:1646  */
+#line 346 "y.y" /* yacc.c:1646  */
     {globalVa = 0;}
-#line 1789 "y.tab.c" /* yacc.c:1646  */
+#line 1792 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 348 "y.y" /* yacc.c:1646  */
+#line 351 "y.y" /* yacc.c:1646  */
     {
 	  		int i = 0;
 			symTable *s;
@@ -1798,11 +1801,11 @@ yyreduce:
 			if(i == vCurrent) yyerror("Global variable declear not find.");
 			if(s->type != tempType) yyerror("Init value type not match.");
 	  }
-#line 1802 "y.tab.c" /* yacc.c:1646  */
+#line 1805 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 360 "y.y" /* yacc.c:1646  */
+#line 363 "y.y" /* yacc.c:1646  */
     {
 	  	  	symTable *s = search(currentScope, (yyvsp[-3].sval));
 			if(s == NULL) 
@@ -1814,35 +1817,35 @@ yyreduce:
 
 			
 	   }
-#line 1818 "y.tab.c" /* yacc.c:1646  */
+#line 1821 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 374 "y.y" /* yacc.c:1646  */
+#line 377 "y.y" /* yacc.c:1646  */
     {tempType = INT_TYPE;}
-#line 1824 "y.tab.c" /* yacc.c:1646  */
+#line 1827 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 375 "y.y" /* yacc.c:1646  */
+#line 378 "y.y" /* yacc.c:1646  */
     {tempType = REAL_TYPE;}
-#line 1830 "y.tab.c" /* yacc.c:1646  */
+#line 1833 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 376 "y.y" /* yacc.c:1646  */
+#line 379 "y.y" /* yacc.c:1646  */
     {tempType = CHAR_TYPE;}
-#line 1836 "y.tab.c" /* yacc.c:1646  */
+#line 1839 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 377 "y.y" /* yacc.c:1646  */
+#line 380 "y.y" /* yacc.c:1646  */
     {tempType = LOGI_TYPE;}
-#line 1842 "y.tab.c" /* yacc.c:1646  */
+#line 1845 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 386 "y.y" /* yacc.c:1646  */
+#line 389 "y.y" /* yacc.c:1646  */
     {
 			scope *sc = createScope();
 			tempScope = sc;	
@@ -1858,17 +1861,17 @@ yyreduce:
 			funcAry[funcNum] = f;
 
 	  }
-#line 1862 "y.tab.c" /* yacc.c:1646  */
+#line 1865 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 401 "y.y" /* yacc.c:1646  */
+#line 404 "y.y" /* yacc.c:1646  */
     {funcVaType = 1;}
-#line 1868 "y.tab.c" /* yacc.c:1646  */
+#line 1871 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 402 "y.y" /* yacc.c:1646  */
+#line 405 "y.y" /* yacc.c:1646  */
     {
 	  		int i;
 			for(i = 0; i < vCurrent; i++)
@@ -1880,11 +1883,11 @@ yyreduce:
 			funcVaType = 0;
 			funcNum++;
 	  }
-#line 1884 "y.tab.c" /* yacc.c:1646  */
+#line 1887 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 415 "y.y" /* yacc.c:1646  */
+#line 418 "y.y" /* yacc.c:1646  */
     {
 	  		scope *sc = createScope();
 			tempScope = sc;	
@@ -1900,17 +1903,17 @@ yyreduce:
 			funcAry[funcNum] = f;
 			inFunc = 1;
 	  }
-#line 1904 "y.tab.c" /* yacc.c:1646  */
+#line 1907 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 430 "y.y" /* yacc.c:1646  */
+#line 433 "y.y" /* yacc.c:1646  */
     {funcVaType = 1;}
-#line 1910 "y.tab.c" /* yacc.c:1646  */
+#line 1913 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 431 "y.y" /* yacc.c:1646  */
+#line 434 "y.y" /* yacc.c:1646  */
     {
 	  		int i;
 			for(i = 0; i < vCurrent; i++)
@@ -1921,11 +1924,11 @@ yyreduce:
 			funcVaType = 0;
 			funcNum++;
 	  }
-#line 1925 "y.tab.c" /* yacc.c:1646  */
+#line 1928 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 454 "y.y" /* yacc.c:1646  */
+#line 457 "y.y" /* yacc.c:1646  */
     {
 	  	    symTable *s = search(currentScope, (yyvsp[0].sval));
 			if(s == NULL)
@@ -1936,37 +1939,37 @@ yyreduce:
 			funcName = (yyvsp[0].sval);
 			subrCall = 1;
 	  }
-#line 1940 "y.tab.c" /* yacc.c:1646  */
+#line 1943 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 465 "y.y" /* yacc.c:1646  */
+#line 468 "y.y" /* yacc.c:1646  */
     {
 		    subrCall = 0;
 		    varNum = 0;
 	  }
-#line 1949 "y.tab.c" /* yacc.c:1646  */
+#line 1952 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 471 "y.y" /* yacc.c:1646  */
+#line 474 "y.y" /* yacc.c:1646  */
     {
 	  	    symTable *s = search(currentScope, (yyvsp[0].sval));
 			if(s == NULL) yyerror("Function CALL was not exist.");
 	  }
-#line 1958 "y.tab.c" /* yacc.c:1646  */
+#line 1961 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 481 "y.y" /* yacc.c:1646  */
+#line 484 "y.y" /* yacc.c:1646  */
     {
 		  fprintf(file, "\t\tgetstatic java.io.PrintStream java.lang.System.out\n");
 	  }
-#line 1966 "y.tab.c" /* yacc.c:1646  */
+#line 1969 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 485 "y.y" /* yacc.c:1646  */
+#line 488 "y.y" /* yacc.c:1646  */
     {
 		  char *type;
 		  if((yyvsp[0].epty)->type == INT_TYPE)
@@ -1976,19 +1979,19 @@ yyreduce:
 				  
 		  fprintf(file, "\t\tinvokevirtual void java.io.PrintStream.print(%s)\n", type);
 	  }
-#line 1980 "y.tab.c" /* yacc.c:1646  */
+#line 1983 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 495 "y.y" /* yacc.c:1646  */
+#line 498 "y.y" /* yacc.c:1646  */
     {
 		  fprintf(file, "\t\tgetstatic java.io.PrintStream java.lang.System.out\n");
 	  }
-#line 1988 "y.tab.c" /* yacc.c:1646  */
+#line 1991 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 499 "y.y" /* yacc.c:1646  */
+#line 502 "y.y" /* yacc.c:1646  */
     {
 		  char *type;
 		  if((yyvsp[0].epty)->type == INT_TYPE)
@@ -1998,11 +2001,11 @@ yyreduce:
 				  
 		  fprintf(file, "\t\tinvokevirtual void java.io.PrintStream.println(%s)\n", type);
 	  }
-#line 2002 "y.tab.c" /* yacc.c:1646  */
+#line 2005 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 511 "y.y" /* yacc.c:1646  */
+#line 514 "y.y" /* yacc.c:1646  */
     {
 	  	 	symTable *s = searchRecu(currentScope, (yyvsp[-2].sval));
 			
@@ -2014,193 +2017,206 @@ yyreduce:
 				fprintf(file, "\t\tistore %d\n", s->index);
 			else
 				fprintf(file, "\t\tputstatic int %s.%s\n", className, (yyvsp[-2].sval));
+
+			if(isLoopAss == 1)
+				incV = s;
 	  }
-#line 2019 "y.tab.c" /* yacc.c:1646  */
+#line 2025 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 523 "y.y" /* yacc.c:1646  */
+#line 529 "y.y" /* yacc.c:1646  */
     {
 	  	 	if((yyvsp[-1].epty)->type != INT_TYPE) yyerror("Assign Exp Type error.");
 	  }
-#line 2027 "y.tab.c" /* yacc.c:1646  */
+#line 2033 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 526 "y.y" /* yacc.c:1646  */
+#line 532 "y.y" /* yacc.c:1646  */
     {
 	 	 	symTable *s = search(currentScope, (yyvsp[-6].sval));
 			if(s == NULL) yyerror("Assign Exp id doesn't exist.");
 			if(s->type != (yyvsp[0].epty)->type) yyerror("Assign Exp type not match.");
 	  }
-#line 2037 "y.tab.c" /* yacc.c:1646  */
+#line 2043 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 535 "y.y" /* yacc.c:1646  */
+#line 541 "y.y" /* yacc.c:1646  */
     {
 		  loopifNum++;
 		  isLoop = 1;
+		  isLoopAss = 1;
 	  }
-#line 2046 "y.tab.c" /* yacc.c:1646  */
+#line 2053 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 540 "y.y" /* yacc.c:1646  */
+#line 547 "y.y" /* yacc.c:1646  */
     {
 		  int index = loopifNum*2;
 		  tempIndex = index+1;
 		  labelStack[index] = labelNum;
-		  fprintf(file, "\t%d:\n", labelNum++);
-	  }
-#line 2057 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 65:
-#line 548 "y.y" /* yacc.c:1646  */
-    {
-		  if((yyvsp[0].epty)->type != LOGI_TYPE)
-			  yyerror("(Loop)If exp type error.");
+		  isLoopAss = 0;
+		  fprintf(file, "\tL%d:\n", labelNum++);
+		  
 	  }
 #line 2066 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 66:
-#line 553 "y.y" /* yacc.c:1646  */
+  case 65:
+#line 556 "y.y" /* yacc.c:1646  */
     {
-		  isLoop = 0;
-		  loopifNum--;
+		  if((yyvsp[0].epty)->type != LOGI_TYPE)
+			  yyerror("(Loop)If exp type error.");
 	  }
 #line 2075 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 67:
+  case 66:
 #line 561 "y.y" /* yacc.c:1646  */
+    {
+		  int index = loopifNum*2-2;
+		  fprintf(file, "\t\tsipush %d\n", inc);
+		  fprintf(file, "\t\tiload %d\n", incV->index);
+		  fprintf(file, "\t\tiadd\n");
+		  fprintf(file, "\t\tistore %d\n", incV->index);
+		  fprintf(file, "\t\tgoto L%d\n", index);
+		  fprintf(file, "\tL%d:\n", index+1);
+		  isLoop = 0;
+		  loopifNum--;
+	  }
+#line 2091 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 67:
+#line 576 "y.y" /* yacc.c:1646  */
     {
 		  if((yyvsp[-1].epty)->type != LOGI_TYPE)yyerror("If expr type error.");
 		  loopifNum++;
 	  }
-#line 2084 "y.tab.c" /* yacc.c:1646  */
+#line 2100 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 566 "y.y" /* yacc.c:1646  */
+#line 581 "y.y" /* yacc.c:1646  */
     {
 		  loopifNum--;
 	  }
-#line 2092 "y.tab.c" /* yacc.c:1646  */
+#line 2108 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 574 "y.y" /* yacc.c:1646  */
+#line 589 "y.y" /* yacc.c:1646  */
     {
 		  int index = loopifNum*2-2;
-		  fprintf(file, "\t%d:\n", index);
+		  fprintf(file, "\tL%d:\n", index);
 	  }
-#line 2101 "y.tab.c" /* yacc.c:1646  */
+#line 2117 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 582 "y.y" /* yacc.c:1646  */
+#line 597 "y.y" /* yacc.c:1646  */
     {
 		  int index = loopifNum*2-2;
 		  labelStack[tempIndex] = labelNum;
-		  fprintf(file, "\t\tgoto %d\n", labelNum++);
-		  fprintf(file, "\t%d:\n",  index);
+		  fprintf(file, "\t\tgoto L%d\n", labelNum++);
+		  fprintf(file, "\tL%d:\n",  index);
 	  }
-#line 2112 "y.tab.c" /* yacc.c:1646  */
+#line 2128 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 589 "y.y" /* yacc.c:1646  */
+#line 604 "y.y" /* yacc.c:1646  */
     {
 		  int index = loopifNum*2-1;
-		  fprintf(file, "\t%d:\n", index);
+		  fprintf(file, "\tL%d:\n", index);
 	  }
-#line 2121 "y.tab.c" /* yacc.c:1646  */
+#line 2137 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 594 "y.y" /* yacc.c:1646  */
+#line 609 "y.y" /* yacc.c:1646  */
     {
 		  int index = loopifNum*2-2;
-		  fprintf(file, "\t%d:\n", index);
+		  fprintf(file, "\tL%d:\n", index);
 	  }
-#line 2130 "y.tab.c" /* yacc.c:1646  */
+#line 2146 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 601 "y.y" /* yacc.c:1646  */
+#line 616 "y.y" /* yacc.c:1646  */
     {tTemp = 1;}
-#line 2136 "y.tab.c" /* yacc.c:1646  */
+#line 2152 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 602 "y.y" /* yacc.c:1646  */
+#line 617 "y.y" /* yacc.c:1646  */
     {tTemp = 2;}
-#line 2142 "y.tab.c" /* yacc.c:1646  */
+#line 2158 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 603 "y.y" /* yacc.c:1646  */
+#line 618 "y.y" /* yacc.c:1646  */
     {tTemp = 3;}
-#line 2148 "y.tab.c" /* yacc.c:1646  */
+#line 2164 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 604 "y.y" /* yacc.c:1646  */
+#line 619 "y.y" /* yacc.c:1646  */
     {tTemp = 4;}
-#line 2154 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 80:
-#line 614 "y.y" /* yacc.c:1646  */
-    { 
-		idCondition((yyvsp[0].sval));
-	}
-#line 2162 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 81:
-#line 618 "y.y" /* yacc.c:1646  */
-    {
-		idCondition((yyvsp[0].sval));
-	  }
 #line 2170 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 80:
+#line 629 "y.y" /* yacc.c:1646  */
+    { 
+		idCondition((yyvsp[0].sval));
+	}
+#line 2178 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 81:
+#line 633 "y.y" /* yacc.c:1646  */
+    {
+		idCondition((yyvsp[0].sval));
+	  }
+#line 2186 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 82:
-#line 626 "y.y" /* yacc.c:1646  */
+#line 641 "y.y" /* yacc.c:1646  */
     {
 	  	  	aTemp = ARY_ATTR;
 		  	dimesParam = (yyvsp[-1].ival);
 		  	}
-#line 2179 "y.tab.c" /* yacc.c:1646  */
+#line 2195 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 631 "y.y" /* yacc.c:1646  */
+#line 646 "y.y" /* yacc.c:1646  */
     {aTemp = PTR_ATTR;}
-#line 2185 "y.tab.c" /* yacc.c:1646  */
+#line 2201 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 632 "y.y" /* yacc.c:1646  */
+#line 647 "y.y" /* yacc.c:1646  */
     {aTemp = PARA_ATTR;}
-#line 2191 "y.tab.c" /* yacc.c:1646  */
+#line 2207 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 637 "y.y" /* yacc.c:1646  */
+#line 652 "y.y" /* yacc.c:1646  */
     {
 	  	    if(aTemp != ARY_ATTR) yyerror("Same Attribute Decleared.");
 	  	  	aTemp = BOTH;
 	  }
-#line 2200 "y.tab.c" /* yacc.c:1646  */
+#line 2216 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 646 "y.y" /* yacc.c:1646  */
+#line 661 "y.y" /* yacc.c:1646  */
     {
 	  	    if( arithmeticCheck((yyvsp[-2].epty), (yyvsp[0].epty)) == ERR_TYPE ) 
 				yyerror("Arithmetic + TYPE Error.");
@@ -2211,11 +2227,11 @@ yyreduce:
 
 			fprintf(file, "\t\tiadd\n");
 	  }
-#line 2215 "y.tab.c" /* yacc.c:1646  */
+#line 2231 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 657 "y.y" /* yacc.c:1646  */
+#line 672 "y.y" /* yacc.c:1646  */
     { 
 	  	   	Types t = arithmeticCheck((yyvsp[-2].epty), (yyvsp[0].epty));
 	  	    if(t == ERR_TYPE) 
@@ -2229,11 +2245,11 @@ yyreduce:
 
 			fprintf(file, "\t\tisub\n");
 	  }
-#line 2233 "y.tab.c" /* yacc.c:1646  */
+#line 2249 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 671 "y.y" /* yacc.c:1646  */
+#line 686 "y.y" /* yacc.c:1646  */
     { 
 	  	    if( arithmeticCheck((yyvsp[-2].epty), (yyvsp[0].epty)) == ERR_TYPE) 
 				yyerror("Arithmetic * TYPE Error.");
@@ -2244,11 +2260,11 @@ yyreduce:
 
 			fprintf(file, "\t\timul\n");
 	  }
-#line 2248 "y.tab.c" /* yacc.c:1646  */
+#line 2264 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 682 "y.y" /* yacc.c:1646  */
+#line 697 "y.y" /* yacc.c:1646  */
     { 
 	  	    if( arithmeticCheck((yyvsp[-2].epty), (yyvsp[0].epty)) == ERR_TYPE) 
 				yyerror("Arithmetic // TYPE Error.");
@@ -2259,11 +2275,11 @@ yyreduce:
 
 			fprintf(file, "\t\tidiv\n");
 	  }
-#line 2263 "y.tab.c" /* yacc.c:1646  */
+#line 2279 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 693 "y.y" /* yacc.c:1646  */
+#line 708 "y.y" /* yacc.c:1646  */
     {
 	  	  	if( (yyvsp[0].epty)->type != INT_TYPE && (yyvsp[0].epty)->type != REAL_TYPE)
 				yyerror("unary TYPE not match.");
@@ -2274,11 +2290,11 @@ yyreduce:
 
 			fprintf(file, "\t\tineg\n");
 	  }
-#line 2278 "y.tab.c" /* yacc.c:1646  */
+#line 2294 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 704 "y.y" /* yacc.c:1646  */
+#line 719 "y.y" /* yacc.c:1646  */
     {
 		    if( expTypeCheck((yyvsp[-2].epty), (yyvsp[0].epty)) == 0)
 				yyerror("Relation expression TYPE Error.");
@@ -2294,13 +2310,13 @@ yyreduce:
 			}
 			labelStack[index] = labelNum;
 			fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tifle %d\n", labelNum++);
+			fprintf(file, "\t\tifle L%d\n", labelNum++);
 	  }
-#line 2300 "y.tab.c" /* yacc.c:1646  */
+#line 2316 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 722 "y.y" /* yacc.c:1646  */
+#line 737 "y.y" /* yacc.c:1646  */
     {
 		    if( expTypeCheck((yyvsp[-2].epty), (yyvsp[0].epty)) == 0)
 				yyerror("Relation expression TYPE Error.");
@@ -2316,13 +2332,13 @@ yyreduce:
 			}
 			labelStack[index] = labelNum;
 			fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tiflt %d\n", labelNum++);
+			fprintf(file, "\t\tiflt L%d\n", labelNum++);
 	  }
-#line 2322 "y.tab.c" /* yacc.c:1646  */
+#line 2338 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 740 "y.y" /* yacc.c:1646  */
+#line 755 "y.y" /* yacc.c:1646  */
     {
 	  	   
 		    if( expTypeCheck((yyvsp[-2].epty), (yyvsp[0].epty)) == 0)
@@ -2339,13 +2355,13 @@ yyreduce:
 			}
 		    labelStack[index] = labelNum;
 	  		fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tifge %d\n", labelNum++);
+			fprintf(file, "\t\tifge L%d\n", labelNum++);
 	  }
-#line 2345 "y.tab.c" /* yacc.c:1646  */
+#line 2361 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 759 "y.y" /* yacc.c:1646  */
+#line 774 "y.y" /* yacc.c:1646  */
     {
 		
 		    if( expTypeCheck((yyvsp[-2].epty), (yyvsp[0].epty)) == 0)
@@ -2362,13 +2378,13 @@ yyreduce:
 			}
 		    labelStack[index] = labelNum;
 			fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tifgt %d\n", labelNum++);
+			fprintf(file, "\t\tifgt L%d\n", labelNum++);
 	  }
-#line 2368 "y.tab.c" /* yacc.c:1646  */
+#line 2384 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 778 "y.y" /* yacc.c:1646  */
+#line 793 "y.y" /* yacc.c:1646  */
     {
 		    if( expTypeCheck((yyvsp[-2].epty), (yyvsp[0].epty)) == 0)
 				yyerror("Relation expression TYPE Error.");
@@ -2384,13 +2400,13 @@ yyreduce:
 			}
 		    labelStack[index] = labelNum;
 			fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tifgt %d\n", labelNum++);
+			fprintf(file, "\t\tifgt L%d\n", labelNum++);
 	  }
-#line 2390 "y.tab.c" /* yacc.c:1646  */
+#line 2406 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 796 "y.y" /* yacc.c:1646  */
+#line 811 "y.y" /* yacc.c:1646  */
     {
 		    if( expTypeCheck((yyvsp[-2].epty), (yyvsp[0].epty)) == 0)
 				yyerror("Relation expression TYPE Error.");
@@ -2406,61 +2422,61 @@ yyreduce:
 			}
 		    labelStack[index] = labelNum;
 			fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tifgt %d\n", labelNum++);
+			fprintf(file, "\t\tifgt L%d\n", labelNum++);
 	  }
-#line 2412 "y.tab.c" /* yacc.c:1646  */
+#line 2428 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 814 "y.y" /* yacc.c:1646  */
+#line 829 "y.y" /* yacc.c:1646  */
     {
 		  funcName = (yyvsp[0].sval);
 	  }
-#line 2420 "y.tab.c" /* yacc.c:1646  */
+#line 2436 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 819 "y.y" /* yacc.c:1646  */
+#line 834 "y.y" /* yacc.c:1646  */
     {
 	        symTable *s = searchRecu(currentScope, (yyvsp[-2].sval));
 			if(s == NULL) yyerror("This id doesn't exist.");
 	  	    (yyval.epty) = expGenerate(s->type);
 	  }
-#line 2430 "y.tab.c" /* yacc.c:1646  */
+#line 2446 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 101:
-#line 825 "y.y" /* yacc.c:1646  */
+#line 840 "y.y" /* yacc.c:1646  */
     {(yyval.epty) = expGenerate(INT_TYPE); fprintf(file, "\t\tsipush %d\n", (yyvsp[0].ival));}
-#line 2436 "y.tab.c" /* yacc.c:1646  */
+#line 2452 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 826 "y.y" /* yacc.c:1646  */
+#line 841 "y.y" /* yacc.c:1646  */
     {(yyval.epty) = expGenerate(REAL_TYPE); }
-#line 2442 "y.tab.c" /* yacc.c:1646  */
+#line 2458 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 827 "y.y" /* yacc.c:1646  */
+#line 842 "y.y" /* yacc.c:1646  */
     {(yyval.epty) = expGenerate(CHAR_TYPE); }
-#line 2448 "y.tab.c" /* yacc.c:1646  */
+#line 2464 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 828 "y.y" /* yacc.c:1646  */
+#line 843 "y.y" /* yacc.c:1646  */
     {(yyval.epty) = expGenerate(LOGI_TYPE); }
-#line 2454 "y.tab.c" /* yacc.c:1646  */
+#line 2470 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 829 "y.y" /* yacc.c:1646  */
+#line 844 "y.y" /* yacc.c:1646  */
     {(yyval.epty) = expGenerate(STR_TYPE);  }
-#line 2460 "y.tab.c" /* yacc.c:1646  */
+#line 2476 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 834 "y.y" /* yacc.c:1646  */
+#line 849 "y.y" /* yacc.c:1646  */
     {
 		    int i;
 		    char *type;
@@ -2478,7 +2494,7 @@ yyreduce:
 				type = "float";
 			else yyerror("(Function call) type error.");
 
-            fprintf(file, "\t\tinvokstatic %s %s.%s(", type, className, funcName);
+            fprintf(file, "\t\tinvokestatic %s %s.%s(", type, className, funcName);
             for(i = 0; i < tempFunc->varNum; i++)
             {
 	            if(tempFunc->var[i]->type == INT_TYPE)
@@ -2493,11 +2509,11 @@ yyreduce:
             }
             fprintf(file, ")\n");
       }
-#line 2497 "y.tab.c" /* yacc.c:1646  */
+#line 2513 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 867 "y.y" /* yacc.c:1646  */
+#line 882 "y.y" /* yacc.c:1646  */
     {
 		    symTable *s = searchRecu(currentScope, funcName);
 			char *type;
@@ -2515,28 +2531,28 @@ yyreduce:
 
 		
       }
-#line 2519 "y.tab.c" /* yacc.c:1646  */
+#line 2535 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 894 "y.y" /* yacc.c:1646  */
+#line 909 "y.y" /* yacc.c:1646  */
     {
 		  tempType = INT_TYPE;
 		  varNum++;
 
 		  fprintf(file, "\t\tsipush %d\n", (yyvsp[0].ival));
 	  }
-#line 2530 "y.tab.c" /* yacc.c:1646  */
+#line 2546 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 112:
-#line 900 "y.y" /* yacc.c:1646  */
+#line 915 "y.y" /* yacc.c:1646  */
     {tempType = REAL_TYPE;}
-#line 2536 "y.tab.c" /* yacc.c:1646  */
+#line 2552 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 902 "y.y" /* yacc.c:1646  */
+#line 917 "y.y" /* yacc.c:1646  */
     {
 		  int i;
 		  symTable *s = searchRecu(currentScope, (yyvsp[0].sval));
@@ -2563,21 +2579,37 @@ yyreduce:
 		  else
 			  fprintf(file, "\t\tgetstatic int %s.%s\n", className, (yyvsp[0].sval));
       }
-#line 2567 "y.tab.c" /* yacc.c:1646  */
+#line 2583 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 114:
+#line 947 "y.y" /* yacc.c:1646  */
+    {
+		  inc = (yyvsp[0].ival);
+	  }
+#line 2591 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 115:
-#line 932 "y.y" /* yacc.c:1646  */
+#line 950 "y.y" /* yacc.c:1646  */
     { 
 	  	    symTable *s = search(currentScope, (yyvsp[0].sval));
 			if(s->type != INT_TYPE && s->type != REAL_TYPE) 
 				yyerror("optional expr type error.");
 	  }
-#line 2577 "y.tab.c" /* yacc.c:1646  */
+#line 2601 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 116:
+#line 956 "y.y" /* yacc.c:1646  */
+    {
+		  inc = 1;
+	  }
+#line 2609 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2581 "y.tab.c" /* yacc.c:1646  */
+#line 2613 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2805,7 +2837,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 940 "y.y" /* yacc.c:1906  */
+#line 961 "y.y" /* yacc.c:1906  */
 
 
 int main(int argc, char *argv[])

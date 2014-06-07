@@ -65,6 +65,9 @@ FILE *file;
 char *className;
 
 int isLoop = 0;
+int isLoopAss = 0;
+int inc;
+symTable *incV;
 int labelNum = 0;
 int loopifNum = 0;
 int tempIndex;
@@ -159,7 +162,7 @@ program
 		  if(strcmp($2, $10) != 0) 
 			  yyerror("Variable name(program) doesn't match.");
 
-		  fprintf(file, "\t\tireturn\n");
+		  fprintf(file, "\t\treturn\n");
 		  fprintf(file, "\t}\n");
 		    
 	  }
@@ -519,6 +522,9 @@ assignStmt
 				fprintf(file, "\t\tistore %d\n", s->index);
 			else
 				fprintf(file, "\t\tputstatic int %s.%s\n", className, $1);
+
+			if(isLoopAss == 1)
+				incV = s;
 	  }
 	| ID '[' expr ']' {
 	  	 	if($3->type != INT_TYPE) yyerror("Assign Exp Type error.");
@@ -535,15 +541,17 @@ loopStmt
 	  {
 		  loopifNum++;
 		  isLoop = 1;
+		  isLoopAss = 1;
 	  }
 	  assignStmt
 	  {
 		  int index = loopifNum*2;
 		  tempIndex = index+1;
 		  labelStack[index] = labelNum;
-		  fprintf(file, "\t%d:\n", labelNum++);
+		  isLoopAss = 0;
+		  fprintf(file, "\tL%d:\n", labelNum++);
+		  
 	  }
-
       ',' expr
 	  {
 		  if($6->type != LOGI_TYPE)
@@ -551,6 +559,13 @@ loopStmt
 	  }
 	  optionExpr stmts END DO
 	  {
+		  int index = loopifNum*2-2;
+		  fprintf(file, "\t\tsipush %d\n", inc);
+		  fprintf(file, "\t\tiload %d\n", incV->index);
+		  fprintf(file, "\t\tiadd\n");
+		  fprintf(file, "\t\tistore %d\n", incV->index);
+		  fprintf(file, "\t\tgoto L%d\n", index);
+		  fprintf(file, "\tL%d:\n", index+1);
 		  isLoop = 0;
 		  loopifNum--;
 	  }
@@ -573,7 +588,7 @@ condition1
 	| stmts
  	  {
 		  int index = loopifNum*2-2;
-		  fprintf(file, "\t%d:\n", index);
+		  fprintf(file, "\tL%d:\n", index);
 	  }
 	;
 
@@ -582,18 +597,18 @@ condition2
 	  {
 		  int index = loopifNum*2-2;
 		  labelStack[tempIndex] = labelNum;
-		  fprintf(file, "\t\tgoto %d\n", labelNum++);
-		  fprintf(file, "\t%d:\n",  index);
+		  fprintf(file, "\t\tgoto L%d\n", labelNum++);
+		  fprintf(file, "\tL%d:\n",  index);
 	  }
       stmts
 	  {
 		  int index = loopifNum*2-1;
-		  fprintf(file, "\t%d:\n", index);
+		  fprintf(file, "\tL%d:\n", index);
 	  }
 	| %empty
 	  {
 		  int index = loopifNum*2-2;
-		  fprintf(file, "\t%d:\n", index);
+		  fprintf(file, "\tL%d:\n", index);
 	  }
 	;
 			   
@@ -716,7 +731,7 @@ expr
 			}
 			labelStack[index] = labelNum;
 			fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tifle %d\n", labelNum++);
+			fprintf(file, "\t\tifle L%d\n", labelNum++);
 	  }
 	| expr GE expr 
 	  {
@@ -734,7 +749,7 @@ expr
 			}
 			labelStack[index] = labelNum;
 			fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tiflt %d\n", labelNum++);
+			fprintf(file, "\t\tiflt L%d\n", labelNum++);
 	  }
 	| expr LT expr 
 	  {
@@ -753,7 +768,7 @@ expr
 			}
 		    labelStack[index] = labelNum;
 	  		fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tifge %d\n", labelNum++);
+			fprintf(file, "\t\tifge L%d\n", labelNum++);
 	  }
 	| expr LE expr 
 	  {
@@ -772,7 +787,7 @@ expr
 			}
 		    labelStack[index] = labelNum;
 			fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tifgt %d\n", labelNum++);
+			fprintf(file, "\t\tifgt L%d\n", labelNum++);
 	  }
 	| expr EQ expr 
 	  {
@@ -790,7 +805,7 @@ expr
 			}
 		    labelStack[index] = labelNum;
 			fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tifgt %d\n", labelNum++);
+			fprintf(file, "\t\tifgt L%d\n", labelNum++);
 	  }
 	| expr NE expr 
 	  {
@@ -808,7 +823,7 @@ expr
 			}
 		    labelStack[index] = labelNum;
 			fprintf(file, "\t\tisub\n");
-			fprintf(file, "\t\tifgt %d\n", labelNum++);
+			fprintf(file, "\t\tifgt L%d\n", labelNum++);
 	  }
     | ID
 	  {
@@ -848,7 +863,7 @@ funcCondition
 				type = "float";
 			else yyerror("(Function call) type error.");
 
-            fprintf(file, "\t\tinvokstatic %s %s.%s(", type, className, funcName);
+            fprintf(file, "\t\tinvokestatic %s %s.%s(", type, className, funcName);
             for(i = 0; i < tempFunc->varNum; i++)
             {
 	            if(tempFunc->var[i]->type == INT_TYPE)
@@ -929,12 +944,18 @@ opt_val
 
 optionExpr
 	: ',' INTEGERC
+	  {
+		  inc = $2;
+	  }
 	| ',' ID { 
 	  	    symTable *s = search(currentScope, $2);
 			if(s->type != INT_TYPE && s->type != REAL_TYPE) 
 				yyerror("optional expr type error.");
 	  }
 	| %empty
+	  {
+		  inc = 1;
+	  }
 	;
 
 %%

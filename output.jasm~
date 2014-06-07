@@ -24,25 +24,22 @@ class example
 		sipush 1
 		iadd
 		istore 2
-		getstatic java.io.PrintStream java.lang.System.out
-		iload 2
-		invokevirtual void java.io.PrintStream.println(int)
 		goto L3
 	L2:
 		iload 2
 		sipush 1
 		isub
 		istore 2
-		getstatic java.io.PrintStream java.lang.System.out
-		iload 2
-		invokevirtual void java.io.PrintStream.println(int)
 	L3:
 		sipush 1
-		iload 3
+		iload 2
 		iadd
-		istore 3
+		istore 2
 		goto L0
 	L1:
-		return
+		getstatic java.io.PrintStream java.lang.System.out
+		iload 2
+		invokevirtual void java.io.PrintStream.print(int)
+		ireturn
 	}
 }
