@@ -1,5 +1,6 @@
 Terminals unused in grammar
 
+   CHARC
    LPARENTHESIS
    RPARENTHESIS
    COMMA
@@ -23,58 +24,58 @@ Terminals unused in grammar
    CONCAT
    PASSIGNMENT
    IFX
-   EQV
    NEQV
+   EQV
    OR
    AND
    NOT
    EXP
 
 
-Grammar
+文法
 
     0 $accept: program $end
 
-    1 $@1: %empty
+    1 $@1: /* 空白 */
 
-    2 $@2: %empty
+    2 $@2: /* 空白 */
 
-    3 $@3: %empty
+    3 $@3: /* 空白 */
 
     4 program: PROGRAM ID $@1 decls declF $@2 stmts END PROGRAM ID $@3 subprogram
 
-    5 $@4: %empty
+    5 $@4: /* 空白 */
 
-    6 $@5: %empty
+    6 $@5: /* 空白 */
 
-    7 $@6: %empty
+    7 $@6: /* 空白 */
 
-    8 $@7: %empty
+    8 $@7: /* 空白 */
 
     9 subprogram: SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram
 
-   10 $@8: %empty
+   10 $@8: /* 空白 */
 
-   11 $@9: %empty
+   11 $@9: /* 空白 */
 
-   12 $@10: %empty
+   12 $@10: /* 空白 */
 
-   13 $@11: %empty
+   13 $@11: /* 空白 */
 
    14 subprogram: FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram
-   15           | %empty
+   15           | /* 空白 */
 
    16 decls: declVar decls
    17      | optionGlob decls
    18      | optionInit decls
    19      | optionDecl decls
-   20      | %empty
+   20      | /* 空白 */
 
    21 declVar: types ids
    22        | types CCOLON ids
    23        | types ',' fAttr sAttr CCOLON ids
 
-   24 $@12: %empty
+   24 $@12: /* 空白 */
 
    25 optionGlob: COMMON $@12 '/' ids '/'
 
@@ -84,28 +85,28 @@ Grammar
 
    28 value: INTEGERC
    29      | REALC
-   30      | CHARC
+   30      | STRINGC
    31      | LOGICALC
 
    32 declF: INTERFACE declFunc END INTERFACE
-   33      | %empty
+   33      | /* 空白 */
 
-   34 $@13: %empty
+   34 $@13: /* 空白 */
 
-   35 $@14: %empty
+   35 $@14: /* 空白 */
 
-   36 $@15: %empty
+   36 $@15: /* 空白 */
 
    37 declFunc: SUBROUTINE ID $@13 '(' idn ')' $@14 decls END SUBROUTINE ID $@15 declFunc
 
-   38 $@16: %empty
+   38 $@16: /* 空白 */
 
-   39 $@17: %empty
+   39 $@17: /* 空白 */
 
-   40 $@18: %empty
+   40 $@18: /* 空白 */
 
    41 declFunc: FUNCTION ID $@16 '(' idn ')' $@17 decls END FUNCTION ID $@18 declFunc
-   42         | %empty
+   42         | /* 空白 */
 
    43 stmts: assignStmt stmts
    44      | printStmt stmts
@@ -114,50 +115,50 @@ Grammar
    47      | RETURN stmts
    48      | EXIT stmts
 
-   49 $@19: %empty
+   49 $@19: /* 空白 */
 
-   50 $@20: %empty
+   50 $@20: /* 空白 */
 
    51 stmts: CALL ID $@19 '(' idn ')' $@20 stmts
 
-   52 $@21: %empty
+   52 $@21: /* 空白 */
 
    53 stmts: READ ID $@21 stmts
-   54      | %empty
+   54      | /* 空白 */
 
-   55 $@22: %empty
+   55 $@22: /* 空白 */
 
    56 printStmt: PRINT $@22 expr
 
-   57 $@23: %empty
+   57 $@23: /* 空白 */
 
    58 printStmt: PRINTLN $@23 expr
 
    59 assignStmt: ID '=' expr
 
-   60 $@24: %empty
+   60 $@24: /* 空白 */
 
    61 assignStmt: ID '[' expr ']' $@24 '=' expr
 
-   62 $@25: %empty
+   62 $@25: /* 空白 */
 
-   63 $@26: %empty
+   63 $@26: /* 空白 */
 
-   64 $@27: %empty
+   64 $@27: /* 空白 */
 
    65 loopStmt: DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
 
-   66 $@28: %empty
+   66 $@28: /* 空白 */
 
    67 ifStmt: IF '(' expr ')' $@28 condition1 END IF
 
    68 condition1: THEN stmts condition2
    69           | stmts
 
-   70 $@29: %empty
+   70 $@29: /* 空白 */
 
    71 condition2: ELSE $@29 stmts
-   72           | %empty
+   72           | /* 空白 */
 
    73 types: INTEGER
    74      | REAL
@@ -165,7 +166,7 @@ Grammar
    76      | CHARACTER
 
    77 idn: ids
-   78    | %empty
+   78    | /* 空白 */
 
    79 ids: ids ',' ID
    80    | ID
@@ -176,7 +177,7 @@ Grammar
    84      | PARAMETER
 
    85 sAttr: ',' POINTER
-   86      | %empty
+   86      | /* 空白 */
 
    87 expr: expr '+' expr
    88     | expr '-' expr
@@ -190,51 +191,50 @@ Grammar
    96     | expr EQ expr
    97     | expr NE expr
 
-   98 $@30: %empty
+   98 $@30: /* 空白 */
 
    99 expr: ID $@30 funcCondition
   100     | INTEGERC
   101     | REALC
-  102     | CHARC
-  103     | LOGICALC
-  104     | STRINGC
+  102     | LOGICALC
+  103     | STRINGC
 
-  105 funcCondition: '(' funcPara ')'
-  106              | %empty
+  104 funcCondition: '(' funcPara ')'
+  105              | /* 空白 */
 
-  107 funcPara: funcPara ',' opt_val
-  108         | opt_val
-  109         | %empty
+  106 funcPara: funcPara ',' opt_val
+  107         | opt_val
+  108         | /* 空白 */
 
-  110 opt_val: INTEGERC
-  111        | REALC
-  112        | ID
+  109 opt_val: INTEGERC
+  110        | REALC
+  111        | ID
 
-  113 optionExpr: ',' INTEGERC
-  114           | ',' ID
-  115           | %empty
+  112 optionExpr: ',' INTEGERC
+  113           | ',' ID
+  114           | /* 空白 */
 
 
-Terminals, with rules where they appear
+終結語詞，附有它們出現處的規則
 
 $end (0) 0
-'(' (40) 9 14 27 37 41 51 67 81 82 105
-')' (41) 9 14 27 37 41 51 67 81 82 105
+'(' (40) 9 14 27 37 41 51 67 81 82 104
+')' (41) 9 14 27 37 41 51 67 81 82 104
 '*' (42) 89
 '+' (43) 87
-',' (44) 23 65 79 85 107 113 114
+',' (44) 23 65 79 85 106 112 113
 '-' (45) 88 91
 '/' (47) 25 26 90
 '=' (61) 27 59 61
 '[' (91) 61
 ']' (93) 61
 error (256) 82
-INTEGERC (258) 28 81 100 110 113
-REALC (259) 29 101 111
-CHARC (260) 30 102
-LOGICALC (261) 31 103
-ID (262) 4 9 14 26 27 37 41 51 53 59 61 79 80 99 112 114
-STRINGC (263) 104
+INTEGERC (258) 28 81 100 109 112
+REALC (259) 29 101 110
+CHARC (260)
+LOGICALC (261) 31 102
+ID (262) 4 9 14 26 27 37 41 51 53 59 61 79 80 99 111 113
+STRINGC (263) 30 103
 LPARENTHESIS (264)
 RPARENTHESIS (265)
 COMMA (266)
@@ -283,192 +283,192 @@ READ (308) 53
 COMMON (309) 25
 IFX (310)
 ELSE (311) 71
-EQV (312)
-NEQV (313)
+NEQV (312)
+EQV (313)
 OR (314)
 AND (315)
 NOT (316)
-LT (317) 94
-LE (318) 95
-GE (319) 93
-GT (320) 92
-EQ (321) 96
-NE (322) 97
+NE (317) 97
+EQ (318) 96
+GT (319) 92
+GE (320) 93
+LE (321) 95
+LT (322) 94
 EXP (323)
 UMINUS (324)
 
 
-Nonterminals, with rules where they appear
+非終結語詞，附有它們出現處的規則
 
 $accept (80)
-    on left: 0
+   於左側： 0
 program (81)
-    on left: 4, on right: 0
+   於左側： 4,於右側： 0
 $@1 (82)
-    on left: 1, on right: 4
+   於左側： 1,於右側： 4
 $@2 (83)
-    on left: 2, on right: 4
+   於左側： 2,於右側： 4
 $@3 (84)
-    on left: 3, on right: 4
+   於左側： 3,於右側： 4
 subprogram (85)
-    on left: 9 14 15, on right: 4 9 14
+   於左側： 9 14 15,於右側： 4 9 14
 $@4 (86)
-    on left: 5, on right: 9
+   於左側： 5,於右側： 9
 $@5 (87)
-    on left: 6, on right: 9
+   於左側： 6,於右側： 9
 $@6 (88)
-    on left: 7, on right: 9
+   於左側： 7,於右側： 9
 $@7 (89)
-    on left: 8, on right: 9
+   於左側： 8,於右側： 9
 $@8 (90)
-    on left: 10, on right: 14
+   於左側： 10,於右側： 14
 $@9 (91)
-    on left: 11, on right: 14
+   於左側： 11,於右側： 14
 $@10 (92)
-    on left: 12, on right: 14
+   於左側： 12,於右側： 14
 $@11 (93)
-    on left: 13, on right: 14
+   於左側： 13,於右側： 14
 decls (94)
-    on left: 16 17 18 19 20, on right: 4 9 14 16 17 18 19 37 41
+   於左側： 16 17 18 19 20,於右側： 4 9 14 16 17 18 19 37 41
 declVar (95)
-    on left: 21 22 23, on right: 16
+   於左側： 21 22 23,於右側： 16
 optionGlob (96)
-    on left: 25, on right: 17
+   於左側： 25,於右側： 17
 $@12 (97)
-    on left: 24, on right: 25
+   於左側： 24,於右側： 25
 optionInit (98)
-    on left: 26, on right: 18
+   於左側： 26,於右側： 18
 optionDecl (99)
-    on left: 27, on right: 19
+   於左側： 27,於右側： 19
 value (100)
-    on left: 28 29 30 31, on right: 26 27
+   於左側： 28 29 30 31,於右側： 26 27
 declF (101)
-    on left: 32 33, on right: 4
+   於左側： 32 33,於右側： 4
 declFunc (102)
-    on left: 37 41 42, on right: 32 37 41
+   於左側： 37 41 42,於右側： 32 37 41
 $@13 (103)
-    on left: 34, on right: 37
+   於左側： 34,於右側： 37
 $@14 (104)
-    on left: 35, on right: 37
+   於左側： 35,於右側： 37
 $@15 (105)
-    on left: 36, on right: 37
+   於左側： 36,於右側： 37
 $@16 (106)
-    on left: 38, on right: 41
+   於左側： 38,於右側： 41
 $@17 (107)
-    on left: 39, on right: 41
+   於左側： 39,於右側： 41
 $@18 (108)
-    on left: 40, on right: 41
+   於左側： 40,於右側： 41
 stmts (109)
-    on left: 43 44 45 46 47 48 51 53 54, on right: 4 9 14 43 44 45
-    46 47 48 51 53 65 68 69 71
+   於左側： 43 44 45 46 47 48 51 53 54,於右側： 4 9 14 43 44 45 46
+    47 48 51 53 65 68 69 71
 $@19 (110)
-    on left: 49, on right: 51
+   於左側： 49,於右側： 51
 $@20 (111)
-    on left: 50, on right: 51
+   於左側： 50,於右側： 51
 $@21 (112)
-    on left: 52, on right: 53
+   於左側： 52,於右側： 53
 printStmt (113)
-    on left: 56 58, on right: 44
+   於左側： 56 58,於右側： 44
 $@22 (114)
-    on left: 55, on right: 56
+   於左側： 55,於右側： 56
 $@23 (115)
-    on left: 57, on right: 58
+   於左側： 57,於右側： 58
 assignStmt (116)
-    on left: 59 61, on right: 43 65
+   於左側： 59 61,於右側： 43 65
 $@24 (117)
-    on left: 60, on right: 61
+   於左側： 60,於右側： 61
 loopStmt (118)
-    on left: 65, on right: 45
+   於左側： 65,於右側： 45
 $@25 (119)
-    on left: 62, on right: 65
+   於左側： 62,於右側： 65
 $@26 (120)
-    on left: 63, on right: 65
+   於左側： 63,於右側： 65
 $@27 (121)
-    on left: 64, on right: 65
+   於左側： 64,於右側： 65
 ifStmt (122)
-    on left: 67, on right: 46
+   於左側： 67,於右側： 46
 $@28 (123)
-    on left: 66, on right: 67
+   於左側： 66,於右側： 67
 condition1 (124)
-    on left: 68 69, on right: 67
+   於左側： 68 69,於右側： 67
 condition2 (125)
-    on left: 71 72, on right: 68
+   於左側： 71 72,於右側： 68
 $@29 (126)
-    on left: 70, on right: 71
+   於左側： 70,於右側： 71
 types (127)
-    on left: 73 74 75 76, on right: 21 22 23
+   於左側： 73 74 75 76,於右側： 21 22 23
 idn (128)
-    on left: 77 78, on right: 9 14 37 41 51
+   於左側： 77 78,於右側： 9 14 37 41 51
 ids (129)
-    on left: 79 80, on right: 21 22 23 25 77 79
+   於左側： 79 80,於右側： 21 22 23 25 77 79
 fAttr (130)
-    on left: 81 82 83 84, on right: 23
+   於左側： 81 82 83 84,於右側： 23
 sAttr (131)
-    on left: 85 86, on right: 23
+   於左側： 85 86,於右側： 23
 expr (132)
-    on left: 87 88 89 90 91 92 93 94 95 96 97 99 100 101 102 103 104,
-    on right: 56 58 59 61 65 67 87 88 89 90 91 92 93 94 95 96 97
+   於左側： 87 88 89 90 91 92 93 94 95 96 97 99 100 101 102 103,於右側：
+    56 58 59 61 65 67 87 88 89 90 91 92 93 94 95 96 97
 $@30 (133)
-    on left: 98, on right: 99
+   於左側： 98,於右側： 99
 funcCondition (134)
-    on left: 105 106, on right: 99
+   於左側： 104 105,於右側： 99
 funcPara (135)
-    on left: 107 108 109, on right: 105 107
+   於左側： 106 107 108,於右側： 104 106
 opt_val (136)
-    on left: 110 111 112, on right: 107 108
+   於左側： 109 110 111,於右側： 106 107
 optionExpr (137)
-    on left: 113 114 115, on right: 65
+   於左側： 112 113 114,於右側： 65
 
 
-State 0
+狀態 0
 
     0 $accept: . program $end
     4 program: . PROGRAM ID $@1 decls declF $@2 stmts END PROGRAM ID $@3 subprogram
 
-    PROGRAM  shift, and go to state 1
+    PROGRAM  偏移，並進入狀態 1
 
-    program  go to state 2
+    program  進入狀態 2
 
 
-State 1
+狀態 1
 
     4 program: PROGRAM . ID $@1 decls declF $@2 stmts END PROGRAM ID $@3 subprogram
 
-    ID  shift, and go to state 3
+    ID  偏移，並進入狀態 3
 
 
-State 2
+狀態 2
 
     0 $accept: program . $end
 
-    $end  shift, and go to state 4
+    $end  偏移，並進入狀態 4
 
 
-State 3
+狀態 3
 
-    1 $@1: . %empty
+    1 $@1: .
     4 program: PROGRAM ID . $@1 decls declF $@2 stmts END PROGRAM ID $@3 subprogram
 
-    $default  reduce using rule 1 ($@1)
+    $預設  使用規則 1 以縮減 ($@1)
 
-    $@1  go to state 5
+    $@1  進入狀態 5
 
 
-State 4
+狀態 4
 
     0 $accept: program $end .
 
-    $default  accept
+    $預設  接受
 
 
-State 5
+狀態 5
 
     4 program: PROGRAM ID $@1 . decls declF $@2 stmts END PROGRAM ID $@3 subprogram
    16 decls: . declVar decls
    17      | . optionGlob decls
    18      | . optionInit decls
    19      | . optionDecl decls
-   20      | . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ]
+   20      | .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ]
    21 declVar: . types ids
    22        | . types CCOLON ids
    23        | . types ',' fAttr sAttr CCOLON ids
@@ -480,97 +480,97 @@ State 5
    75      | . LOGICAL
    76      | . CHARACTER
 
-    INTEGER    shift, and go to state 6
-    REAL       shift, and go to state 7
-    LOGICAL    shift, and go to state 8
-    CHARACTER  shift, and go to state 9
-    DATA       shift, and go to state 10
-    PARAMETER  shift, and go to state 11
-    COMMON     shift, and go to state 12
+    INTEGER    偏移，並進入狀態 6
+    REAL       偏移，並進入狀態 7
+    LOGICAL    偏移，並進入狀態 8
+    CHARACTER  偏移，並進入狀態 9
+    DATA       偏移，並進入狀態 10
+    PARAMETER  偏移，並進入狀態 11
+    COMMON     偏移，並進入狀態 12
 
-    $default  reduce using rule 20 (decls)
+    $預設  使用規則 20 以縮減 (decls)
 
-    decls       go to state 13
-    declVar     go to state 14
-    optionGlob  go to state 15
-    optionInit  go to state 16
-    optionDecl  go to state 17
-    types       go to state 18
+    decls       進入狀態 13
+    declVar     進入狀態 14
+    optionGlob  進入狀態 15
+    optionInit  進入狀態 16
+    optionDecl  進入狀態 17
+    types       進入狀態 18
 
 
-State 6
+狀態 6
 
    73 types: INTEGER .
 
-    $default  reduce using rule 73 (types)
+    $預設  使用規則 73 以縮減 (types)
 
 
-State 7
+狀態 7
 
    74 types: REAL .
 
-    $default  reduce using rule 74 (types)
+    $預設  使用規則 74 以縮減 (types)
 
 
-State 8
+狀態 8
 
    75 types: LOGICAL .
 
-    $default  reduce using rule 75 (types)
+    $預設  使用規則 75 以縮減 (types)
 
 
-State 9
+狀態 9
 
    76 types: CHARACTER .
 
-    $default  reduce using rule 76 (types)
+    $預設  使用規則 76 以縮減 (types)
 
 
-State 10
+狀態 10
 
    26 optionInit: DATA . '/' ID '/' value
 
-    '/'  shift, and go to state 19
+    '/'  偏移，並進入狀態 19
 
 
-State 11
+狀態 11
 
    27 optionDecl: PARAMETER . '(' ID '=' value ')'
 
-    '('  shift, and go to state 20
+    '('  偏移，並進入狀態 20
 
 
-State 12
+狀態 12
 
-   24 $@12: . %empty
+   24 $@12: .
    25 optionGlob: COMMON . $@12 '/' ids '/'
 
-    $default  reduce using rule 24 ($@12)
+    $預設  使用規則 24 以縮減 ($@12)
 
-    $@12  go to state 21
+    $@12  進入狀態 21
 
 
-State 13
+狀態 13
 
     4 program: PROGRAM ID $@1 decls . declF $@2 stmts END PROGRAM ID $@3 subprogram
    32 declF: . INTERFACE declFunc END INTERFACE
-   33      | . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ]
+   33      | .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ]
 
-    INTERFACE  shift, and go to state 22
+    INTERFACE  偏移，並進入狀態 22
 
-    $default  reduce using rule 33 (declF)
+    $預設  使用規則 33 以縮減 (declF)
 
-    declF  go to state 23
+    declF  進入狀態 23
 
 
-State 14
+狀態 14
 
    16 decls: . declVar decls
    16      | declVar . decls
    17      | . optionGlob decls
    18      | . optionInit decls
    19      | . optionDecl decls
-   20      | . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ]
+   20      | .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ]
    21 declVar: . types ids
    22        | . types CCOLON ids
    23        | . types ',' fAttr sAttr CCOLON ids
@@ -582,32 +582,32 @@ State 14
    75      | . LOGICAL
    76      | . CHARACTER
 
-    INTEGER    shift, and go to state 6
-    REAL       shift, and go to state 7
-    LOGICAL    shift, and go to state 8
-    CHARACTER  shift, and go to state 9
-    DATA       shift, and go to state 10
-    PARAMETER  shift, and go to state 11
-    COMMON     shift, and go to state 12
+    INTEGER    偏移，並進入狀態 6
+    REAL       偏移，並進入狀態 7
+    LOGICAL    偏移，並進入狀態 8
+    CHARACTER  偏移，並進入狀態 9
+    DATA       偏移，並進入狀態 10
+    PARAMETER  偏移，並進入狀態 11
+    COMMON     偏移，並進入狀態 12
 
-    $default  reduce using rule 20 (decls)
+    $預設  使用規則 20 以縮減 (decls)
 
-    decls       go to state 24
-    declVar     go to state 14
-    optionGlob  go to state 15
-    optionInit  go to state 16
-    optionDecl  go to state 17
-    types       go to state 18
+    decls       進入狀態 24
+    declVar     進入狀態 14
+    optionGlob  進入狀態 15
+    optionInit  進入狀態 16
+    optionDecl  進入狀態 17
+    types       進入狀態 18
 
 
-State 15
+狀態 15
 
    16 decls: . declVar decls
    17      | . optionGlob decls
    17      | optionGlob . decls
    18      | . optionInit decls
    19      | . optionDecl decls
-   20      | . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ]
+   20      | .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ]
    21 declVar: . types ids
    22        | . types CCOLON ids
    23        | . types ',' fAttr sAttr CCOLON ids
@@ -619,32 +619,32 @@ State 15
    75      | . LOGICAL
    76      | . CHARACTER
 
-    INTEGER    shift, and go to state 6
-    REAL       shift, and go to state 7
-    LOGICAL    shift, and go to state 8
-    CHARACTER  shift, and go to state 9
-    DATA       shift, and go to state 10
-    PARAMETER  shift, and go to state 11
-    COMMON     shift, and go to state 12
+    INTEGER    偏移，並進入狀態 6
+    REAL       偏移，並進入狀態 7
+    LOGICAL    偏移，並進入狀態 8
+    CHARACTER  偏移，並進入狀態 9
+    DATA       偏移，並進入狀態 10
+    PARAMETER  偏移，並進入狀態 11
+    COMMON     偏移，並進入狀態 12
 
-    $default  reduce using rule 20 (decls)
+    $預設  使用規則 20 以縮減 (decls)
 
-    decls       go to state 25
-    declVar     go to state 14
-    optionGlob  go to state 15
-    optionInit  go to state 16
-    optionDecl  go to state 17
-    types       go to state 18
+    decls       進入狀態 25
+    declVar     進入狀態 14
+    optionGlob  進入狀態 15
+    optionInit  進入狀態 16
+    optionDecl  進入狀態 17
+    types       進入狀態 18
 
 
-State 16
+狀態 16
 
    16 decls: . declVar decls
    17      | . optionGlob decls
    18      | . optionInit decls
    18      | optionInit . decls
    19      | . optionDecl decls
-   20      | . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ]
+   20      | .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ]
    21 declVar: . types ids
    22        | . types CCOLON ids
    23        | . types ',' fAttr sAttr CCOLON ids
@@ -656,32 +656,32 @@ State 16
    75      | . LOGICAL
    76      | . CHARACTER
 
-    INTEGER    shift, and go to state 6
-    REAL       shift, and go to state 7
-    LOGICAL    shift, and go to state 8
-    CHARACTER  shift, and go to state 9
-    DATA       shift, and go to state 10
-    PARAMETER  shift, and go to state 11
-    COMMON     shift, and go to state 12
+    INTEGER    偏移，並進入狀態 6
+    REAL       偏移，並進入狀態 7
+    LOGICAL    偏移，並進入狀態 8
+    CHARACTER  偏移，並進入狀態 9
+    DATA       偏移，並進入狀態 10
+    PARAMETER  偏移，並進入狀態 11
+    COMMON     偏移，並進入狀態 12
 
-    $default  reduce using rule 20 (decls)
+    $預設  使用規則 20 以縮減 (decls)
 
-    decls       go to state 26
-    declVar     go to state 14
-    optionGlob  go to state 15
-    optionInit  go to state 16
-    optionDecl  go to state 17
-    types       go to state 18
+    decls       進入狀態 26
+    declVar     進入狀態 14
+    optionGlob  進入狀態 15
+    optionInit  進入狀態 16
+    optionDecl  進入狀態 17
+    types       進入狀態 18
 
 
-State 17
+狀態 17
 
    16 decls: . declVar decls
    17      | . optionGlob decls
    18      | . optionInit decls
    19      | . optionDecl decls
    19      | optionDecl . decls
-   20      | . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ]
+   20      | .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ]
    21 declVar: . types ids
    22        | . types CCOLON ids
    23        | . types ',' fAttr sAttr CCOLON ids
@@ -693,25 +693,25 @@ State 17
    75      | . LOGICAL
    76      | . CHARACTER
 
-    INTEGER    shift, and go to state 6
-    REAL       shift, and go to state 7
-    LOGICAL    shift, and go to state 8
-    CHARACTER  shift, and go to state 9
-    DATA       shift, and go to state 10
-    PARAMETER  shift, and go to state 11
-    COMMON     shift, and go to state 12
+    INTEGER    偏移，並進入狀態 6
+    REAL       偏移，並進入狀態 7
+    LOGICAL    偏移，並進入狀態 8
+    CHARACTER  偏移，並進入狀態 9
+    DATA       偏移，並進入狀態 10
+    PARAMETER  偏移，並進入狀態 11
+    COMMON     偏移，並進入狀態 12
 
-    $default  reduce using rule 20 (decls)
+    $預設  使用規則 20 以縮減 (decls)
 
-    decls       go to state 27
-    declVar     go to state 14
-    optionGlob  go to state 15
-    optionInit  go to state 16
-    optionDecl  go to state 17
-    types       go to state 18
+    decls       進入狀態 27
+    declVar     進入狀態 14
+    optionGlob  進入狀態 15
+    optionInit  進入狀態 16
+    optionDecl  進入狀態 17
+    types       進入狀態 18
 
 
-State 18
+狀態 18
 
    21 declVar: types . ids
    22        | types . CCOLON ids
@@ -719,106 +719,106 @@ State 18
    79 ids: . ids ',' ID
    80    | . ID
 
-    ID      shift, and go to state 28
-    CCOLON  shift, and go to state 29
-    ','     shift, and go to state 30
+    ID      偏移，並進入狀態 28
+    CCOLON  偏移，並進入狀態 29
+    ','     偏移，並進入狀態 30
 
-    ids  go to state 31
+    ids  進入狀態 31
 
 
-State 19
+狀態 19
 
    26 optionInit: DATA '/' . ID '/' value
 
-    ID  shift, and go to state 32
+    ID  偏移，並進入狀態 32
 
 
-State 20
+狀態 20
 
    27 optionDecl: PARAMETER '(' . ID '=' value ')'
 
-    ID  shift, and go to state 33
+    ID  偏移，並進入狀態 33
 
 
-State 21
+狀態 21
 
    25 optionGlob: COMMON $@12 . '/' ids '/'
 
-    '/'  shift, and go to state 34
+    '/'  偏移，並進入狀態 34
 
 
-State 22
+狀態 22
 
    32 declF: INTERFACE . declFunc END INTERFACE
    37 declFunc: . SUBROUTINE ID $@13 '(' idn ')' $@14 decls END SUBROUTINE ID $@15 declFunc
    41         | . FUNCTION ID $@16 '(' idn ')' $@17 decls END FUNCTION ID $@18 declFunc
-   42         | . %empty  [END]
+   42         | .  [END]
 
-    FUNCTION    shift, and go to state 35
-    SUBROUTINE  shift, and go to state 36
+    FUNCTION    偏移，並進入狀態 35
+    SUBROUTINE  偏移，並進入狀態 36
 
-    $default  reduce using rule 42 (declFunc)
+    $預設  使用規則 42 以縮減 (declFunc)
 
-    declFunc  go to state 37
+    declFunc  進入狀態 37
 
 
-State 23
+狀態 23
 
-    2 $@2: . %empty
+    2 $@2: .
     4 program: PROGRAM ID $@1 decls declF . $@2 stmts END PROGRAM ID $@3 subprogram
 
-    $default  reduce using rule 2 ($@2)
+    $預設  使用規則 2 以縮減 ($@2)
 
-    $@2  go to state 38
+    $@2  進入狀態 38
 
 
-State 24
+狀態 24
 
    16 decls: declVar decls .
 
-    $default  reduce using rule 16 (decls)
+    $預設  使用規則 16 以縮減 (decls)
 
 
-State 25
+狀態 25
 
    17 decls: optionGlob decls .
 
-    $default  reduce using rule 17 (decls)
+    $預設  使用規則 17 以縮減 (decls)
 
 
-State 26
+狀態 26
 
    18 decls: optionInit decls .
 
-    $default  reduce using rule 18 (decls)
+    $預設  使用規則 18 以縮減 (decls)
 
 
-State 27
+狀態 27
 
    19 decls: optionDecl decls .
 
-    $default  reduce using rule 19 (decls)
+    $預設  使用規則 19 以縮減 (decls)
 
 
-State 28
+狀態 28
 
    80 ids: ID .
 
-    $default  reduce using rule 80 (ids)
+    $預設  使用規則 80 以縮減 (ids)
 
 
-State 29
+狀態 29
 
    22 declVar: types CCOLON . ids
    79 ids: . ids ',' ID
    80    | . ID
 
-    ID  shift, and go to state 28
+    ID  偏移，並進入狀態 28
 
-    ids  go to state 39
+    ids  進入狀態 39
 
 
-State 30
+狀態 30
 
    23 declVar: types ',' . fAttr sAttr CCOLON ids
    81 fAttr: . DIMENSION '(' INTEGERC ')'
@@ -826,70 +826,70 @@ State 30
    83      | . POINTER
    84      | . PARAMETER
 
-    DIMENSION  shift, and go to state 40
-    PARAMETER  shift, and go to state 41
-    POINTER    shift, and go to state 42
+    DIMENSION  偏移，並進入狀態 40
+    PARAMETER  偏移，並進入狀態 41
+    POINTER    偏移，並進入狀態 42
 
-    fAttr  go to state 43
+    fAttr  進入狀態 43
 
 
-State 31
+狀態 31
 
    21 declVar: types ids .  [ID, INTEGER, REAL, LOGICAL, CHARACTER, CALL, DATA, DO, END, EXIT, PARAMETER, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ, COMMON]
    79 ids: ids . ',' ID
 
-    ','  shift, and go to state 44
+    ','  偏移，並進入狀態 44
 
-    $default  reduce using rule 21 (declVar)
+    $預設  使用規則 21 以縮減 (declVar)
 
 
-State 32
+狀態 32
 
    26 optionInit: DATA '/' ID . '/' value
 
-    '/'  shift, and go to state 45
+    '/'  偏移，並進入狀態 45
 
 
-State 33
+狀態 33
 
    27 optionDecl: PARAMETER '(' ID . '=' value ')'
 
-    '='  shift, and go to state 46
+    '='  偏移，並進入狀態 46
 
 
-State 34
+狀態 34
 
    25 optionGlob: COMMON $@12 '/' . ids '/'
    79 ids: . ids ',' ID
    80    | . ID
 
-    ID  shift, and go to state 28
+    ID  偏移，並進入狀態 28
 
-    ids  go to state 47
+    ids  進入狀態 47
 
 
-State 35
+狀態 35
 
    41 declFunc: FUNCTION . ID $@16 '(' idn ')' $@17 decls END FUNCTION ID $@18 declFunc
 
-    ID  shift, and go to state 48
+    ID  偏移，並進入狀態 48
 
 
-State 36
+狀態 36
 
    37 declFunc: SUBROUTINE . ID $@13 '(' idn ')' $@14 decls END SUBROUTINE ID $@15 declFunc
 
-    ID  shift, and go to state 49
+    ID  偏移，並進入狀態 49
 
 
-State 37
+狀態 37
 
    32 declF: INTERFACE declFunc . END INTERFACE
 
-    END  shift, and go to state 50
+    END  偏移，並進入狀態 50
 
 
-State 38
+狀態 38
 
     4 program: PROGRAM ID $@1 decls declF $@2 . stmts END PROGRAM ID $@3 subprogram
    43 stmts: . assignStmt stmts
@@ -900,7 +900,7 @@ State 38
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END]
+   54      | .  [END]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -908,172 +908,172 @@ State 38
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 60
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 60
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 39
+狀態 39
 
    22 declVar: types CCOLON ids .  [ID, INTEGER, REAL, LOGICAL, CHARACTER, CALL, DATA, DO, END, EXIT, PARAMETER, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ, COMMON]
    79 ids: ids . ',' ID
 
-    ','  shift, and go to state 44
+    ','  偏移，並進入狀態 44
 
-    $default  reduce using rule 22 (declVar)
+    $預設  使用規則 22 以縮減 (declVar)
 
 
-State 40
+狀態 40
 
    81 fAttr: DIMENSION . '(' INTEGERC ')'
    82      | DIMENSION . '(' error ')'
 
-    '('  shift, and go to state 65
+    '('  偏移，並進入狀態 65
 
 
-State 41
+狀態 41
 
    84 fAttr: PARAMETER .
 
-    $default  reduce using rule 84 (fAttr)
+    $預設  使用規則 84 以縮減 (fAttr)
 
 
-State 42
+狀態 42
 
    83 fAttr: POINTER .
 
-    $default  reduce using rule 83 (fAttr)
+    $預設  使用規則 83 以縮減 (fAttr)
 
 
-State 43
+狀態 43
 
    23 declVar: types ',' fAttr . sAttr CCOLON ids
    85 sAttr: . ',' POINTER
-   86      | . %empty  [CCOLON]
+   86      | .  [CCOLON]
 
-    ','  shift, and go to state 66
+    ','  偏移，並進入狀態 66
 
-    $default  reduce using rule 86 (sAttr)
+    $預設  使用規則 86 以縮減 (sAttr)
 
-    sAttr  go to state 67
+    sAttr  進入狀態 67
 
 
-State 44
+狀態 44
 
    79 ids: ids ',' . ID
 
-    ID  shift, and go to state 68
+    ID  偏移，並進入狀態 68
 
 
-State 45
+狀態 45
 
    26 optionInit: DATA '/' ID '/' . value
    28 value: . INTEGERC
    29      | . REALC
-   30      | . CHARC
+   30      | . STRINGC
    31      | . LOGICALC
 
-    INTEGERC  shift, and go to state 69
-    REALC     shift, and go to state 70
-    CHARC     shift, and go to state 71
-    LOGICALC  shift, and go to state 72
+    INTEGERC  偏移，並進入狀態 69
+    REALC     偏移，並進入狀態 70
+    LOGICALC  偏移，並進入狀態 71
+    STRINGC   偏移，並進入狀態 72
 
-    value  go to state 73
+    value  進入狀態 73
 
 
-State 46
+狀態 46
 
    27 optionDecl: PARAMETER '(' ID '=' . value ')'
    28 value: . INTEGERC
    29      | . REALC
-   30      | . CHARC
+   30      | . STRINGC
    31      | . LOGICALC
 
-    INTEGERC  shift, and go to state 69
-    REALC     shift, and go to state 70
-    CHARC     shift, and go to state 71
-    LOGICALC  shift, and go to state 72
+    INTEGERC  偏移，並進入狀態 69
+    REALC     偏移，並進入狀態 70
+    LOGICALC  偏移，並進入狀態 71
+    STRINGC   偏移，並進入狀態 72
 
-    value  go to state 74
+    value  進入狀態 74
 
 
-State 47
+狀態 47
 
    25 optionGlob: COMMON $@12 '/' ids . '/'
    79 ids: ids . ',' ID
 
-    '/'  shift, and go to state 75
-    ','  shift, and go to state 44
+    '/'  偏移，並進入狀態 75
+    ','  偏移，並進入狀態 44
 
 
-State 48
+狀態 48
 
-   38 $@16: . %empty
+   38 $@16: .
    41 declFunc: FUNCTION ID . $@16 '(' idn ')' $@17 decls END FUNCTION ID $@18 declFunc
 
-    $default  reduce using rule 38 ($@16)
+    $預設  使用規則 38 以縮減 ($@16)
 
-    $@16  go to state 76
+    $@16  進入狀態 76
 
 
-State 49
+狀態 49
 
-   34 $@13: . %empty
+   34 $@13: .
    37 declFunc: SUBROUTINE ID . $@13 '(' idn ')' $@14 decls END SUBROUTINE ID $@15 declFunc
 
-    $default  reduce using rule 34 ($@13)
+    $預設  使用規則 34 以縮減 ($@13)
 
-    $@13  go to state 77
+    $@13  進入狀態 77
 
 
-State 50
+狀態 50
 
    32 declF: INTERFACE declFunc END . INTERFACE
 
-    INTERFACE  shift, and go to state 78
+    INTERFACE  偏移，並進入狀態 78
 
 
-State 51
+狀態 51
 
    59 assignStmt: ID . '=' expr
    61           | ID . '[' expr ']' $@24 '=' expr
 
-    '='  shift, and go to state 79
-    '['  shift, and go to state 80
+    '='  偏移，並進入狀態 79
+    '['  偏移，並進入狀態 80
 
 
-State 52
+狀態 52
 
    51 stmts: CALL . ID $@19 '(' idn ')' $@20 stmts
 
-    ID  shift, and go to state 81
+    ID  偏移，並進入狀態 81
 
 
-State 53
+狀態 53
 
-   62 $@25: . %empty
+   62 $@25: .
    65 loopStmt: DO . $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
 
-    $default  reduce using rule 62 ($@25)
+    $預設  使用規則 62 以縮減 ($@25)
 
-    $@25  go to state 82
+    $@25  進入狀態 82
 
 
-State 54
+狀態 54
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -1084,7 +1084,7 @@ State 54
    48      | EXIT . stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END, ELSE]
+   54      | .  [END, ELSE]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -1092,46 +1092,46 @@ State 54
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 83
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 83
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 55
+狀態 55
 
-   55 $@22: . %empty
+   55 $@22: .
    56 printStmt: PRINT . $@22 expr
 
-    $default  reduce using rule 55 ($@22)
+    $預設  使用規則 55 以縮減 ($@22)
 
-    $@22  go to state 84
+    $@22  進入狀態 84
 
 
-State 56
+狀態 56
 
-   57 $@23: . %empty
+   57 $@23: .
    58 printStmt: PRINTLN . $@23 expr
 
-    $default  reduce using rule 57 ($@23)
+    $預設  使用規則 57 以縮減 ($@23)
 
-    $@23  go to state 85
+    $@23  進入狀態 85
 
 
-State 57
+狀態 57
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -1142,7 +1142,7 @@ State 57
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END, ELSE]
+   54      | .  [END, ELSE]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -1150,47 +1150,47 @@ State 57
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 86
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 86
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 58
+狀態 58
 
    67 ifStmt: IF . '(' expr ')' $@28 condition1 END IF
 
-    '('  shift, and go to state 87
+    '('  偏移，並進入狀態 87
 
 
-State 59
+狀態 59
 
    53 stmts: READ . ID $@21 stmts
 
-    ID  shift, and go to state 88
+    ID  偏移，並進入狀態 88
 
 
-State 60
+狀態 60
 
     4 program: PROGRAM ID $@1 decls declF $@2 stmts . END PROGRAM ID $@3 subprogram
 
-    END  shift, and go to state 89
+    END  偏移，並進入狀態 89
 
 
-State 61
+狀態 61
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -1201,7 +1201,7 @@ State 61
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END, ELSE]
+   54      | .  [END, ELSE]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -1209,26 +1209,26 @@ State 61
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 90
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 90
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 62
+狀態 62
 
    43 stmts: . assignStmt stmts
    43      | assignStmt . stmts
@@ -1239,7 +1239,7 @@ State 62
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END, ELSE]
+   54      | .  [END, ELSE]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -1247,26 +1247,26 @@ State 62
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 91
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 91
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 63
+狀態 63
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -1277,7 +1277,7 @@ State 63
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END, ELSE]
+   54      | .  [END, ELSE]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -1285,26 +1285,26 @@ State 63
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 92
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 92
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 64
+狀態 64
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -1315,7 +1315,7 @@ State 64
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END, ELSE]
+   54      | .  [END, ELSE]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -1323,126 +1323,126 @@ State 64
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 93
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 93
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 65
+狀態 65
 
    81 fAttr: DIMENSION '(' . INTEGERC ')'
    82      | DIMENSION '(' . error ')'
 
-    error     shift, and go to state 94
-    INTEGERC  shift, and go to state 95
+    error     偏移，並進入狀態 94
+    INTEGERC  偏移，並進入狀態 95
 
 
-State 66
+狀態 66
 
    85 sAttr: ',' . POINTER
 
-    POINTER  shift, and go to state 96
+    POINTER  偏移，並進入狀態 96
 
 
-State 67
+狀態 67
 
    23 declVar: types ',' fAttr sAttr . CCOLON ids
 
-    CCOLON  shift, and go to state 97
+    CCOLON  偏移，並進入狀態 97
 
 
-State 68
+狀態 68
 
    79 ids: ids ',' ID .
 
-    $default  reduce using rule 79 (ids)
+    $預設  使用規則 79 以縮減 (ids)
 
 
-State 69
+狀態 69
 
    28 value: INTEGERC .
 
-    $default  reduce using rule 28 (value)
+    $預設  使用規則 28 以縮減 (value)
 
 
-State 70
+狀態 70
 
    29 value: REALC .
 
-    $default  reduce using rule 29 (value)
+    $預設  使用規則 29 以縮減 (value)
 
 
-State 71
-
-   30 value: CHARC .
-
-    $default  reduce using rule 30 (value)
-
-
-State 72
+狀態 71
 
    31 value: LOGICALC .
 
-    $default  reduce using rule 31 (value)
+    $預設  使用規則 31 以縮減 (value)
 
 
-State 73
+狀態 72
+
+   30 value: STRINGC .
+
+    $預設  使用規則 30 以縮減 (value)
+
+
+狀態 73
 
    26 optionInit: DATA '/' ID '/' value .
 
-    $default  reduce using rule 26 (optionInit)
+    $預設  使用規則 26 以縮減 (optionInit)
 
 
-State 74
+狀態 74
 
    27 optionDecl: PARAMETER '(' ID '=' value . ')'
 
-    ')'  shift, and go to state 98
+    ')'  偏移，並進入狀態 98
 
 
-State 75
+狀態 75
 
    25 optionGlob: COMMON $@12 '/' ids '/' .
 
-    $default  reduce using rule 25 (optionGlob)
+    $預設  使用規則 25 以縮減 (optionGlob)
 
 
-State 76
+狀態 76
 
    41 declFunc: FUNCTION ID $@16 . '(' idn ')' $@17 decls END FUNCTION ID $@18 declFunc
 
-    '('  shift, and go to state 99
+    '('  偏移，並進入狀態 99
 
 
-State 77
+狀態 77
 
    37 declFunc: SUBROUTINE ID $@13 . '(' idn ')' $@14 decls END SUBROUTINE ID $@15 declFunc
 
-    '('  shift, and go to state 100
+    '('  偏移，並進入狀態 100
 
 
-State 78
+狀態 78
 
    32 declF: INTERFACE declFunc END INTERFACE .
 
-    $default  reduce using rule 32 (declF)
+    $預設  使用規則 32 以縮減 (declF)
 
 
-State 79
+狀態 79
 
    59 assignStmt: ID '=' . expr
    87 expr: . expr '+' expr
@@ -1459,22 +1459,20 @@ State 79
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 108
+    expr  進入狀態 107
 
 
-State 80
+狀態 80
 
    61 assignStmt: ID '[' . expr ']' $@24 '=' expr
    87 expr: . expr '+' expr
@@ -1491,50 +1489,48 @@ State 80
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 109
+    expr  進入狀態 108
 
 
-State 81
+狀態 81
 
-   49 $@19: . %empty
+   49 $@19: .
    51 stmts: CALL ID . $@19 '(' idn ')' $@20 stmts
 
-    $default  reduce using rule 49 ($@19)
+    $預設  使用規則 49 以縮減 ($@19)
 
-    $@19  go to state 110
+    $@19  進入狀態 109
 
 
-State 82
+狀態 82
 
    59 assignStmt: . ID '=' expr
    61           | . ID '[' expr ']' $@24 '=' expr
    65 loopStmt: DO $@25 . assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
 
-    ID  shift, and go to state 51
+    ID  偏移，並進入狀態 51
 
-    assignStmt  go to state 111
+    assignStmt  進入狀態 110
 
 
-State 83
+狀態 83
 
    48 stmts: EXIT stmts .
 
-    $default  reduce using rule 48 (stmts)
+    $預設  使用規則 48 以縮減 (stmts)
 
 
-State 84
+狀態 84
 
    56 printStmt: PRINT $@22 . expr
    87 expr: . expr '+' expr
@@ -1551,22 +1547,20 @@ State 84
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 112
+    expr  進入狀態 111
 
 
-State 85
+狀態 85
 
    58 printStmt: PRINTLN $@23 . expr
    87 expr: . expr '+' expr
@@ -1583,29 +1577,27 @@ State 85
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 113
+    expr  進入狀態 112
 
 
-State 86
+狀態 86
 
    47 stmts: RETURN stmts .
 
-    $default  reduce using rule 47 (stmts)
+    $預設  使用規則 47 以縮減 (stmts)
 
 
-State 87
+狀態 87
 
    67 ifStmt: IF '(' . expr ')' $@28 condition1 END IF
    87 expr: . expr '+' expr
@@ -1622,183 +1614,174 @@ State 87
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 114
+    expr  進入狀態 113
 
 
-State 88
+狀態 88
 
-   52 $@21: . %empty
+   52 $@21: .
    53 stmts: READ ID . $@21 stmts
 
-    $default  reduce using rule 52 ($@21)
+    $預設  使用規則 52 以縮減 ($@21)
 
-    $@21  go to state 115
+    $@21  進入狀態 114
 
 
-State 89
+狀態 89
 
     4 program: PROGRAM ID $@1 decls declF $@2 stmts END . PROGRAM ID $@3 subprogram
 
-    PROGRAM  shift, and go to state 116
+    PROGRAM  偏移，並進入狀態 115
 
 
-State 90
+狀態 90
 
    44 stmts: printStmt stmts .
 
-    $default  reduce using rule 44 (stmts)
+    $預設  使用規則 44 以縮減 (stmts)
 
 
-State 91
+狀態 91
 
    43 stmts: assignStmt stmts .
 
-    $default  reduce using rule 43 (stmts)
+    $預設  使用規則 43 以縮減 (stmts)
 
 
-State 92
+狀態 92
 
    45 stmts: loopStmt stmts .
 
-    $default  reduce using rule 45 (stmts)
+    $預設  使用規則 45 以縮減 (stmts)
 
 
-State 93
+狀態 93
 
    46 stmts: ifStmt stmts .
 
-    $default  reduce using rule 46 (stmts)
+    $預設  使用規則 46 以縮減 (stmts)
 
 
-State 94
+狀態 94
 
    82 fAttr: DIMENSION '(' error . ')'
 
-    ')'  shift, and go to state 117
+    ')'  偏移，並進入狀態 116
 
 
-State 95
+狀態 95
 
    81 fAttr: DIMENSION '(' INTEGERC . ')'
 
-    ')'  shift, and go to state 118
+    ')'  偏移，並進入狀態 117
 
 
-State 96
+狀態 96
 
    85 sAttr: ',' POINTER .
 
-    $default  reduce using rule 85 (sAttr)
+    $預設  使用規則 85 以縮減 (sAttr)
 
 
-State 97
+狀態 97
 
    23 declVar: types ',' fAttr sAttr CCOLON . ids
    79 ids: . ids ',' ID
    80    | . ID
 
-    ID  shift, and go to state 28
+    ID  偏移，並進入狀態 28
 
-    ids  go to state 119
+    ids  進入狀態 118
 
 
-State 98
+狀態 98
 
    27 optionDecl: PARAMETER '(' ID '=' value ')' .
 
-    $default  reduce using rule 27 (optionDecl)
+    $預設  使用規則 27 以縮減 (optionDecl)
 
 
-State 99
+狀態 99
 
    41 declFunc: FUNCTION ID $@16 '(' . idn ')' $@17 decls END FUNCTION ID $@18 declFunc
    77 idn: . ids
-   78    | . %empty  [')']
+   78    | .  [')']
    79 ids: . ids ',' ID
    80    | . ID
 
-    ID  shift, and go to state 28
+    ID  偏移，並進入狀態 28
 
-    $default  reduce using rule 78 (idn)
+    $預設  使用規則 78 以縮減 (idn)
 
-    idn  go to state 120
-    ids  go to state 121
+    idn  進入狀態 119
+    ids  進入狀態 120
 
 
-State 100
+狀態 100
 
    37 declFunc: SUBROUTINE ID $@13 '(' . idn ')' $@14 decls END SUBROUTINE ID $@15 declFunc
    77 idn: . ids
-   78    | . %empty  [')']
+   78    | .  [')']
    79 ids: . ids ',' ID
    80    | . ID
 
-    ID  shift, and go to state 28
+    ID  偏移，並進入狀態 28
 
-    $default  reduce using rule 78 (idn)
+    $預設  使用規則 78 以縮減 (idn)
 
-    idn  go to state 122
-    ids  go to state 121
+    idn  進入狀態 121
+    ids  進入狀態 120
 
 
-State 101
+狀態 101
 
   100 expr: INTEGERC .
 
-    $default  reduce using rule 100 (expr)
+    $預設  使用規則 100 以縮減 (expr)
 
 
-State 102
+狀態 102
 
   101 expr: REALC .
 
-    $default  reduce using rule 101 (expr)
+    $預設  使用規則 101 以縮減 (expr)
 
 
-State 103
+狀態 103
 
-  102 expr: CHARC .
+  102 expr: LOGICALC .
 
-    $default  reduce using rule 102 (expr)
-
-
-State 104
-
-  103 expr: LOGICALC .
-
-    $default  reduce using rule 103 (expr)
+    $預設  使用規則 102 以縮減 (expr)
 
 
-State 105
+狀態 104
 
-   98 $@30: . %empty
+   98 $@30: .
    99 expr: ID . $@30 funcCondition
 
-    $default  reduce using rule 98 ($@30)
+    $預設  使用規則 98 以縮減 ($@30)
 
-    $@30  go to state 123
-
-
-State 106
-
-  104 expr: STRINGC .
-
-    $default  reduce using rule 104 (expr)
+    $@30  進入狀態 122
 
 
-State 107
+狀態 105
+
+  103 expr: STRINGC .
+
+    $預設  使用規則 103 以縮減 (expr)
+
+
+狀態 106
 
    87 expr: . expr '+' expr
    88     | . expr '-' expr
@@ -1815,22 +1798,20 @@ State 107
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 124
+    expr  進入狀態 123
 
 
-State 108
+狀態 107
 
    59 assignStmt: ID '=' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, ',']
    87 expr: expr . '+' expr
@@ -1844,21 +1825,21 @@ State 108
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    LT   shift, and go to state 125
-    LE   shift, and go to state 126
-    GE   shift, and go to state 127
-    GT   shift, and go to state 128
-    EQ   shift, and go to state 129
-    NE   shift, and go to state 130
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
+    NE   偏移，並進入狀態 124
+    EQ   偏移，並進入狀態 125
+    GT   偏移，並進入狀態 126
+    GE   偏移，並進入狀態 127
+    LE   偏移，並進入狀態 128
+    LT   偏移，並進入狀態 129
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
 
-    $default  reduce using rule 59 (assignStmt)
+    $預設  使用規則 59 以縮減 (assignStmt)
 
 
-State 109
+狀態 108
 
    61 assignStmt: ID '[' expr . ']' $@24 '=' expr
    87 expr: expr . '+' expr
@@ -1872,37 +1853,37 @@ State 109
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    LT   shift, and go to state 125
-    LE   shift, and go to state 126
-    GE   shift, and go to state 127
-    GT   shift, and go to state 128
-    EQ   shift, and go to state 129
-    NE   shift, and go to state 130
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
-    ']'  shift, and go to state 135
+    NE   偏移，並進入狀態 124
+    EQ   偏移，並進入狀態 125
+    GT   偏移，並進入狀態 126
+    GE   偏移，並進入狀態 127
+    LE   偏移，並進入狀態 128
+    LT   偏移，並進入狀態 129
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
+    ']'  偏移，並進入狀態 134
 
 
-State 110
+狀態 109
 
    51 stmts: CALL ID $@19 . '(' idn ')' $@20 stmts
 
-    '('  shift, and go to state 136
+    '('  偏移，並進入狀態 135
 
 
-State 111
+狀態 110
 
-   63 $@26: . %empty
+   63 $@26: .
    65 loopStmt: DO $@25 assignStmt . $@26 ',' expr $@27 optionExpr stmts END DO
 
-    $default  reduce using rule 63 ($@26)
+    $預設  使用規則 63 以縮減 ($@26)
 
-    $@26  go to state 137
+    $@26  進入狀態 136
 
 
-State 112
+狀態 111
 
    56 printStmt: PRINT $@22 expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE]
    87 expr: expr . '+' expr
@@ -1916,21 +1897,21 @@ State 112
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    LT   shift, and go to state 125
-    LE   shift, and go to state 126
-    GE   shift, and go to state 127
-    GT   shift, and go to state 128
-    EQ   shift, and go to state 129
-    NE   shift, and go to state 130
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
+    NE   偏移，並進入狀態 124
+    EQ   偏移，並進入狀態 125
+    GT   偏移，並進入狀態 126
+    GE   偏移，並進入狀態 127
+    LE   偏移，並進入狀態 128
+    LT   偏移，並進入狀態 129
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
 
-    $default  reduce using rule 56 (printStmt)
+    $預設  使用規則 56 以縮減 (printStmt)
 
 
-State 113
+狀態 112
 
    58 printStmt: PRINTLN $@23 expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE]
    87 expr: expr . '+' expr
@@ -1944,21 +1925,21 @@ State 113
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    LT   shift, and go to state 125
-    LE   shift, and go to state 126
-    GE   shift, and go to state 127
-    GT   shift, and go to state 128
-    EQ   shift, and go to state 129
-    NE   shift, and go to state 130
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
+    NE   偏移，並進入狀態 124
+    EQ   偏移，並進入狀態 125
+    GT   偏移，並進入狀態 126
+    GE   偏移，並進入狀態 127
+    LE   偏移，並進入狀態 128
+    LT   偏移，並進入狀態 129
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
 
-    $default  reduce using rule 58 (printStmt)
+    $預設  使用規則 58 以縮減 (printStmt)
 
 
-State 114
+狀態 113
 
    67 ifStmt: IF '(' expr . ')' $@28 condition1 END IF
    87 expr: expr . '+' expr
@@ -1972,20 +1953,20 @@ State 114
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    LT   shift, and go to state 125
-    LE   shift, and go to state 126
-    GE   shift, and go to state 127
-    GT   shift, and go to state 128
-    EQ   shift, and go to state 129
-    NE   shift, and go to state 130
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
-    ')'  shift, and go to state 138
+    NE   偏移，並進入狀態 124
+    EQ   偏移，並進入狀態 125
+    GT   偏移，並進入狀態 126
+    GE   偏移，並進入狀態 127
+    LE   偏移，並進入狀態 128
+    LT   偏移，並進入狀態 129
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
+    ')'  偏移，並進入狀態 137
 
 
-State 115
+狀態 114
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -1996,7 +1977,7 @@ State 115
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
    53      | READ ID $@21 . stmts
-   54      | . %empty  [END, ELSE]
+   54      | .  [END, ELSE]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -2004,100 +1985,100 @@ State 115
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 139
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 138
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 116
+狀態 115
 
     4 program: PROGRAM ID $@1 decls declF $@2 stmts END PROGRAM . ID $@3 subprogram
 
-    ID  shift, and go to state 140
+    ID  偏移，並進入狀態 139
 
 
-State 117
+狀態 116
 
    82 fAttr: DIMENSION '(' error ')' .
 
-    $default  reduce using rule 82 (fAttr)
+    $預設  使用規則 82 以縮減 (fAttr)
 
 
-State 118
+狀態 117
 
    81 fAttr: DIMENSION '(' INTEGERC ')' .
 
-    $default  reduce using rule 81 (fAttr)
+    $預設  使用規則 81 以縮減 (fAttr)
 
 
-State 119
+狀態 118
 
    23 declVar: types ',' fAttr sAttr CCOLON ids .  [ID, INTEGER, REAL, LOGICAL, CHARACTER, CALL, DATA, DO, END, EXIT, PARAMETER, PRINT, PRINTLN, RETURN, INTERFACE, IF, READ, COMMON]
    79 ids: ids . ',' ID
 
-    ','  shift, and go to state 44
+    ','  偏移，並進入狀態 44
 
-    $default  reduce using rule 23 (declVar)
+    $預設  使用規則 23 以縮減 (declVar)
 
 
-State 120
+狀態 119
 
    41 declFunc: FUNCTION ID $@16 '(' idn . ')' $@17 decls END FUNCTION ID $@18 declFunc
 
-    ')'  shift, and go to state 141
+    ')'  偏移，並進入狀態 140
 
 
-State 121
+狀態 120
 
    77 idn: ids .  [')']
    79 ids: ids . ',' ID
 
-    ','  shift, and go to state 44
+    ','  偏移，並進入狀態 44
 
-    $default  reduce using rule 77 (idn)
+    $預設  使用規則 77 以縮減 (idn)
 
 
-State 122
+狀態 121
 
    37 declFunc: SUBROUTINE ID $@13 '(' idn . ')' $@14 decls END SUBROUTINE ID $@15 declFunc
 
-    ')'  shift, and go to state 142
+    ')'  偏移，並進入狀態 141
 
 
-State 123
+狀態 122
 
    99 expr: ID $@30 . funcCondition
-  105 funcCondition: . '(' funcPara ')'
-  106              | . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, '+', '-', '*', '/', ')', ',', ']']
+  104 funcCondition: . '(' funcPara ')'
+  105              | .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, '+', '-', '*', '/', ')', ',', ']']
 
-    '('  shift, and go to state 143
+    '('  偏移，並進入狀態 142
 
-    $default  reduce using rule 106 (funcCondition)
+    $預設  使用規則 105 以縮減 (funcCondition)
 
-    funcCondition  go to state 144
+    funcCondition  進入狀態 143
 
 
-State 124
+狀態 123
 
    87 expr: expr . '+' expr
    88     | expr . '-' expr
    89     | expr . '*' expr
    90     | expr . '/' expr
-   91     | '-' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, '+', '-', '*', '/', ')', ',', ']']
+   91     | '-' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, '+', '-', '*', '/', ')', ',', ']']
    92     | expr . GT expr
    93     | expr . GE expr
    94     | expr . LT expr
@@ -2105,181 +2086,21 @@ State 124
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    $default  reduce using rule 91 (expr)
+    $預設  使用規則 91 以縮減 (expr)
 
-    Conflict between rule 91 and token LT resolved as reduce (LT < UMINUS).
-    Conflict between rule 91 and token LE resolved as reduce (LE < UMINUS).
-    Conflict between rule 91 and token GE resolved as reduce (GE < UMINUS).
-    Conflict between rule 91 and token GT resolved as reduce (GT < UMINUS).
-    Conflict between rule 91 and token EQ resolved as reduce (EQ < UMINUS).
-    Conflict between rule 91 and token NE resolved as reduce (NE < UMINUS).
-    Conflict between rule 91 and token '+' resolved as reduce ('+' < UMINUS).
-    Conflict between rule 91 and token '-' resolved as reduce ('-' < UMINUS).
-    Conflict between rule 91 and token '*' resolved as reduce ('*' < UMINUS).
-    Conflict between rule 91 and token '/' resolved as reduce ('/' < UMINUS).
-
-
-State 125
-
-   87 expr: . expr '+' expr
-   88     | . expr '-' expr
-   89     | . expr '*' expr
-   90     | . expr '/' expr
-   91     | . '-' expr
-   92     | . expr GT expr
-   93     | . expr GE expr
-   94     | . expr LT expr
-   94     | expr LT . expr
-   95     | . expr LE expr
-   96     | . expr EQ expr
-   97     | . expr NE expr
-   99     | . ID $@30 funcCondition
-  100     | . INTEGERC
-  101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
-
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
-
-    expr  go to state 145
+    在規則 91 與記號 NE 之間的衝突以縮減來解決 (NE < UMINUS).
+    在規則 91 與記號 EQ 之間的衝突以縮減來解決 (EQ < UMINUS).
+    在規則 91 與記號 GT 之間的衝突以縮減來解決 (GT < UMINUS).
+    在規則 91 與記號 GE 之間的衝突以縮減來解決 (GE < UMINUS).
+    在規則 91 與記號 LE 之間的衝突以縮減來解決 (LE < UMINUS).
+    在規則 91 與記號 LT 之間的衝突以縮減來解決 (LT < UMINUS).
+    在規則 91 與記號 '+' 之間的衝突以縮減來解決 ('+' < UMINUS).
+    在規則 91 與記號 '-' 之間的衝突以縮減來解決 ('-' < UMINUS).
+    在規則 91 與記號 '*' 之間的衝突以縮減來解決 ('*' < UMINUS).
+    在規則 91 與記號 '/' 之間的衝突以縮減來解決 ('/' < UMINUS).
 
 
-State 126
-
-   87 expr: . expr '+' expr
-   88     | . expr '-' expr
-   89     | . expr '*' expr
-   90     | . expr '/' expr
-   91     | . '-' expr
-   92     | . expr GT expr
-   93     | . expr GE expr
-   94     | . expr LT expr
-   95     | . expr LE expr
-   95     | expr LE . expr
-   96     | . expr EQ expr
-   97     | . expr NE expr
-   99     | . ID $@30 funcCondition
-  100     | . INTEGERC
-  101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
-
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
-
-    expr  go to state 146
-
-
-State 127
-
-   87 expr: . expr '+' expr
-   88     | . expr '-' expr
-   89     | . expr '*' expr
-   90     | . expr '/' expr
-   91     | . '-' expr
-   92     | . expr GT expr
-   93     | . expr GE expr
-   93     | expr GE . expr
-   94     | . expr LT expr
-   95     | . expr LE expr
-   96     | . expr EQ expr
-   97     | . expr NE expr
-   99     | . ID $@30 funcCondition
-  100     | . INTEGERC
-  101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
-
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
-
-    expr  go to state 147
-
-
-State 128
-
-   87 expr: . expr '+' expr
-   88     | . expr '-' expr
-   89     | . expr '*' expr
-   90     | . expr '/' expr
-   91     | . '-' expr
-   92     | . expr GT expr
-   92     | expr GT . expr
-   93     | . expr GE expr
-   94     | . expr LT expr
-   95     | . expr LE expr
-   96     | . expr EQ expr
-   97     | . expr NE expr
-   99     | . ID $@30 funcCondition
-  100     | . INTEGERC
-  101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
-
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
-
-    expr  go to state 148
-
-
-State 129
-
-   87 expr: . expr '+' expr
-   88     | . expr '-' expr
-   89     | . expr '*' expr
-   90     | . expr '/' expr
-   91     | . '-' expr
-   92     | . expr GT expr
-   93     | . expr GE expr
-   94     | . expr LT expr
-   95     | . expr LE expr
-   96     | . expr EQ expr
-   96     | expr EQ . expr
-   97     | . expr NE expr
-   99     | . ID $@30 funcCondition
-  100     | . INTEGERC
-  101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
-
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
-
-    expr  go to state 149
-
-
-State 130
+狀態 124
 
    87 expr: . expr '+' expr
    88     | . expr '-' expr
@@ -2296,22 +2117,170 @@ State 130
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 150
+    expr  進入狀態 144
 
 
-State 131
+狀態 125
+
+   87 expr: . expr '+' expr
+   88     | . expr '-' expr
+   89     | . expr '*' expr
+   90     | . expr '/' expr
+   91     | . '-' expr
+   92     | . expr GT expr
+   93     | . expr GE expr
+   94     | . expr LT expr
+   95     | . expr LE expr
+   96     | . expr EQ expr
+   96     | expr EQ . expr
+   97     | . expr NE expr
+   99     | . ID $@30 funcCondition
+  100     | . INTEGERC
+  101     | . REALC
+  102     | . LOGICALC
+  103     | . STRINGC
+
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
+
+    expr  進入狀態 145
+
+
+狀態 126
+
+   87 expr: . expr '+' expr
+   88     | . expr '-' expr
+   89     | . expr '*' expr
+   90     | . expr '/' expr
+   91     | . '-' expr
+   92     | . expr GT expr
+   92     | expr GT . expr
+   93     | . expr GE expr
+   94     | . expr LT expr
+   95     | . expr LE expr
+   96     | . expr EQ expr
+   97     | . expr NE expr
+   99     | . ID $@30 funcCondition
+  100     | . INTEGERC
+  101     | . REALC
+  102     | . LOGICALC
+  103     | . STRINGC
+
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
+
+    expr  進入狀態 146
+
+
+狀態 127
+
+   87 expr: . expr '+' expr
+   88     | . expr '-' expr
+   89     | . expr '*' expr
+   90     | . expr '/' expr
+   91     | . '-' expr
+   92     | . expr GT expr
+   93     | . expr GE expr
+   93     | expr GE . expr
+   94     | . expr LT expr
+   95     | . expr LE expr
+   96     | . expr EQ expr
+   97     | . expr NE expr
+   99     | . ID $@30 funcCondition
+  100     | . INTEGERC
+  101     | . REALC
+  102     | . LOGICALC
+  103     | . STRINGC
+
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
+
+    expr  進入狀態 147
+
+
+狀態 128
+
+   87 expr: . expr '+' expr
+   88     | . expr '-' expr
+   89     | . expr '*' expr
+   90     | . expr '/' expr
+   91     | . '-' expr
+   92     | . expr GT expr
+   93     | . expr GE expr
+   94     | . expr LT expr
+   95     | . expr LE expr
+   95     | expr LE . expr
+   96     | . expr EQ expr
+   97     | . expr NE expr
+   99     | . ID $@30 funcCondition
+  100     | . INTEGERC
+  101     | . REALC
+  102     | . LOGICALC
+  103     | . STRINGC
+
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
+
+    expr  進入狀態 148
+
+
+狀態 129
+
+   87 expr: . expr '+' expr
+   88     | . expr '-' expr
+   89     | . expr '*' expr
+   90     | . expr '/' expr
+   91     | . '-' expr
+   92     | . expr GT expr
+   93     | . expr GE expr
+   94     | . expr LT expr
+   94     | expr LT . expr
+   95     | . expr LE expr
+   96     | . expr EQ expr
+   97     | . expr NE expr
+   99     | . ID $@30 funcCondition
+  100     | . INTEGERC
+  101     | . REALC
+  102     | . LOGICALC
+  103     | . STRINGC
+
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
+
+    expr  進入狀態 149
+
+
+狀態 130
 
    87 expr: . expr '+' expr
    87     | expr '+' . expr
@@ -2328,22 +2297,20 @@ State 131
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 151
+    expr  進入狀態 150
 
 
-State 132
+狀態 131
 
    87 expr: . expr '+' expr
    88     | . expr '-' expr
@@ -2360,22 +2327,20 @@ State 132
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 152
+    expr  進入狀態 151
 
 
-State 133
+狀態 132
 
    87 expr: . expr '+' expr
    88     | . expr '-' expr
@@ -2392,22 +2357,20 @@ State 133
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 153
+    expr  進入狀態 152
 
 
-State 134
+狀態 133
 
    87 expr: . expr '+' expr
    88     | . expr '-' expr
@@ -2424,294 +2387,127 @@ State 134
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 154
+    expr  進入狀態 153
 
 
-State 135
+狀態 134
 
-   60 $@24: . %empty
+   60 $@24: .
    61 assignStmt: ID '[' expr ']' . $@24 '=' expr
 
-    $default  reduce using rule 60 ($@24)
+    $預設  使用規則 60 以縮減 ($@24)
 
-    $@24  go to state 155
+    $@24  進入狀態 154
 
 
-State 136
+狀態 135
 
    51 stmts: CALL ID $@19 '(' . idn ')' $@20 stmts
    77 idn: . ids
-   78    | . %empty  [')']
+   78    | .  [')']
    79 ids: . ids ',' ID
    80    | . ID
 
-    ID  shift, and go to state 28
+    ID  偏移，並進入狀態 28
 
-    $default  reduce using rule 78 (idn)
+    $預設  使用規則 78 以縮減 (idn)
 
-    idn  go to state 156
-    ids  go to state 121
+    idn  進入狀態 155
+    ids  進入狀態 120
 
 
-State 137
+狀態 136
 
    65 loopStmt: DO $@25 assignStmt $@26 . ',' expr $@27 optionExpr stmts END DO
 
-    ','  shift, and go to state 157
+    ','  偏移，並進入狀態 156
 
 
-State 138
+狀態 137
 
-   66 $@28: . %empty
+   66 $@28: .
    67 ifStmt: IF '(' expr ')' . $@28 condition1 END IF
 
-    $default  reduce using rule 66 ($@28)
+    $預設  使用規則 66 以縮減 ($@28)
 
-    $@28  go to state 158
+    $@28  進入狀態 157
 
 
-State 139
+狀態 138
 
    53 stmts: READ ID $@21 stmts .
 
-    $default  reduce using rule 53 (stmts)
+    $預設  使用規則 53 以縮減 (stmts)
 
 
-State 140
+狀態 139
 
-    3 $@3: . %empty
+    3 $@3: .
     4 program: PROGRAM ID $@1 decls declF $@2 stmts END PROGRAM ID . $@3 subprogram
 
-    $default  reduce using rule 3 ($@3)
+    $預設  使用規則 3 以縮減 ($@3)
 
-    $@3  go to state 159
+    $@3  進入狀態 158
 
 
-State 141
+狀態 140
 
-   39 $@17: . %empty
+   39 $@17: .
    41 declFunc: FUNCTION ID $@16 '(' idn ')' . $@17 decls END FUNCTION ID $@18 declFunc
 
-    $default  reduce using rule 39 ($@17)
+    $預設  使用規則 39 以縮減 ($@17)
 
-    $@17  go to state 160
+    $@17  進入狀態 159
 
 
-State 142
+狀態 141
 
-   35 $@14: . %empty
+   35 $@14: .
    37 declFunc: SUBROUTINE ID $@13 '(' idn ')' . $@14 decls END SUBROUTINE ID $@15 declFunc
 
-    $default  reduce using rule 35 ($@14)
+    $預設  使用規則 35 以縮減 ($@14)
 
-    $@14  go to state 161
-
-
-State 143
-
-  105 funcCondition: '(' . funcPara ')'
-  107 funcPara: . funcPara ',' opt_val
-  108         | . opt_val
-  109         | . %empty  [')', ',']
-  110 opt_val: . INTEGERC
-  111        | . REALC
-  112        | . ID
-
-    INTEGERC  shift, and go to state 162
-    REALC     shift, and go to state 163
-    ID        shift, and go to state 164
-
-    $default  reduce using rule 109 (funcPara)
-
-    funcPara  go to state 165
-    opt_val   go to state 166
+    $@14  進入狀態 160
 
 
-State 144
+狀態 142
+
+  104 funcCondition: '(' . funcPara ')'
+  106 funcPara: . funcPara ',' opt_val
+  107         | . opt_val
+  108         | .  [')', ',']
+  109 opt_val: . INTEGERC
+  110        | . REALC
+  111        | . ID
+
+    INTEGERC  偏移，並進入狀態 161
+    REALC     偏移，並進入狀態 162
+    ID        偏移，並進入狀態 163
+
+    $預設  使用規則 108 以縮減 (funcPara)
+
+    funcPara  進入狀態 164
+    opt_val   進入狀態 165
+
+
+狀態 143
 
    99 expr: ID $@30 funcCondition .
 
-    $default  reduce using rule 99 (expr)
+    $預設  使用規則 99 以縮減 (expr)
 
 
-State 145
-
-   87 expr: expr . '+' expr
-   88     | expr . '-' expr
-   89     | expr . '*' expr
-   90     | expr . '/' expr
-   92     | expr . GT expr
-   93     | expr . GE expr
-   94     | expr . LT expr
-   94     | expr LT expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, ')', ',', ']']
-   95     | expr . LE expr
-   96     | expr . EQ expr
-   97     | expr . NE expr
-
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
-
-    $default  reduce using rule 94 (expr)
-
-    Conflict between rule 94 and token LT resolved as reduce (%left LT).
-    Conflict between rule 94 and token LE resolved as reduce (%left LE).
-    Conflict between rule 94 and token GE resolved as reduce (%left GE).
-    Conflict between rule 94 and token GT resolved as reduce (%left GT).
-    Conflict between rule 94 and token EQ resolved as reduce (%left EQ).
-    Conflict between rule 94 and token NE resolved as reduce (%left NE).
-    Conflict between rule 94 and token '+' resolved as shift (LT < '+').
-    Conflict between rule 94 and token '-' resolved as shift (LT < '-').
-    Conflict between rule 94 and token '*' resolved as shift (LT < '*').
-    Conflict between rule 94 and token '/' resolved as shift (LT < '/').
-
-
-State 146
-
-   87 expr: expr . '+' expr
-   88     | expr . '-' expr
-   89     | expr . '*' expr
-   90     | expr . '/' expr
-   92     | expr . GT expr
-   93     | expr . GE expr
-   94     | expr . LT expr
-   95     | expr . LE expr
-   95     | expr LE expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, ')', ',', ']']
-   96     | expr . EQ expr
-   97     | expr . NE expr
-
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
-
-    $default  reduce using rule 95 (expr)
-
-    Conflict between rule 95 and token LT resolved as reduce (%left LT).
-    Conflict between rule 95 and token LE resolved as reduce (%left LE).
-    Conflict between rule 95 and token GE resolved as reduce (%left GE).
-    Conflict between rule 95 and token GT resolved as reduce (%left GT).
-    Conflict between rule 95 and token EQ resolved as reduce (%left EQ).
-    Conflict between rule 95 and token NE resolved as reduce (%left NE).
-    Conflict between rule 95 and token '+' resolved as shift (LE < '+').
-    Conflict between rule 95 and token '-' resolved as shift (LE < '-').
-    Conflict between rule 95 and token '*' resolved as shift (LE < '*').
-    Conflict between rule 95 and token '/' resolved as shift (LE < '/').
-
-
-State 147
-
-   87 expr: expr . '+' expr
-   88     | expr . '-' expr
-   89     | expr . '*' expr
-   90     | expr . '/' expr
-   92     | expr . GT expr
-   93     | expr . GE expr
-   93     | expr GE expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, ')', ',', ']']
-   94     | expr . LT expr
-   95     | expr . LE expr
-   96     | expr . EQ expr
-   97     | expr . NE expr
-
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
-
-    $default  reduce using rule 93 (expr)
-
-    Conflict between rule 93 and token LT resolved as reduce (%left LT).
-    Conflict between rule 93 and token LE resolved as reduce (%left LE).
-    Conflict between rule 93 and token GE resolved as reduce (%left GE).
-    Conflict between rule 93 and token GT resolved as reduce (%left GT).
-    Conflict between rule 93 and token EQ resolved as reduce (%left EQ).
-    Conflict between rule 93 and token NE resolved as reduce (%left NE).
-    Conflict between rule 93 and token '+' resolved as shift (GE < '+').
-    Conflict between rule 93 and token '-' resolved as shift (GE < '-').
-    Conflict between rule 93 and token '*' resolved as shift (GE < '*').
-    Conflict between rule 93 and token '/' resolved as shift (GE < '/').
-
-
-State 148
-
-   87 expr: expr . '+' expr
-   88     | expr . '-' expr
-   89     | expr . '*' expr
-   90     | expr . '/' expr
-   92     | expr . GT expr
-   92     | expr GT expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, ')', ',', ']']
-   93     | expr . GE expr
-   94     | expr . LT expr
-   95     | expr . LE expr
-   96     | expr . EQ expr
-   97     | expr . NE expr
-
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
-
-    $default  reduce using rule 92 (expr)
-
-    Conflict between rule 92 and token LT resolved as reduce (%left LT).
-    Conflict between rule 92 and token LE resolved as reduce (%left LE).
-    Conflict between rule 92 and token GE resolved as reduce (%left GE).
-    Conflict between rule 92 and token GT resolved as reduce (%left GT).
-    Conflict between rule 92 and token EQ resolved as reduce (%left EQ).
-    Conflict between rule 92 and token NE resolved as reduce (%left NE).
-    Conflict between rule 92 and token '+' resolved as shift (GT < '+').
-    Conflict between rule 92 and token '-' resolved as shift (GT < '-').
-    Conflict between rule 92 and token '*' resolved as shift (GT < '*').
-    Conflict between rule 92 and token '/' resolved as shift (GT < '/').
-
-
-State 149
-
-   87 expr: expr . '+' expr
-   88     | expr . '-' expr
-   89     | expr . '*' expr
-   90     | expr . '/' expr
-   92     | expr . GT expr
-   93     | expr . GE expr
-   94     | expr . LT expr
-   95     | expr . LE expr
-   96     | expr . EQ expr
-   96     | expr EQ expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, ')', ',', ']']
-   97     | expr . NE expr
-
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
-
-    $default  reduce using rule 96 (expr)
-
-    Conflict between rule 96 and token LT resolved as reduce (%left LT).
-    Conflict between rule 96 and token LE resolved as reduce (%left LE).
-    Conflict between rule 96 and token GE resolved as reduce (%left GE).
-    Conflict between rule 96 and token GT resolved as reduce (%left GT).
-    Conflict between rule 96 and token EQ resolved as reduce (%left EQ).
-    Conflict between rule 96 and token NE resolved as reduce (%left NE).
-    Conflict between rule 96 and token '+' resolved as shift (EQ < '+').
-    Conflict between rule 96 and token '-' resolved as shift (EQ < '-').
-    Conflict between rule 96 and token '*' resolved as shift (EQ < '*').
-    Conflict between rule 96 and token '/' resolved as shift (EQ < '/').
-
-
-State 150
+狀態 144
 
    87 expr: expr . '+' expr
    88     | expr . '-' expr
@@ -2723,31 +2519,196 @@ State 150
    95     | expr . LE expr
    96     | expr . EQ expr
    97     | expr . NE expr
-   97     | expr NE expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, ')', ',', ']']
+   97     | expr NE expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, ')', ',', ']']
 
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
 
-    $default  reduce using rule 97 (expr)
+    $預設  使用規則 97 以縮減 (expr)
 
-    Conflict between rule 97 and token LT resolved as reduce (%left LT).
-    Conflict between rule 97 and token LE resolved as reduce (%left LE).
-    Conflict between rule 97 and token GE resolved as reduce (%left GE).
-    Conflict between rule 97 and token GT resolved as reduce (%left GT).
-    Conflict between rule 97 and token EQ resolved as reduce (%left EQ).
-    Conflict between rule 97 and token NE resolved as reduce (%left NE).
-    Conflict between rule 97 and token '+' resolved as shift (NE < '+').
-    Conflict between rule 97 and token '-' resolved as shift (NE < '-').
-    Conflict between rule 97 and token '*' resolved as shift (NE < '*').
-    Conflict between rule 97 and token '/' resolved as shift (NE < '/').
+    在規則 97 與記號 NE 之間的衝突以縮減來解決 (%left NE).
+    在規則 97 與記號 EQ 之間的衝突以縮減來解決 (%left EQ).
+    在規則 97 與記號 GT 之間的衝突以縮減來解決 (%left GT).
+    在規則 97 與記號 GE 之間的衝突以縮減來解決 (%left GE).
+    在規則 97 與記號 LE 之間的衝突以縮減來解決 (%left LE).
+    在規則 97 與記號 LT 之間的衝突以縮減來解決 (%left LT).
+    在規則 97 與記號 '+' 之間的衝突以偏移來解決 (NE < '+').
+    在規則 97 與記號 '-' 之間的衝突以偏移來解決 (NE < '-').
+    在規則 97 與記號 '*' 之間的衝突以偏移來解決 (NE < '*').
+    在規則 97 與記號 '/' 之間的衝突以偏移來解決 (NE < '/').
 
 
-State 151
+狀態 145
 
    87 expr: expr . '+' expr
-   87     | expr '+' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, '+', '-', ')', ',', ']']
+   88     | expr . '-' expr
+   89     | expr . '*' expr
+   90     | expr . '/' expr
+   92     | expr . GT expr
+   93     | expr . GE expr
+   94     | expr . LT expr
+   95     | expr . LE expr
+   96     | expr . EQ expr
+   96     | expr EQ expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, ')', ',', ']']
+   97     | expr . NE expr
+
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
+
+    $預設  使用規則 96 以縮減 (expr)
+
+    在規則 96 與記號 NE 之間的衝突以縮減來解決 (%left NE).
+    在規則 96 與記號 EQ 之間的衝突以縮減來解決 (%left EQ).
+    在規則 96 與記號 GT 之間的衝突以縮減來解決 (%left GT).
+    在規則 96 與記號 GE 之間的衝突以縮減來解決 (%left GE).
+    在規則 96 與記號 LE 之間的衝突以縮減來解決 (%left LE).
+    在規則 96 與記號 LT 之間的衝突以縮減來解決 (%left LT).
+    在規則 96 與記號 '+' 之間的衝突以偏移來解決 (EQ < '+').
+    在規則 96 與記號 '-' 之間的衝突以偏移來解決 (EQ < '-').
+    在規則 96 與記號 '*' 之間的衝突以偏移來解決 (EQ < '*').
+    在規則 96 與記號 '/' 之間的衝突以偏移來解決 (EQ < '/').
+
+
+狀態 146
+
+   87 expr: expr . '+' expr
+   88     | expr . '-' expr
+   89     | expr . '*' expr
+   90     | expr . '/' expr
+   92     | expr . GT expr
+   92     | expr GT expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, ')', ',', ']']
+   93     | expr . GE expr
+   94     | expr . LT expr
+   95     | expr . LE expr
+   96     | expr . EQ expr
+   97     | expr . NE expr
+
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
+
+    $預設  使用規則 92 以縮減 (expr)
+
+    在規則 92 與記號 NE 之間的衝突以縮減來解決 (%left NE).
+    在規則 92 與記號 EQ 之間的衝突以縮減來解決 (%left EQ).
+    在規則 92 與記號 GT 之間的衝突以縮減來解決 (%left GT).
+    在規則 92 與記號 GE 之間的衝突以縮減來解決 (%left GE).
+    在規則 92 與記號 LE 之間的衝突以縮減來解決 (%left LE).
+    在規則 92 與記號 LT 之間的衝突以縮減來解決 (%left LT).
+    在規則 92 與記號 '+' 之間的衝突以偏移來解決 (GT < '+').
+    在規則 92 與記號 '-' 之間的衝突以偏移來解決 (GT < '-').
+    在規則 92 與記號 '*' 之間的衝突以偏移來解決 (GT < '*').
+    在規則 92 與記號 '/' 之間的衝突以偏移來解決 (GT < '/').
+
+
+狀態 147
+
+   87 expr: expr . '+' expr
+   88     | expr . '-' expr
+   89     | expr . '*' expr
+   90     | expr . '/' expr
+   92     | expr . GT expr
+   93     | expr . GE expr
+   93     | expr GE expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, ')', ',', ']']
+   94     | expr . LT expr
+   95     | expr . LE expr
+   96     | expr . EQ expr
+   97     | expr . NE expr
+
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
+
+    $預設  使用規則 93 以縮減 (expr)
+
+    在規則 93 與記號 NE 之間的衝突以縮減來解決 (%left NE).
+    在規則 93 與記號 EQ 之間的衝突以縮減來解決 (%left EQ).
+    在規則 93 與記號 GT 之間的衝突以縮減來解決 (%left GT).
+    在規則 93 與記號 GE 之間的衝突以縮減來解決 (%left GE).
+    在規則 93 與記號 LE 之間的衝突以縮減來解決 (%left LE).
+    在規則 93 與記號 LT 之間的衝突以縮減來解決 (%left LT).
+    在規則 93 與記號 '+' 之間的衝突以偏移來解決 (GE < '+').
+    在規則 93 與記號 '-' 之間的衝突以偏移來解決 (GE < '-').
+    在規則 93 與記號 '*' 之間的衝突以偏移來解決 (GE < '*').
+    在規則 93 與記號 '/' 之間的衝突以偏移來解決 (GE < '/').
+
+
+狀態 148
+
+   87 expr: expr . '+' expr
+   88     | expr . '-' expr
+   89     | expr . '*' expr
+   90     | expr . '/' expr
+   92     | expr . GT expr
+   93     | expr . GE expr
+   94     | expr . LT expr
+   95     | expr . LE expr
+   95     | expr LE expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, ')', ',', ']']
+   96     | expr . EQ expr
+   97     | expr . NE expr
+
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
+
+    $預設  使用規則 95 以縮減 (expr)
+
+    在規則 95 與記號 NE 之間的衝突以縮減來解決 (%left NE).
+    在規則 95 與記號 EQ 之間的衝突以縮減來解決 (%left EQ).
+    在規則 95 與記號 GT 之間的衝突以縮減來解決 (%left GT).
+    在規則 95 與記號 GE 之間的衝突以縮減來解決 (%left GE).
+    在規則 95 與記號 LE 之間的衝突以縮減來解決 (%left LE).
+    在規則 95 與記號 LT 之間的衝突以縮減來解決 (%left LT).
+    在規則 95 與記號 '+' 之間的衝突以偏移來解決 (LE < '+').
+    在規則 95 與記號 '-' 之間的衝突以偏移來解決 (LE < '-').
+    在規則 95 與記號 '*' 之間的衝突以偏移來解決 (LE < '*').
+    在規則 95 與記號 '/' 之間的衝突以偏移來解決 (LE < '/').
+
+
+狀態 149
+
+   87 expr: expr . '+' expr
+   88     | expr . '-' expr
+   89     | expr . '*' expr
+   90     | expr . '/' expr
+   92     | expr . GT expr
+   93     | expr . GE expr
+   94     | expr . LT expr
+   94     | expr LT expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, ')', ',', ']']
+   95     | expr . LE expr
+   96     | expr . EQ expr
+   97     | expr . NE expr
+
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
+
+    $預設  使用規則 94 以縮減 (expr)
+
+    在規則 94 與記號 NE 之間的衝突以縮減來解決 (%left NE).
+    在規則 94 與記號 EQ 之間的衝突以縮減來解決 (%left EQ).
+    在規則 94 與記號 GT 之間的衝突以縮減來解決 (%left GT).
+    在規則 94 與記號 GE 之間的衝突以縮減來解決 (%left GE).
+    在規則 94 與記號 LE 之間的衝突以縮減來解決 (%left LE).
+    在規則 94 與記號 LT 之間的衝突以縮減來解決 (%left LT).
+    在規則 94 與記號 '+' 之間的衝突以偏移來解決 (LT < '+').
+    在規則 94 與記號 '-' 之間的衝突以偏移來解決 (LT < '-').
+    在規則 94 與記號 '*' 之間的衝突以偏移來解決 (LT < '*').
+    在規則 94 與記號 '/' 之間的衝突以偏移來解決 (LT < '/').
+
+
+狀態 150
+
+   87 expr: expr . '+' expr
+   87     | expr '+' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, '+', '-', ')', ',', ']']
    88     | expr . '-' expr
    89     | expr . '*' expr
    90     | expr . '/' expr
@@ -2758,28 +2719,28 @@ State 151
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
 
-    $default  reduce using rule 87 (expr)
+    $預設  使用規則 87 以縮減 (expr)
 
-    Conflict between rule 87 and token LT resolved as reduce (LT < '+').
-    Conflict between rule 87 and token LE resolved as reduce (LE < '+').
-    Conflict between rule 87 and token GE resolved as reduce (GE < '+').
-    Conflict between rule 87 and token GT resolved as reduce (GT < '+').
-    Conflict between rule 87 and token EQ resolved as reduce (EQ < '+').
-    Conflict between rule 87 and token NE resolved as reduce (NE < '+').
-    Conflict between rule 87 and token '+' resolved as reduce (%left '+').
-    Conflict between rule 87 and token '-' resolved as reduce (%left '-').
-    Conflict between rule 87 and token '*' resolved as shift ('+' < '*').
-    Conflict between rule 87 and token '/' resolved as shift ('+' < '/').
+    在規則 87 與記號 NE 之間的衝突以縮減來解決 (NE < '+').
+    在規則 87 與記號 EQ 之間的衝突以縮減來解決 (EQ < '+').
+    在規則 87 與記號 GT 之間的衝突以縮減來解決 (GT < '+').
+    在規則 87 與記號 GE 之間的衝突以縮減來解決 (GE < '+').
+    在規則 87 與記號 LE 之間的衝突以縮減來解決 (LE < '+').
+    在規則 87 與記號 LT 之間的衝突以縮減來解決 (LT < '+').
+    在規則 87 與記號 '+' 之間的衝突以縮減來解決 (%left '+').
+    在規則 87 與記號 '-' 之間的衝突以縮減來解決 (%left '-').
+    在規則 87 與記號 '*' 之間的衝突以偏移來解決 ('+' < '*').
+    在規則 87 與記號 '/' 之間的衝突以偏移來解決 ('+' < '/').
 
 
-State 152
+狀態 151
 
    87 expr: expr . '+' expr
    88     | expr . '-' expr
-   88     | expr '-' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, '+', '-', ')', ',', ']']
+   88     | expr '-' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, '+', '-', ')', ',', ']']
    89     | expr . '*' expr
    90     | expr . '/' expr
    92     | expr . GT expr
@@ -2789,29 +2750,29 @@ State 152
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
 
-    $default  reduce using rule 88 (expr)
+    $預設  使用規則 88 以縮減 (expr)
 
-    Conflict between rule 88 and token LT resolved as reduce (LT < '-').
-    Conflict between rule 88 and token LE resolved as reduce (LE < '-').
-    Conflict between rule 88 and token GE resolved as reduce (GE < '-').
-    Conflict between rule 88 and token GT resolved as reduce (GT < '-').
-    Conflict between rule 88 and token EQ resolved as reduce (EQ < '-').
-    Conflict between rule 88 and token NE resolved as reduce (NE < '-').
-    Conflict between rule 88 and token '+' resolved as reduce (%left '+').
-    Conflict between rule 88 and token '-' resolved as reduce (%left '-').
-    Conflict between rule 88 and token '*' resolved as shift ('-' < '*').
-    Conflict between rule 88 and token '/' resolved as shift ('-' < '/').
+    在規則 88 與記號 NE 之間的衝突以縮減來解決 (NE < '-').
+    在規則 88 與記號 EQ 之間的衝突以縮減來解決 (EQ < '-').
+    在規則 88 與記號 GT 之間的衝突以縮減來解決 (GT < '-').
+    在規則 88 與記號 GE 之間的衝突以縮減來解決 (GE < '-').
+    在規則 88 與記號 LE 之間的衝突以縮減來解決 (LE < '-').
+    在規則 88 與記號 LT 之間的衝突以縮減來解決 (LT < '-').
+    在規則 88 與記號 '+' 之間的衝突以縮減來解決 (%left '+').
+    在規則 88 與記號 '-' 之間的衝突以縮減來解決 (%left '-').
+    在規則 88 與記號 '*' 之間的衝突以偏移來解決 ('-' < '*').
+    在規則 88 與記號 '/' 之間的衝突以偏移來解決 ('-' < '/').
 
 
-State 153
+狀態 152
 
    87 expr: expr . '+' expr
    88     | expr . '-' expr
    89     | expr . '*' expr
-   89     | expr '*' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, '+', '-', '*', '/', ')', ',', ']']
+   89     | expr '*' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, '+', '-', '*', '/', ')', ',', ']']
    90     | expr . '/' expr
    92     | expr . GT expr
    93     | expr . GE expr
@@ -2820,27 +2781,27 @@ State 153
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    $default  reduce using rule 89 (expr)
+    $預設  使用規則 89 以縮減 (expr)
 
-    Conflict between rule 89 and token LT resolved as reduce (LT < '*').
-    Conflict between rule 89 and token LE resolved as reduce (LE < '*').
-    Conflict between rule 89 and token GE resolved as reduce (GE < '*').
-    Conflict between rule 89 and token GT resolved as reduce (GT < '*').
-    Conflict between rule 89 and token EQ resolved as reduce (EQ < '*').
-    Conflict between rule 89 and token NE resolved as reduce (NE < '*').
-    Conflict between rule 89 and token '+' resolved as reduce ('+' < '*').
-    Conflict between rule 89 and token '-' resolved as reduce ('-' < '*').
-    Conflict between rule 89 and token '*' resolved as reduce (%left '*').
-    Conflict between rule 89 and token '/' resolved as reduce (%left '/').
+    在規則 89 與記號 NE 之間的衝突以縮減來解決 (NE < '*').
+    在規則 89 與記號 EQ 之間的衝突以縮減來解決 (EQ < '*').
+    在規則 89 與記號 GT 之間的衝突以縮減來解決 (GT < '*').
+    在規則 89 與記號 GE 之間的衝突以縮減來解決 (GE < '*').
+    在規則 89 與記號 LE 之間的衝突以縮減來解決 (LE < '*').
+    在規則 89 與記號 LT 之間的衝突以縮減來解決 (LT < '*').
+    在規則 89 與記號 '+' 之間的衝突以縮減來解決 ('+' < '*').
+    在規則 89 與記號 '-' 之間的衝突以縮減來解決 ('-' < '*').
+    在規則 89 與記號 '*' 之間的衝突以縮減來解決 (%left '*').
+    在規則 89 與記號 '/' 之間的衝突以縮減來解決 (%left '/').
 
 
-State 154
+狀態 153
 
    87 expr: expr . '+' expr
    88     | expr . '-' expr
    89     | expr . '*' expr
    90     | expr . '/' expr
-   90     | expr '/' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, LT, LE, GE, GT, EQ, NE, '+', '-', '*', '/', ')', ',', ']']
+   90     | expr '/' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, NE, EQ, GT, GE, LE, LT, '+', '-', '*', '/', ')', ',', ']']
    92     | expr . GT expr
    93     | expr . GE expr
    94     | expr . LT expr
@@ -2848,35 +2809,35 @@ State 154
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    $default  reduce using rule 90 (expr)
+    $預設  使用規則 90 以縮減 (expr)
 
-    Conflict between rule 90 and token LT resolved as reduce (LT < '/').
-    Conflict between rule 90 and token LE resolved as reduce (LE < '/').
-    Conflict between rule 90 and token GE resolved as reduce (GE < '/').
-    Conflict between rule 90 and token GT resolved as reduce (GT < '/').
-    Conflict between rule 90 and token EQ resolved as reduce (EQ < '/').
-    Conflict between rule 90 and token NE resolved as reduce (NE < '/').
-    Conflict between rule 90 and token '+' resolved as reduce ('+' < '/').
-    Conflict between rule 90 and token '-' resolved as reduce ('-' < '/').
-    Conflict between rule 90 and token '*' resolved as reduce (%left '*').
-    Conflict between rule 90 and token '/' resolved as reduce (%left '/').
+    在規則 90 與記號 NE 之間的衝突以縮減來解決 (NE < '/').
+    在規則 90 與記號 EQ 之間的衝突以縮減來解決 (EQ < '/').
+    在規則 90 與記號 GT 之間的衝突以縮減來解決 (GT < '/').
+    在規則 90 與記號 GE 之間的衝突以縮減來解決 (GE < '/').
+    在規則 90 與記號 LE 之間的衝突以縮減來解決 (LE < '/').
+    在規則 90 與記號 LT 之間的衝突以縮減來解決 (LT < '/').
+    在規則 90 與記號 '+' 之間的衝突以縮減來解決 ('+' < '/').
+    在規則 90 與記號 '-' 之間的衝突以縮減來解決 ('-' < '/').
+    在規則 90 與記號 '*' 之間的衝突以縮減來解決 (%left '*').
+    在規則 90 與記號 '/' 之間的衝突以縮減來解決 (%left '/').
 
 
-State 155
+狀態 154
 
    61 assignStmt: ID '[' expr ']' $@24 . '=' expr
 
-    '='  shift, and go to state 167
+    '='  偏移，並進入狀態 166
 
 
-State 156
+狀態 155
 
    51 stmts: CALL ID $@19 '(' idn . ')' $@20 stmts
 
-    ')'  shift, and go to state 168
+    ')'  偏移，並進入狀態 167
 
 
-State 157
+狀態 156
 
    65 loopStmt: DO $@25 assignStmt $@26 ',' . expr $@27 optionExpr stmts END DO
    87 expr: . expr '+' expr
@@ -2893,22 +2854,20 @@ State 157
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 169
+    expr  進入狀態 168
 
 
-State 158
+狀態 157
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -2918,7 +2877,7 @@ State 158
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END]
+   54      | .  [END]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -2929,49 +2888,49 @@ State 158
    68 condition1: . THEN stmts condition2
    69           | . stmts
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    THEN     shift, and go to state 170
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    THEN     偏移，並進入狀態 169
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 171
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
-    condition1  go to state 172
+    stmts       進入狀態 170
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
+    condition1  進入狀態 171
 
 
-State 159
+狀態 158
 
     4 program: PROGRAM ID $@1 decls declF $@2 stmts END PROGRAM ID $@3 . subprogram
     9 subprogram: . SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram
    14           | . FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram
-   15           | . %empty  [$end]
+   15           | .  [$end]
 
-    FUNCTION    shift, and go to state 173
-    SUBROUTINE  shift, and go to state 174
+    FUNCTION    偏移，並進入狀態 172
+    SUBROUTINE  偏移，並進入狀態 173
 
-    $default  reduce using rule 15 (subprogram)
+    $預設  使用規則 15 以縮減 (subprogram)
 
-    subprogram  go to state 175
+    subprogram  進入狀態 174
 
 
-State 160
+狀態 159
 
    16 decls: . declVar decls
    17      | . optionGlob decls
    18      | . optionInit decls
    19      | . optionDecl decls
-   20      | . %empty  [END]
+   20      | .  [END]
    21 declVar: . types ids
    22        | . types CCOLON ids
    23        | . types ',' fAttr sAttr CCOLON ids
@@ -2984,31 +2943,31 @@ State 160
    75      | . LOGICAL
    76      | . CHARACTER
 
-    INTEGER    shift, and go to state 6
-    REAL       shift, and go to state 7
-    LOGICAL    shift, and go to state 8
-    CHARACTER  shift, and go to state 9
-    DATA       shift, and go to state 10
-    PARAMETER  shift, and go to state 11
-    COMMON     shift, and go to state 12
+    INTEGER    偏移，並進入狀態 6
+    REAL       偏移，並進入狀態 7
+    LOGICAL    偏移，並進入狀態 8
+    CHARACTER  偏移，並進入狀態 9
+    DATA       偏移，並進入狀態 10
+    PARAMETER  偏移，並進入狀態 11
+    COMMON     偏移，並進入狀態 12
 
-    $default  reduce using rule 20 (decls)
+    $預設  使用規則 20 以縮減 (decls)
 
-    decls       go to state 176
-    declVar     go to state 14
-    optionGlob  go to state 15
-    optionInit  go to state 16
-    optionDecl  go to state 17
-    types       go to state 18
+    decls       進入狀態 175
+    declVar     進入狀態 14
+    optionGlob  進入狀態 15
+    optionInit  進入狀態 16
+    optionDecl  進入狀態 17
+    types       進入狀態 18
 
 
-State 161
+狀態 160
 
    16 decls: . declVar decls
    17      | . optionGlob decls
    18      | . optionInit decls
    19      | . optionDecl decls
-   20      | . %empty  [END]
+   20      | .  [END]
    21 declVar: . types ids
    22        | . types CCOLON ids
    23        | . types ',' fAttr sAttr CCOLON ids
@@ -3021,62 +2980,62 @@ State 161
    75      | . LOGICAL
    76      | . CHARACTER
 
-    INTEGER    shift, and go to state 6
-    REAL       shift, and go to state 7
-    LOGICAL    shift, and go to state 8
-    CHARACTER  shift, and go to state 9
-    DATA       shift, and go to state 10
-    PARAMETER  shift, and go to state 11
-    COMMON     shift, and go to state 12
+    INTEGER    偏移，並進入狀態 6
+    REAL       偏移，並進入狀態 7
+    LOGICAL    偏移，並進入狀態 8
+    CHARACTER  偏移，並進入狀態 9
+    DATA       偏移，並進入狀態 10
+    PARAMETER  偏移，並進入狀態 11
+    COMMON     偏移，並進入狀態 12
 
-    $default  reduce using rule 20 (decls)
+    $預設  使用規則 20 以縮減 (decls)
 
-    decls       go to state 177
-    declVar     go to state 14
-    optionGlob  go to state 15
-    optionInit  go to state 16
-    optionDecl  go to state 17
-    types       go to state 18
-
-
-State 162
-
-  110 opt_val: INTEGERC .
-
-    $default  reduce using rule 110 (opt_val)
+    decls       進入狀態 176
+    declVar     進入狀態 14
+    optionGlob  進入狀態 15
+    optionInit  進入狀態 16
+    optionDecl  進入狀態 17
+    types       進入狀態 18
 
 
-State 163
+狀態 161
 
-  111 opt_val: REALC .
+  109 opt_val: INTEGERC .
 
-    $default  reduce using rule 111 (opt_val)
-
-
-State 164
-
-  112 opt_val: ID .
-
-    $default  reduce using rule 112 (opt_val)
+    $預設  使用規則 109 以縮減 (opt_val)
 
 
-State 165
+狀態 162
 
-  105 funcCondition: '(' funcPara . ')'
-  107 funcPara: funcPara . ',' opt_val
+  110 opt_val: REALC .
 
-    ')'  shift, and go to state 178
-    ','  shift, and go to state 179
+    $預設  使用規則 110 以縮減 (opt_val)
 
 
-State 166
+狀態 163
 
-  108 funcPara: opt_val .
+  111 opt_val: ID .
 
-    $default  reduce using rule 108 (funcPara)
+    $預設  使用規則 111 以縮減 (opt_val)
 
 
-State 167
+狀態 164
+
+  104 funcCondition: '(' funcPara . ')'
+  106 funcPara: funcPara . ',' opt_val
+
+    ')'  偏移，並進入狀態 177
+    ','  偏移，並進入狀態 178
+
+
+狀態 165
+
+  107 funcPara: opt_val .
+
+    $預設  使用規則 107 以縮減 (funcPara)
+
+
+狀態 166
 
    61 assignStmt: ID '[' expr ']' $@24 '=' . expr
    87 expr: . expr '+' expr
@@ -3093,34 +3052,32 @@ State 167
    99     | . ID $@30 funcCondition
   100     | . INTEGERC
   101     | . REALC
-  102     | . CHARC
-  103     | . LOGICALC
-  104     | . STRINGC
+  102     | . LOGICALC
+  103     | . STRINGC
 
-    INTEGERC  shift, and go to state 101
-    REALC     shift, and go to state 102
-    CHARC     shift, and go to state 103
-    LOGICALC  shift, and go to state 104
-    ID        shift, and go to state 105
-    STRINGC   shift, and go to state 106
-    '-'       shift, and go to state 107
+    INTEGERC  偏移，並進入狀態 101
+    REALC     偏移，並進入狀態 102
+    LOGICALC  偏移，並進入狀態 103
+    ID        偏移，並進入狀態 104
+    STRINGC   偏移，並進入狀態 105
+    '-'       偏移，並進入狀態 106
 
-    expr  go to state 180
+    expr  進入狀態 179
 
 
-State 168
+狀態 167
 
-   50 $@20: . %empty
+   50 $@20: .
    51 stmts: CALL ID $@19 '(' idn ')' . $@20 stmts
 
-    $default  reduce using rule 50 ($@20)
+    $預設  使用規則 50 以縮減 ($@20)
 
-    $@20  go to state 181
+    $@20  進入狀態 180
 
 
-State 169
+狀態 168
 
-   64 $@27: . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ',']
+   64 $@27: .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ',']
    65 loopStmt: DO $@25 assignStmt $@26 ',' expr . $@27 optionExpr stmts END DO
    87 expr: expr . '+' expr
    88     | expr . '-' expr
@@ -3133,23 +3090,23 @@ State 169
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    LT   shift, and go to state 125
-    LE   shift, and go to state 126
-    GE   shift, and go to state 127
-    GT   shift, and go to state 128
-    EQ   shift, and go to state 129
-    NE   shift, and go to state 130
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
+    NE   偏移，並進入狀態 124
+    EQ   偏移，並進入狀態 125
+    GT   偏移，並進入狀態 126
+    GE   偏移，並進入狀態 127
+    LE   偏移，並進入狀態 128
+    LT   偏移，並進入狀態 129
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
 
-    $default  reduce using rule 64 ($@27)
+    $預設  使用規則 64 以縮減 ($@27)
 
-    $@27  go to state 182
+    $@27  進入狀態 181
 
 
-State 170
+狀態 169
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -3159,7 +3116,7 @@ State 170
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END, ELSE]
+   54      | .  [END, ELSE]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -3168,96 +3125,96 @@ State 170
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
    68 condition1: THEN . stmts condition2
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 183
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 182
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 171
+狀態 170
 
    69 condition1: stmts .
 
-    $default  reduce using rule 69 (condition1)
+    $預設  使用規則 69 以縮減 (condition1)
 
 
-State 172
+狀態 171
 
    67 ifStmt: IF '(' expr ')' $@28 condition1 . END IF
 
-    END  shift, and go to state 184
+    END  偏移，並進入狀態 183
 
 
-State 173
+狀態 172
 
    14 subprogram: FUNCTION . ID $@8 '(' idn ')' $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram
 
-    ID  shift, and go to state 185
+    ID  偏移，並進入狀態 184
 
 
-State 174
+狀態 173
 
     9 subprogram: SUBROUTINE . ID $@4 '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram
 
-    ID  shift, and go to state 186
+    ID  偏移，並進入狀態 185
 
 
-State 175
+狀態 174
 
     4 program: PROGRAM ID $@1 decls declF $@2 stmts END PROGRAM ID $@3 subprogram .
 
-    $default  reduce using rule 4 (program)
+    $預設  使用規則 4 以縮減 (program)
 
 
-State 176
+狀態 175
 
    41 declFunc: FUNCTION ID $@16 '(' idn ')' $@17 decls . END FUNCTION ID $@18 declFunc
 
-    END  shift, and go to state 187
+    END  偏移，並進入狀態 186
 
 
-State 177
+狀態 176
 
    37 declFunc: SUBROUTINE ID $@13 '(' idn ')' $@14 decls . END SUBROUTINE ID $@15 declFunc
 
-    END  shift, and go to state 188
+    END  偏移，並進入狀態 187
 
 
-State 178
+狀態 177
 
-  105 funcCondition: '(' funcPara ')' .
+  104 funcCondition: '(' funcPara ')' .
 
-    $default  reduce using rule 105 (funcCondition)
-
-
-State 179
-
-  107 funcPara: funcPara ',' . opt_val
-  110 opt_val: . INTEGERC
-  111        | . REALC
-  112        | . ID
-
-    INTEGERC  shift, and go to state 162
-    REALC     shift, and go to state 163
-    ID        shift, and go to state 164
-
-    opt_val  go to state 189
+    $預設  使用規則 104 以縮減 (funcCondition)
 
 
-State 180
+狀態 178
+
+  106 funcPara: funcPara ',' . opt_val
+  109 opt_val: . INTEGERC
+  110        | . REALC
+  111        | . ID
+
+    INTEGERC  偏移，並進入狀態 161
+    REALC     偏移，並進入狀態 162
+    ID        偏移，並進入狀態 163
+
+    opt_val  進入狀態 188
+
+
+狀態 179
 
    61 assignStmt: ID '[' expr ']' $@24 '=' expr .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ, ELSE, ',']
    87 expr: expr . '+' expr
@@ -3271,21 +3228,21 @@ State 180
    96     | expr . EQ expr
    97     | expr . NE expr
 
-    LT   shift, and go to state 125
-    LE   shift, and go to state 126
-    GE   shift, and go to state 127
-    GT   shift, and go to state 128
-    EQ   shift, and go to state 129
-    NE   shift, and go to state 130
-    '+'  shift, and go to state 131
-    '-'  shift, and go to state 132
-    '*'  shift, and go to state 133
-    '/'  shift, and go to state 134
+    NE   偏移，並進入狀態 124
+    EQ   偏移，並進入狀態 125
+    GT   偏移，並進入狀態 126
+    GE   偏移，並進入狀態 127
+    LE   偏移，並進入狀態 128
+    LT   偏移，並進入狀態 129
+    '+'  偏移，並進入狀態 130
+    '-'  偏移，並進入狀態 131
+    '*'  偏移，並進入狀態 132
+    '/'  偏移，並進入狀態 133
 
-    $default  reduce using rule 61 (assignStmt)
+    $預設  使用規則 61 以縮減 (assignStmt)
 
 
-State 181
+狀態 180
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -3296,7 +3253,7 @@ State 181
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    51      | CALL ID $@19 '(' idn ')' $@20 . stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END, ELSE]
+   54      | .  [END, ELSE]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -3304,117 +3261,117 @@ State 181
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 190
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 189
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 182
+狀態 181
 
    65 loopStmt: DO $@25 assignStmt $@26 ',' expr $@27 . optionExpr stmts END DO
-  113 optionExpr: . ',' INTEGERC
-  114           | . ',' ID
-  115           | . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ]
+  112 optionExpr: . ',' INTEGERC
+  113           | . ',' ID
+  114           | .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ]
 
-    ','  shift, and go to state 191
+    ','  偏移，並進入狀態 190
 
-    $default  reduce using rule 115 (optionExpr)
+    $預設  使用規則 114 以縮減 (optionExpr)
 
-    optionExpr  go to state 192
+    optionExpr  進入狀態 191
 
 
-State 183
+狀態 182
 
    68 condition1: THEN stmts . condition2
    71 condition2: . ELSE $@29 stmts
-   72           | . %empty  [END]
+   72           | .  [END]
 
-    ELSE  shift, and go to state 193
+    ELSE  偏移，並進入狀態 192
 
-    $default  reduce using rule 72 (condition2)
+    $預設  使用規則 72 以縮減 (condition2)
 
-    condition2  go to state 194
+    condition2  進入狀態 193
 
 
-State 184
+狀態 183
 
    67 ifStmt: IF '(' expr ')' $@28 condition1 END . IF
 
-    IF  shift, and go to state 195
+    IF  偏移，並進入狀態 194
 
 
-State 185
+狀態 184
 
-   10 $@8: . %empty
+   10 $@8: .
    14 subprogram: FUNCTION ID . $@8 '(' idn ')' $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram
 
-    $default  reduce using rule 10 ($@8)
+    $預設  使用規則 10 以縮減 ($@8)
 
-    $@8  go to state 196
+    $@8  進入狀態 195
 
 
-State 186
+狀態 185
 
-    5 $@4: . %empty
+    5 $@4: .
     9 subprogram: SUBROUTINE ID . $@4 '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram
 
-    $default  reduce using rule 5 ($@4)
+    $預設  使用規則 5 以縮減 ($@4)
 
-    $@4  go to state 197
+    $@4  進入狀態 196
 
 
-State 187
+狀態 186
 
    41 declFunc: FUNCTION ID $@16 '(' idn ')' $@17 decls END . FUNCTION ID $@18 declFunc
 
-    FUNCTION  shift, and go to state 198
+    FUNCTION  偏移，並進入狀態 197
 
 
-State 188
+狀態 187
 
    37 declFunc: SUBROUTINE ID $@13 '(' idn ')' $@14 decls END . SUBROUTINE ID $@15 declFunc
 
-    SUBROUTINE  shift, and go to state 199
+    SUBROUTINE  偏移，並進入狀態 198
 
 
-State 189
+狀態 188
 
-  107 funcPara: funcPara ',' opt_val .
+  106 funcPara: funcPara ',' opt_val .
 
-    $default  reduce using rule 107 (funcPara)
+    $預設  使用規則 106 以縮減 (funcPara)
 
 
-State 190
+狀態 189
 
    51 stmts: CALL ID $@19 '(' idn ')' $@20 stmts .
 
-    $default  reduce using rule 51 (stmts)
+    $預設  使用規則 51 以縮減 (stmts)
 
 
-State 191
+狀態 190
 
-  113 optionExpr: ',' . INTEGERC
-  114           | ',' . ID
+  112 optionExpr: ',' . INTEGERC
+  113           | ',' . ID
 
-    INTEGERC  shift, and go to state 200
-    ID        shift, and go to state 201
+    INTEGERC  偏移，並進入狀態 199
+    ID        偏移，並進入狀態 200
 
 
-State 192
+狀態 191
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -3424,7 +3381,7 @@ State 192
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END]
+   54      | .  [END]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -3433,99 +3390,99 @@ State 192
    65         | DO $@25 assignStmt $@26 ',' expr $@27 optionExpr . stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 202
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 201
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 193
+狀態 192
 
-   70 $@29: . %empty
+   70 $@29: .
    71 condition2: ELSE . $@29 stmts
 
-    $default  reduce using rule 70 ($@29)
+    $預設  使用規則 70 以縮減 ($@29)
 
-    $@29  go to state 203
+    $@29  進入狀態 202
 
 
-State 194
+狀態 193
 
    68 condition1: THEN stmts condition2 .
 
-    $default  reduce using rule 68 (condition1)
+    $預設  使用規則 68 以縮減 (condition1)
 
 
-State 195
+狀態 194
 
    67 ifStmt: IF '(' expr ')' $@28 condition1 END IF .
 
-    $default  reduce using rule 67 (ifStmt)
+    $預設  使用規則 67 以縮減 (ifStmt)
 
 
-State 196
+狀態 195
 
    14 subprogram: FUNCTION ID $@8 . '(' idn ')' $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram
 
-    '('  shift, and go to state 204
+    '('  偏移，並進入狀態 203
 
 
-State 197
+狀態 196
 
     9 subprogram: SUBROUTINE ID $@4 . '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram
 
-    '('  shift, and go to state 205
+    '('  偏移，並進入狀態 204
 
 
-State 198
+狀態 197
 
    41 declFunc: FUNCTION ID $@16 '(' idn ')' $@17 decls END FUNCTION . ID $@18 declFunc
 
-    ID  shift, and go to state 206
+    ID  偏移，並進入狀態 205
 
 
-State 199
+狀態 198
 
    37 declFunc: SUBROUTINE ID $@13 '(' idn ')' $@14 decls END SUBROUTINE . ID $@15 declFunc
 
-    ID  shift, and go to state 207
+    ID  偏移，並進入狀態 206
 
 
-State 200
+狀態 199
 
-  113 optionExpr: ',' INTEGERC .
+  112 optionExpr: ',' INTEGERC .
 
-    $default  reduce using rule 113 (optionExpr)
-
-
-State 201
-
-  114 optionExpr: ',' ID .
-
-    $default  reduce using rule 114 (optionExpr)
+    $預設  使用規則 112 以縮減 (optionExpr)
 
 
-State 202
+狀態 200
+
+  113 optionExpr: ',' ID .
+
+    $預設  使用規則 113 以縮減 (optionExpr)
+
+
+狀態 201
 
    65 loopStmt: DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts . END DO
 
-    END  shift, and go to state 208
+    END  偏移，並進入狀態 207
 
 
-State 203
+狀態 202
 
    43 stmts: . assignStmt stmts
    44      | . printStmt stmts
@@ -3535,7 +3492,7 @@ State 203
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END]
+   54      | .  [END]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -3544,184 +3501,184 @@ State 203
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
    71 condition2: ELSE $@29 . stmts
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 209
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 208
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 204
+狀態 203
 
    14 subprogram: FUNCTION ID $@8 '(' . idn ')' $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram
    77 idn: . ids
-   78    | . %empty  [')']
+   78    | .  [')']
    79 ids: . ids ',' ID
    80    | . ID
 
-    ID  shift, and go to state 28
+    ID  偏移，並進入狀態 28
 
-    $default  reduce using rule 78 (idn)
+    $預設  使用規則 78 以縮減 (idn)
 
-    idn  go to state 210
-    ids  go to state 121
+    idn  進入狀態 209
+    ids  進入狀態 120
 
 
-State 205
+狀態 204
 
     9 subprogram: SUBROUTINE ID $@4 '(' . idn ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram
    77 idn: . ids
-   78    | . %empty  [')']
+   78    | .  [')']
    79 ids: . ids ',' ID
    80    | . ID
 
-    ID  shift, and go to state 28
+    ID  偏移，並進入狀態 28
 
-    $default  reduce using rule 78 (idn)
+    $預設  使用規則 78 以縮減 (idn)
 
-    idn  go to state 211
-    ids  go to state 121
+    idn  進入狀態 210
+    ids  進入狀態 120
 
 
-State 206
+狀態 205
 
-   40 $@18: . %empty
+   40 $@18: .
    41 declFunc: FUNCTION ID $@16 '(' idn ')' $@17 decls END FUNCTION ID . $@18 declFunc
 
-    $default  reduce using rule 40 ($@18)
+    $預設  使用規則 40 以縮減 ($@18)
 
-    $@18  go to state 212
+    $@18  進入狀態 211
 
 
-State 207
+狀態 206
 
-   36 $@15: . %empty
+   36 $@15: .
    37 declFunc: SUBROUTINE ID $@13 '(' idn ')' $@14 decls END SUBROUTINE ID . $@15 declFunc
 
-    $default  reduce using rule 36 ($@15)
+    $預設  使用規則 36 以縮減 ($@15)
 
-    $@15  go to state 213
+    $@15  進入狀態 212
 
 
-State 208
+狀態 207
 
    65 loopStmt: DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END . DO
 
-    DO  shift, and go to state 214
+    DO  偏移，並進入狀態 213
 
 
-State 209
+狀態 208
 
    71 condition2: ELSE $@29 stmts .
 
-    $default  reduce using rule 71 (condition2)
+    $預設  使用規則 71 以縮減 (condition2)
 
 
-State 210
+狀態 209
 
    14 subprogram: FUNCTION ID $@8 '(' idn . ')' $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram
 
-    ')'  shift, and go to state 215
+    ')'  偏移，並進入狀態 214
 
 
-State 211
+狀態 210
 
     9 subprogram: SUBROUTINE ID $@4 '(' idn . ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram
 
-    ')'  shift, and go to state 216
+    ')'  偏移，並進入狀態 215
 
 
-State 212
+狀態 211
 
    37 declFunc: . SUBROUTINE ID $@13 '(' idn ')' $@14 decls END SUBROUTINE ID $@15 declFunc
    41         | . FUNCTION ID $@16 '(' idn ')' $@17 decls END FUNCTION ID $@18 declFunc
    41         | FUNCTION ID $@16 '(' idn ')' $@17 decls END FUNCTION ID $@18 . declFunc
-   42         | . %empty  [END]
+   42         | .  [END]
 
-    FUNCTION    shift, and go to state 35
-    SUBROUTINE  shift, and go to state 36
+    FUNCTION    偏移，並進入狀態 35
+    SUBROUTINE  偏移，並進入狀態 36
 
-    $default  reduce using rule 42 (declFunc)
+    $預設  使用規則 42 以縮減 (declFunc)
 
-    declFunc  go to state 217
+    declFunc  進入狀態 216
 
 
-State 213
+狀態 212
 
    37 declFunc: . SUBROUTINE ID $@13 '(' idn ')' $@14 decls END SUBROUTINE ID $@15 declFunc
    37         | SUBROUTINE ID $@13 '(' idn ')' $@14 decls END SUBROUTINE ID $@15 . declFunc
    41         | . FUNCTION ID $@16 '(' idn ')' $@17 decls END FUNCTION ID $@18 declFunc
-   42         | . %empty  [END]
+   42         | .  [END]
 
-    FUNCTION    shift, and go to state 35
-    SUBROUTINE  shift, and go to state 36
+    FUNCTION    偏移，並進入狀態 35
+    SUBROUTINE  偏移，並進入狀態 36
 
-    $default  reduce using rule 42 (declFunc)
+    $預設  使用規則 42 以縮減 (declFunc)
 
-    declFunc  go to state 218
+    declFunc  進入狀態 217
 
 
-State 214
+狀態 213
 
    65 loopStmt: DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO .
 
-    $default  reduce using rule 65 (loopStmt)
+    $預設  使用規則 65 以縮減 (loopStmt)
 
 
-State 215
+狀態 214
 
-   11 $@9: . %empty
+   11 $@9: .
    14 subprogram: FUNCTION ID $@8 '(' idn ')' . $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram
 
-    $default  reduce using rule 11 ($@9)
+    $預設  使用規則 11 以縮減 ($@9)
 
-    $@9  go to state 219
+    $@9  進入狀態 218
 
 
-State 216
+狀態 215
 
-    6 $@5: . %empty
+    6 $@5: .
     9 subprogram: SUBROUTINE ID $@4 '(' idn ')' . $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram
 
-    $default  reduce using rule 6 ($@5)
+    $預設  使用規則 6 以縮減 ($@5)
 
-    $@5  go to state 220
+    $@5  進入狀態 219
 
 
-State 217
+狀態 216
 
    41 declFunc: FUNCTION ID $@16 '(' idn ')' $@17 decls END FUNCTION ID $@18 declFunc .
 
-    $default  reduce using rule 41 (declFunc)
+    $預設  使用規則 41 以縮減 (declFunc)
 
 
-State 218
+狀態 217
 
    37 declFunc: SUBROUTINE ID $@13 '(' idn ')' $@14 decls END SUBROUTINE ID $@15 declFunc .
 
-    $default  reduce using rule 37 (declFunc)
+    $預設  使用規則 37 以縮減 (declFunc)
 
 
-State 219
+狀態 218
 
    14 subprogram: FUNCTION ID $@8 '(' idn ')' $@9 . decls $@10 stmts END FUNCTION ID $@11 subprogram
    16 decls: . declVar decls
    17      | . optionGlob decls
    18      | . optionInit decls
    19      | . optionDecl decls
-   20      | . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ]
+   20      | .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ]
    21 declVar: . types ids
    22        | . types CCOLON ids
    23        | . types ',' fAttr sAttr CCOLON ids
@@ -3733,32 +3690,32 @@ State 219
    75      | . LOGICAL
    76      | . CHARACTER
 
-    INTEGER    shift, and go to state 6
-    REAL       shift, and go to state 7
-    LOGICAL    shift, and go to state 8
-    CHARACTER  shift, and go to state 9
-    DATA       shift, and go to state 10
-    PARAMETER  shift, and go to state 11
-    COMMON     shift, and go to state 12
+    INTEGER    偏移，並進入狀態 6
+    REAL       偏移，並進入狀態 7
+    LOGICAL    偏移，並進入狀態 8
+    CHARACTER  偏移，並進入狀態 9
+    DATA       偏移，並進入狀態 10
+    PARAMETER  偏移，並進入狀態 11
+    COMMON     偏移，並進入狀態 12
 
-    $default  reduce using rule 20 (decls)
+    $預設  使用規則 20 以縮減 (decls)
 
-    decls       go to state 221
-    declVar     go to state 14
-    optionGlob  go to state 15
-    optionInit  go to state 16
-    optionDecl  go to state 17
-    types       go to state 18
+    decls       進入狀態 220
+    declVar     進入狀態 14
+    optionGlob  進入狀態 15
+    optionInit  進入狀態 16
+    optionDecl  進入狀態 17
+    types       進入狀態 18
 
 
-State 220
+狀態 219
 
     9 subprogram: SUBROUTINE ID $@4 '(' idn ')' $@5 . decls $@6 stmts END SUBROUTINE ID $@7 subprogram
    16 decls: . declVar decls
    17      | . optionGlob decls
    18      | . optionInit decls
    19      | . optionDecl decls
-   20      | . %empty  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ]
+   20      | .  [ID, CALL, DO, END, EXIT, PRINT, PRINTLN, RETURN, IF, READ]
    21 declVar: . types ids
    22        | . types CCOLON ids
    23        | . types ',' fAttr sAttr CCOLON ids
@@ -3770,45 +3727,45 @@ State 220
    75      | . LOGICAL
    76      | . CHARACTER
 
-    INTEGER    shift, and go to state 6
-    REAL       shift, and go to state 7
-    LOGICAL    shift, and go to state 8
-    CHARACTER  shift, and go to state 9
-    DATA       shift, and go to state 10
-    PARAMETER  shift, and go to state 11
-    COMMON     shift, and go to state 12
+    INTEGER    偏移，並進入狀態 6
+    REAL       偏移，並進入狀態 7
+    LOGICAL    偏移，並進入狀態 8
+    CHARACTER  偏移，並進入狀態 9
+    DATA       偏移，並進入狀態 10
+    PARAMETER  偏移，並進入狀態 11
+    COMMON     偏移，並進入狀態 12
 
-    $default  reduce using rule 20 (decls)
+    $預設  使用規則 20 以縮減 (decls)
 
-    decls       go to state 222
-    declVar     go to state 14
-    optionGlob  go to state 15
-    optionInit  go to state 16
-    optionDecl  go to state 17
-    types       go to state 18
+    decls       進入狀態 221
+    declVar     進入狀態 14
+    optionGlob  進入狀態 15
+    optionInit  進入狀態 16
+    optionDecl  進入狀態 17
+    types       進入狀態 18
 
 
-State 221
+狀態 220
 
-   12 $@10: . %empty
+   12 $@10: .
    14 subprogram: FUNCTION ID $@8 '(' idn ')' $@9 decls . $@10 stmts END FUNCTION ID $@11 subprogram
 
-    $default  reduce using rule 12 ($@10)
+    $預設  使用規則 12 以縮減 ($@10)
 
-    $@10  go to state 223
+    $@10  進入狀態 222
 
 
-State 222
+狀態 221
 
-    7 $@6: . %empty
+    7 $@6: .
     9 subprogram: SUBROUTINE ID $@4 '(' idn ')' $@5 decls . $@6 stmts END SUBROUTINE ID $@7 subprogram
 
-    $default  reduce using rule 7 ($@6)
+    $預設  使用規則 7 以縮減 ($@6)
 
-    $@6  go to state 224
+    $@6  進入狀態 223
 
 
-State 223
+狀態 222
 
    14 subprogram: FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 . stmts END FUNCTION ID $@11 subprogram
    43 stmts: . assignStmt stmts
@@ -3819,7 +3776,7 @@ State 223
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END]
+   54      | .  [END]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -3827,26 +3784,26 @@ State 223
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 225
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 224
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 224
+狀態 223
 
     9 subprogram: SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 . stmts END SUBROUTINE ID $@7 subprogram
    43 stmts: . assignStmt stmts
@@ -3857,7 +3814,7 @@ State 224
    48      | . EXIT stmts
    51      | . CALL ID $@19 '(' idn ')' $@20 stmts
    53      | . READ ID $@21 stmts
-   54      | . %empty  [END]
+   54      | .  [END]
    56 printStmt: . PRINT $@22 expr
    58          | . PRINTLN $@23 expr
    59 assignStmt: . ID '=' expr
@@ -3865,126 +3822,126 @@ State 224
    65 loopStmt: . DO $@25 assignStmt $@26 ',' expr $@27 optionExpr stmts END DO
    67 ifStmt: . IF '(' expr ')' $@28 condition1 END IF
 
-    ID       shift, and go to state 51
-    CALL     shift, and go to state 52
-    DO       shift, and go to state 53
-    EXIT     shift, and go to state 54
-    PRINT    shift, and go to state 55
-    PRINTLN  shift, and go to state 56
-    RETURN   shift, and go to state 57
-    IF       shift, and go to state 58
-    READ     shift, and go to state 59
+    ID       偏移，並進入狀態 51
+    CALL     偏移，並進入狀態 52
+    DO       偏移，並進入狀態 53
+    EXIT     偏移，並進入狀態 54
+    PRINT    偏移，並進入狀態 55
+    PRINTLN  偏移，並進入狀態 56
+    RETURN   偏移，並進入狀態 57
+    IF       偏移，並進入狀態 58
+    READ     偏移，並進入狀態 59
 
-    $default  reduce using rule 54 (stmts)
+    $預設  使用規則 54 以縮減 (stmts)
 
-    stmts       go to state 226
-    printStmt   go to state 61
-    assignStmt  go to state 62
-    loopStmt    go to state 63
-    ifStmt      go to state 64
+    stmts       進入狀態 225
+    printStmt   進入狀態 61
+    assignStmt  進入狀態 62
+    loopStmt    進入狀態 63
+    ifStmt      進入狀態 64
 
 
-State 225
+狀態 224
 
    14 subprogram: FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 stmts . END FUNCTION ID $@11 subprogram
 
-    END  shift, and go to state 227
+    END  偏移，並進入狀態 226
 
 
-State 226
+狀態 225
 
     9 subprogram: SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 stmts . END SUBROUTINE ID $@7 subprogram
 
-    END  shift, and go to state 228
+    END  偏移，並進入狀態 227
 
 
-State 227
+狀態 226
 
    14 subprogram: FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 stmts END . FUNCTION ID $@11 subprogram
 
-    FUNCTION  shift, and go to state 229
+    FUNCTION  偏移，並進入狀態 228
 
 
-State 228
+狀態 227
 
     9 subprogram: SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 stmts END . SUBROUTINE ID $@7 subprogram
 
-    SUBROUTINE  shift, and go to state 230
+    SUBROUTINE  偏移，並進入狀態 229
 
 
-State 229
+狀態 228
 
    14 subprogram: FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 stmts END FUNCTION . ID $@11 subprogram
 
-    ID  shift, and go to state 231
+    ID  偏移，並進入狀態 230
 
 
-State 230
+狀態 229
 
     9 subprogram: SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE . ID $@7 subprogram
 
-    ID  shift, and go to state 232
+    ID  偏移，並進入狀態 231
 
 
-State 231
+狀態 230
 
-   13 $@11: . %empty
+   13 $@11: .
    14 subprogram: FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 stmts END FUNCTION ID . $@11 subprogram
 
-    $default  reduce using rule 13 ($@11)
+    $預設  使用規則 13 以縮減 ($@11)
 
-    $@11  go to state 233
+    $@11  進入狀態 232
 
 
-State 232
+狀態 231
 
-    8 $@7: . %empty
+    8 $@7: .
     9 subprogram: SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE ID . $@7 subprogram
 
-    $default  reduce using rule 8 ($@7)
+    $預設  使用規則 8 以縮減 ($@7)
 
-    $@7  go to state 234
+    $@7  進入狀態 233
 
 
-State 233
+狀態 232
 
     9 subprogram: . SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram
    14           | . FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram
    14           | FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 stmts END FUNCTION ID $@11 . subprogram
-   15           | . %empty  [$end]
+   15           | .  [$end]
 
-    FUNCTION    shift, and go to state 173
-    SUBROUTINE  shift, and go to state 174
+    FUNCTION    偏移，並進入狀態 172
+    SUBROUTINE  偏移，並進入狀態 173
 
-    $default  reduce using rule 15 (subprogram)
+    $預設  使用規則 15 以縮減 (subprogram)
 
-    subprogram  go to state 235
+    subprogram  進入狀態 234
 
 
-State 234
+狀態 233
 
     9 subprogram: . SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram
     9           | SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 . subprogram
    14           | . FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram
-   15           | . %empty  [$end]
+   15           | .  [$end]
 
-    FUNCTION    shift, and go to state 173
-    SUBROUTINE  shift, and go to state 174
+    FUNCTION    偏移，並進入狀態 172
+    SUBROUTINE  偏移，並進入狀態 173
 
-    $default  reduce using rule 15 (subprogram)
+    $預設  使用規則 15 以縮減 (subprogram)
 
-    subprogram  go to state 236
+    subprogram  進入狀態 235
 
 
-State 235
+狀態 234
 
    14 subprogram: FUNCTION ID $@8 '(' idn ')' $@9 decls $@10 stmts END FUNCTION ID $@11 subprogram .
 
-    $default  reduce using rule 14 (subprogram)
+    $預設  使用規則 14 以縮減 (subprogram)
 
 
-State 236
+狀態 235
 
     9 subprogram: SUBROUTINE ID $@4 '(' idn ')' $@5 decls $@6 stmts END SUBROUTINE ID $@7 subprogram .
 
-    $default  reduce using rule 9 (subprogram)
+    $預設  使用規則 9 以縮減 (subprogram)

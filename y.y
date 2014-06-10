@@ -11,7 +11,7 @@ struct expType {
 	Types type;
 	int ival;
 	float dval;
-	char cval;
+	char *sval;
 	int bval;
 };
 
@@ -41,6 +41,11 @@ Attrs aTemp;
 scope *tempScope;
 symTable *tempSym;
 Types tempType;
+
+int tempInt;
+float tempReal;
+char *tempStr;
+int tempBool;
 
 func *tempFunc = NULL;
 func *funcAry[100];
@@ -324,7 +329,7 @@ subprogram
 		  fprintf(file, "\t}\n");
 	  }
 	  subprogram
-    | %empty
+    | 
 	;
 
 decls
@@ -332,7 +337,7 @@ decls
 	| optionGlob decls
 	| optionInit decls
 	| optionDecl decls
-	| %empty
+	| 
 	;
 
 declVar
@@ -348,6 +353,7 @@ optionGlob
 
 optionInit
 	: DATA '/' ID '/' value
+   
 	  {
 	  		int i = 0;
 			symTable *s;
@@ -369,20 +375,25 @@ optionDecl
 	  	    if(tempType != s->type)
 			    yyerror("(parameter)const not the same type.");
 
-			
+		    if(s->type == INT_TYPE)
+			    s->ival = tempInt;
+		    else if(s->type == REAL_TYPE)
+			    s->dval = tempReal;
+		    else if(s->type == CHAR_TYPE)
+			    s->sval = strdup(tempStr);		
 	   }
 	;
 
 value
-	: INTEGERC {tempType = INT_TYPE;}
-	| REALC    {tempType = REAL_TYPE;}
-	| CHARC    {tempType = CHAR_TYPE;}
-	| LOGICALC {tempType = LOGI_TYPE;}
+    : INTEGERC {tempType = INT_TYPE; tempInt = $1;}
+    | REALC    {tempType = REAL_TYPE; tempReal = $1;}
+    | STRINGC  {tempType = CHAR_TYPE; tempStr = $1;}
+    | LOGICALC {tempType = LOGI_TYPE; tempBool = $1;}
 	;
 
 declF
     : INTERFACE declFunc END INTERFACE
-    | %empty
+    | 
     ;
 
 declFunc
@@ -403,15 +414,19 @@ declFunc
 	  }
 	  '(' idn ')' {funcVaType = 1;}
 	  decls END SUBROUTINE ID {
-	  		int i;
+
+		    int i;
+			symTable *s = search(currentScope, $11);
 			for(i = 0; i < vCurrent; i++)
 			{
 				if(table[i] != NULL) yyerror("Variable type not declear.");
 			}
 	  	    if(strcmp($2, $11) != 0) yyerror("Subroutine's name doesn't match.");
+
 			vCurrent = 0;
 			funcVaType = 0;
 			funcNum++;
+			
 	  }
 	  declFunc
 
@@ -432,17 +447,26 @@ declFunc
 	  }
 	  '(' idn ')' {funcVaType = 1;}
 	  decls END FUNCTION ID {
+            symTable *s = search(tempScope, $11);
 	  		int i;
 			for(i = 0; i < vCurrent; i++)
 				if(table[i] != NULL) yyerror("Variable type not declear.");
 				
 			if(strcmp($2,$11) != 0) yyerror("Function's name doesn't match.");
+
+			for(i = 0; i < funcAry[funcNum]->varNum; i++)
+			{
+				funcAry[funcNum]->var[i]->index = i;
+			}
+
+			s->index = funcAry[funcNum]->varNum;
+			
 			vCurrent = 0;
 			funcVaType = 0;
 			funcNum++;
 	  }
 	  declFunc
-	| %empty
+	| 
 	;
 
 
@@ -476,7 +500,7 @@ stmts
 			if(s == NULL) yyerror("Function CALL was not exist.");
 	  }
 	  stmts
-	| %empty
+	| 
 	;
 
 printStmt
@@ -489,7 +513,7 @@ printStmt
 		  char *type;
 		  if($3->type == INT_TYPE)
 			  type = "int";
-		  else if($3->type == STR_TYPE)
+		  else if($3->type == CHAR_TYPE)
 			  type = "java.lang.String";
 				  
 		  fprintf(file, "\t\tinvokevirtual void java.io.PrintStream.print(%s)\n", type);
@@ -503,7 +527,7 @@ printStmt
 		  char *type;
 		  if($3->type == INT_TYPE)
 			  type = "int";
-		  else if($3->type == STR_TYPE)
+		  else if($3->type == CHAR_TYPE)
 			  type = "java.lang.String";
 				  
 		  fprintf(file, "\t\tinvokevirtual void java.io.PrintStream.println(%s)\n", type);
@@ -517,6 +541,9 @@ assignStmt
 			if(s == NULL) yyerror("Assign id wasn't exist.");
 			if(s->type == $3->type){}
 			else yyerror("Assign Expression type error.");
+
+			if(s->attr == BOTH || s->attr == PARA_ATTR)
+				yyerror("This Id is CONST can't be assign.");
 
 			if(search(currentScope, $1) != NULL)
 				fprintf(file, "\t\tistore %d\n", s->index);
@@ -605,7 +632,7 @@ condition2
 		  int index = loopifNum*2-1;
 		  fprintf(file, "\tL%d:\n", index);
 	  }
-	| %empty
+	| 
 	  {
 		  int index = loopifNum*2-2;
 		  fprintf(file, "\tL%d:\n", index);
@@ -622,7 +649,7 @@ types
 
 idn
 	: ids
-	| %empty
+	| 
 	;
 
 ids
@@ -653,7 +680,7 @@ sAttr
 	  	    if(aTemp != ARY_ATTR) yyerror("Same Attribute Decleared.");
 	  	  	aTemp = BOTH;
 	  }
-	| %empty
+	| 
 	;
 
 expr
@@ -839,9 +866,8 @@ expr
 
 	| INTEGERC {$$ = expGenerate(INT_TYPE); fprintf(file, "\t\tsipush %d\n", $1);} 
 	| REALC    {$$ = expGenerate(REAL_TYPE); }
-	| CHARC    {$$ = expGenerate(CHAR_TYPE); }
 	| LOGICALC {$$ = expGenerate(LOGI_TYPE); }
-	| STRINGC  {$$ = expGenerate(STR_TYPE);  }
+	| STRINGC  {$$ = expGenerate(CHAR_TYPE); ;fprintf(file, "\t\tldc \"%s\"\n", $1);}
 	;
 
 funcCondition
@@ -878,21 +904,31 @@ funcCondition
             }
             fprintf(file, ")\n");
       }
-    | %empty
+    | 
 	  {
 		    symTable *s = searchRecu(currentScope, funcName);
 			char *type;
+
+			if(s->attr == PARA_ATTR)
+			{
+				if(s->type == INT_TYPE)
+					fprintf(file, "\t\tsipush %d\n", s->ival);
+				else if(s->type == CHAR_TYPE)
+					fprintf(file, "\t\tldc \"%s\"\n", s->sval);
+			}
+			else
+			{
+				if(s->type == INT_TYPE)
+					type = strdup("int");
+				else if(s->type == REAL_TYPE)
+					type = strdup("float");
+				else yyerror("(Function call) type error.");
 			
-			if(s->type == INT_TYPE)
-				type = strdup("int");
-			else if(s->type == REAL_TYPE)
-				type = strdup("float");
-			else yyerror("(Function call) type error.");
-			
-			if(search(currentScope, funcName) != NULL)
-				fprintf(file, "\t\tiload %d\n", s->index);
-		    else
-				fprintf(file, "\t\tgetstaitc %s %s.%s\n", type, className, s->name);
+				if(search(currentScope, funcName) != NULL)
+					fprintf(file, "\t\tiload %d\n", s->index);
+				else
+					fprintf(file, "\t\tgetstaitc %s %s.%s\n", type, className, s->name);
+			}
 
 		
       }
@@ -901,7 +937,7 @@ funcCondition
 funcPara
     : funcPara ',' opt_val
 	| opt_val
-    | %empty
+    | 
     ;
 
 opt_val
@@ -936,9 +972,29 @@ opt_val
 		  varNum++;
 
 		  if(search(currentScope, $1) != NULL)
-			  fprintf(file, "\t\tiload %d\n", s->index);
+		  {
+			  if(s->attr == PARA_ATTR)
+			  {
+				  if(s->type == INT_TYPE)
+					  fprintf(file, "\t\t sipush %d\n", s->ival);
+				  else if(s->type == CHAR_TYPE)
+					  fprintf(file, "\t\t ldc \"%s\"\n", s->sval);
+			  }
+			  else
+				  fprintf(file, "\t\tiload %d\n", s->index);
+		  }
 		  else
+		  {
+			  if(s->attr == PARA_ATTR)
+			  {
+				  if(s->type == INT_TYPE)
+					  fprintf(file, "\t\t sipush %d\n", s->ival);
+				  else if(s->type == CHAR_TYPE)
+					  fprintf(file, "\t\t ldc \"%s\"\n", s->sval);
+			  }
+			  else	  
 			  fprintf(file, "\t\tgetstatic int %s.%s\n", className, $1);
+		  }
       }
 	;
 
@@ -952,7 +1008,7 @@ optionExpr
 			if(s->type != INT_TYPE && s->type != REAL_TYPE) 
 				yyerror("optional expr type error.");
 	  }
-	| %empty
+	| 
 	  {
 		  inc = 1;
 	  }
@@ -1118,6 +1174,7 @@ void idCondition(char *idToken)
 		int end = tempFunc->varNum;
 		
 		symTable *s = insert(currentScope, idToken);
+
 		if(s == NULL) {
 			for(i = 0; i < end; i++)
 			{

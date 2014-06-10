@@ -27,7 +27,7 @@ struct symTable {
 		int ival;
 		float dval;
 		int bval;
-		char c;
+		char *sval;
 	};
     symTable *next;
 };

@@ -5,44 +5,9 @@ class example
 	max_stack 15
 	max_locals 15
 	{
-		sipush 5
-		istore 1
-		sipush 0
-		istore 2
-		sipush 0
-		istore 3
-	L0:
-		iload 3
-		sipush 10
-		isub
-		ifge L1
-		iload 1
-		sipush 10
-		isub
-		ifle L2
-		iload 2
-		sipush 1
-		iadd
-		istore 2
 		getstatic java.io.PrintStream java.lang.System.out
-		iload 2
-		invokevirtual void java.io.PrintStream.println(int)
-		goto L3
-	L2:
-		iload 2
-		sipush 1
-		isub
-		istore 2
-		getstatic java.io.PrintStream java.lang.System.out
-		iload 2
-		invokevirtual void java.io.PrintStream.println(int)
-	L3:
-		sipush 1
-		iload 3
-		iadd
-		istore 3
-		goto L0
-	L1:
+		ldc "Hello sFortran"
+		invokevirtual void java.io.PrintStream.print(java.lang.String)
 		return
 	}
 }

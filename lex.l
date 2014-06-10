@@ -146,7 +146,7 @@ id       {letter}({letter}|{digit})*
                 LIST;
 				*s = 0;
 				BEGIN 0;
-				yylval.sval = strdup(s);
+				yylval.sval = strdup(strBuf);
 				return STRINGC;
 				}
 
