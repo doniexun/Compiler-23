@@ -977,7 +977,9 @@ int main(int argc, char *argv[])
 	globalScope = createScope();
 	globalScope->prevLink = NULL;
 	scopeGroup[scopeNum++] = globalScope;
-		
+
+	printf("instruct number : %d\n", argc);
+	printf("%s\n", argv[1]);
 
 	yyparse();
 
