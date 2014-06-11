@@ -1,4 +1,4 @@
-class example
+class testfile
 {
 	field static int a
 	method public static void main(java.lang.String[])
@@ -6,43 +6,39 @@ class example
 	max_locals 15
 	{
 		sipush 5
-		istore 1
-		sipush 0
-		istore 2
-		sipush 0
-		istore 3
-	L0:
-		iload 3
+		putstatic int testfile.a
+		getstatic int testfile.a
 		sipush 10
-		isub
-		ifge L1
+		invokestatic int testfile.add(int, int)
+		istore 1
 		iload 1
 		sipush 10
 		isub
-		ifle L2
-		iload 2
-		sipush 1
-		iadd
-		istore 2
+		ifle L0
 		getstatic java.io.PrintStream java.lang.System.out
-		iload 2
-		invokevirtual void java.io.PrintStream.println(int)
-		goto L3
-	L2:
-		iload 2
-		sipush 1
-		isub
-		istore 2
+		iload 1
+		ineg
+		invokevirtual void java.io.PrintStream.print(int)
+		goto L1
+	L0:
 		getstatic java.io.PrintStream java.lang.System.out
-		iload 2
-		invokevirtual void java.io.PrintStream.println(int)
-	L3:
-		sipush 1
-		iload 3
-		iadd
-		istore 3
-		goto L0
+		iload 1
+		invokevirtual void java.io.PrintStream.print(int)
 	L1:
+		getstatic java.io.PrintStream java.lang.System.out
+		ldc "Hello World"
+		invokevirtual void java.io.PrintStream.println(java.lang.String)
 		return
+	}
+	method public static int add(int, int)
+	max_stack 15
+	max_locals 15
+	{
+		iload 0
+		iload 1
+		iadd
+		istore 2
+		iload 2
+		ireturn
 	}
 }

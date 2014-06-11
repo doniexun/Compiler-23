@@ -114,13 +114,81 @@ extern int yydebug;
     UMINUS = 324
   };
 #endif
+/* Tokens.  */
+#define INTEGERC 258
+#define REALC 259
+#define CHARC 260
+#define LOGICALC 261
+#define ID 262
+#define STRINGC 263
+#define LPARENTHESIS 264
+#define RPARENTHESIS 265
+#define COMMA 266
+#define COLON 267
+#define CCOLON 268
+#define SEMICOLON 269
+#define LBRACKET 270
+#define RBRACKET 271
+#define LBRACE 272
+#define RBRACE 273
+#define INTEGER 274
+#define REAL 275
+#define LOGICAL 276
+#define CHARACTER 277
+#define CALL 278
+#define CASE 279
+#define CLOSE 280
+#define CONTINUE 281
+#define CYCLE 282
+#define DATA 283
+#define DIMENSION 284
+#define DO 285
+#define END 286
+#define EXIT 287
+#define FUNCTION 288
+#define GOTO 289
+#define PROCEDURE 290
+#define PARAMETER 291
+#define PRINT 292
+#define PRINTLN 293
+#define POINTER 294
+#define PROGRAM 295
+#define RECURSIVE 296
+#define RETURN 297
+#define SELECT 298
+#define STOP 299
+#define SUBROUTINE 300
+#define TYPE 301
+#define PERCENT 302
+#define CONCAT 303
+#define PASSIGNMENT 304
+#define INTERFACE 305
+#define THEN 306
+#define IF 307
+#define READ 308
+#define COMMON 309
+#define IFX 310
+#define ELSE 311
+#define EQV 312
+#define NEQV 313
+#define OR 314
+#define AND 315
+#define NOT 316
+#define LT 317
+#define LE 318
+#define GE 319
+#define GT 320
+#define EQ 321
+#define NE 322
+#define EXP 323
+#define UMINUS 324
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 77 "y.y" /* yacc.c:1909  */
+#line 82 "y.y" /* yacc.c:1909  */
 
 	int ival;
 	float dval;
@@ -130,7 +198,7 @@ union YYSTYPE
 	char *sval;
 	symTable *sym; // ID or INTEGERC or REALC
 
-#line 134 "y.tab.h" /* yacc.c:1909  */
+#line 202 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

@@ -1,5 +1,5 @@
 
-#line 3 "<stdout>"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -732,7 +732,7 @@ char *s;
 
 
 
-#line 736 "<stdout>"
+#line 736 "lex.yy.c"
 
 #define INITIAL 0
 #define STRING 1
@@ -928,7 +928,7 @@ YY_DECL
 #line 35 "lex.l"
 
  /* Define Delimiters */
-#line 932 "<stdout>"
+#line 932 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -1402,7 +1402,7 @@ YY_RULE_SETUP
                 LIST;
 				*s = 0;
 				BEGIN 0;
-				yylval.sval = strdup(s);
+				yylval.sval = strdup(strBuf);
 				return STRINGC;
 				}
 	YY_BREAK
@@ -1540,7 +1540,7 @@ YY_RULE_SETUP
 #line 229 "lex.l"
 ECHO;
 	YY_BREAK
-#line 1544 "<stdout>"
+#line 1544 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(STRING):
 case YY_STATE_EOF(COMMENT1):
